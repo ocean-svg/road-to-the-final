@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Road to the Final — 5-a-Side Tournament</title>
+<meta name="description" content="Road to the Final: an 8-team 5-a-side football tournament. Fixtures, groups, bracket, rules and sign-up.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚽</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top">Road to <span>the Final</span></a>
+    <nav class="site-nav" id="site-nav">
+      <a href="#format">Format</a>
+      <a href="#bracket">Bracket</a>
+      <a href="#groups">Groups</a>
+      <a href="#fixtures">Fixtures</a>
+      <a href="#rules">Rules</a>
+      <a href="#venue">Venue &amp; Sign Up</a>
+    </nav>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">5-A-SIDE KNOCKOUT FOOTBALL</p>
+        <h1>Road to<br><em>the Final</em></h1>
+        <p class="hero-sub">Eight teams. Two groups. One trophy. Follow every result from the group stage through to the final whistle.</p>
+        <div class="hero-meta">
+          <div><div class="num">8</div><div class="lbl">Teams</div></div>
+          <div><div class="num">12</div><div class="lbl">Group matches</div></div>
+          <div><div class="num">3</div><div class="lbl">Knockout rounds</div></div>
+          <div><div class="num">1</div><div class="lbl">Trophy</div></div>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#venue">Register a team</a>
+          <a class="btn btn-ghost" href="#fixtures">See fixtures</a>
+        </div>
+      </div>
+
+      <div class="next-match-card">
+        <p class="eyebrow">NEXT UP</p>
+        <div class="fixture-row">
+          <span>Ironclad FC</span>
+          <span class="vs">vs</span>
+          <span>The Strikers</span>
+        </div>
+        <p class="when">Saturday · Group A · Kickoff 14:00 · Pitch 1</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="format">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">HOW IT WORKS</p>
+        <h2>Group stage, then knockout</h2>
+        <p>Eight teams split into two groups of four. Everyone plays a round robin, then the top two from each group carry on to the knockout rounds — the road to the final.</p>
+      </div>
+      <div class="format-grid">
+        <div class="panel format-card">
+          <div class="step">01</div>
+          <h3>Group stage</h3>
+          <p>Round robin within Group A and Group B. Win = 3 points, draw = 1, loss = 0. Ranked by points, then goal difference.</p>
+        </div>
+        <div class="panel format-card">
+          <div class="step">02</div>
+          <h3>Semi-finals</h3>
+          <p>Group A winner faces Group B runner-up, and Group B winner faces Group A runner-up. Straight knockout, extra time if level.</p>
+        </div>
+        <div class="panel format-card">
+          <div class="step">03</div>
+          <h3>The Final</h3>
+          <p>Winners meet for the trophy. Level after extra time goes to penalties. Third-place teams receive a runners-up medal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="bracket" class="alt">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">THE ROAD</p>
+        <h2>Knockout bracket</h2>
+        <p>Updated after every match — results feed straight into the next round.</p>
+      </div>
+
+      <div class="bracket">
+        <div class="bracket-round">
+          <div class="bracket-round-label">Semi-final 1</div>
+          <div class="match">
+            <div class="team"><span>Group A Winner</span><span class="score">–</span></div>
+            <div class="team"><span>Group B Runner-up</span><span class="score">–</span></div>
+          </div>
+          <div class="bracket-round-label">Semi-final 2</div>
+          <div class="match">
+            <div class="team"><span>Group B Winner</span><span class="score">–</span></div>
+            <div class="team"><span>Group A Runner-up</span><span class="score">–</span></div>
+          </div>
+        </div>
+        <div class="bracket-round final-round">
+          <div class="bracket-round-label">Final · Sat 28 Nov</div>
+          <div class="match final">
+            <div class="team"><span>Semi-final 1 winner</span><span class="score">–</span></div>
+            <div class="team"><span>Semi-final 2 winner</span><span class="score">–</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="groups">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">STANDINGS</p>
+        <h2>Group tables</h2>
+        <p>Top two from each group (highlighted) advance to the semi-finals.</p>
+      </div>
+      <div class="groups-grid">
+        <div class="panel">
+          <table class="standings">
+            <caption>Group A</caption>
+            <thead>
+              <tr><th>Team</th><th class="num">P</th><th class="num">W</th><th class="num">D</th><th class="num">L</th><th class="num">GD</th><th class="num">Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="qualifies"><td>Ironclad FC</td><td class="num">3</td><td class="num">3</td><td class="num">0</td><td class="num">0</td><td class="num">+7</td><td class="num">9</td></tr>
+              <tr class="qualifies"><td>The Strikers</td><td class="num">3</td><td class="num">2</td><td class="num">0</td><td class="num">1</td><td class="num">+2</td><td class="num">6</td></tr>
+              <tr><td>Riverside United</td><td class="num">3</td><td class="num">1</td><td class="num">0</td><td class="num">2</td><td class="num">-3</td><td class="num">3</td></tr>
+              <tr><td>North Point FC</td><td class="num">3</td><td class="num">0</td><td class="num">0</td><td class="num">3</td><td class="num">-6</td><td class="num">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <table class="standings">
+            <caption>Group B</caption>
+            <thead>
+              <tr><th>Team</th><th class="num">P</th><th class="num">W</th><th class="num">D</th><th class="num">L</th><th class="num">GD</th><th class="num">Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="qualifies"><td>Vantage Athletic</td><td class="num">3</td><td class="num">2</td><td class="num">1</td><td class="num">0</td><td class="num">+5</td><td class="num">7</td></tr>
+              <tr class="qualifies"><td>Harbour City FC</td><td class="num">3</td><td class="num">2</td><td class="num">0</td><td class="num">1</td><td class="num">+1</td><td class="num">6</td></tr>
+              <tr><td>Wanderers SC</td><td class="num">3</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">-1</td><td class="num">4</td></tr>
+              <tr><td>Foxhill Rovers</td><td class="num">3</td><td class="num">0</td><td class="num">0</td><td class="num">3</td><td class="num">-5</td><td class="num">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="fixtures" class="alt">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">SCHEDULE</p>
+        <h2>Fixtures</h2>
+        <p>All group matches kick off on Saturdays. Knockout dates confirmed once groups are settled.</p>
+      </div>
+      <div class="panel">
+        <div class="fixtures-list">
+          <div class="fixture-item"><span class="date">Sat 7 Nov</span><span class="teams">Ironclad FC vs The Strikers</span><span class="group-tag">Group A · 14:00</span></div>
+          <div class="fixture-item"><span class="date">Sat 7 Nov</span><span class="teams">Riverside United vs North Point FC</span><span class="group-tag">Group A · 15:00</span></div>
+          <div class="fixture-item"><span class="date">Sat 7 Nov</span><span class="teams">Vantage Athletic vs Wanderers SC</span><span class="group-tag">Group B · 16:00</span></div>
+          <div class="fixture-item"><span class="date">Sat 7 Nov</span><span class="teams">Harbour City FC vs Foxhill Rovers</span><span class="group-tag">Group B · 17:00</span></div>
+          <div class="fixture-item"><span class="date">Sat 14 Nov</span><span class="teams">Ironclad FC vs Riverside United</span><span class="group-tag">Group A · 14:00</span></div>
+          <div class="fixture-item"><span class="date">Sat 14 Nov</span><span class="teams">The Strikers vs North Point FC</span><span class="group-tag">Group A · 15:00</span></div>
+          <div class="fixture-item"><span class="date">Sat 14 Nov</span><span class="teams">Vantage Athletic vs Harbour City FC</span><span class="group-tag">Group B · 16:00</span></div>
+          <div class="fixture-item"><span class="date">Sat 14 Nov</span><span class="teams">Wanderers SC vs Foxhill Rovers</span><span class="group-tag">Group B · 17:00</span></div>
+          <div class="fixture-item"><span class="date">Sat 21 Nov</span><span class="teams">Semi-final 1</span><span class="group-tag">Knockout · 15:00</span></div>
+          <div class="fixture-item"><span class="date">Sat 21 Nov</span><span class="teams">Semi-final 2</span><span class="group-tag">Knockout · 16:00</span></div>
+          <div class="fixture-item"><span class="date">Sat 28 Nov</span><span class="teams">The Final</span><span class="group-tag">Final · 16:00</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="rules">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">FORMAT DETAILS</p>
+        <h2>Rules at a glance</h2>
+      </div>
+      <div class="rules-grid">
+        <div>
+          <h3>On the pitch</h3>
+          <ul>
+            <li>5 players per side, rolling substitutions, max 8 on the roster.</li>
+            <li>2 x 20-minute halves in the group stage; 2 x 15 minutes plus extra time in the knockouts.</li>
+            <li>No offside. Goalkeeper cannot receive a back-pass by hand.</li>
+            <li>Slide tackles are not permitted — direct free kick and possible caution.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Competition rules</h3>
+          <ul>
+            <li>Teams must have 4 players present to kick off; a 10-minute grace period applies.</li>
+            <li>Group ties broken by: points → goal difference → goals scored → head-to-head.</li>
+            <li>Two yellow cards = one match suspension for the next fixture.</li>
+            <li>Registration closes one week before the group draw.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="venue" class="alt">
+    <div class="wrap">
+      <div class="venue-grid">
+        <div>
+          <p class="eyebrow">GET INVOLVED</p>
+          <h2>Venue &amp; sign up</h2>
+          <div style="margin-top:22px;">
+            <div class="info-line"><span class="k">Venue</span><span>Oakview Sports Centre, 5-a-side pitches 1–2</span></div>
+            <div class="info-line"><span class="k">Dates</span><span>7 Nov – 28 Nov (Saturdays)</span></div>
+            <div class="info-line"><span class="k">Entry fee</span><span>R850 per team</span></div>
+            <div class="info-line"><span class="k">Contact</span><span><a href="mailto:hello@roadtothefinal.example">hello@roadtothefinal.example</a></span></div>
+          </div>
+        </div>
+        <div class="panel" style="padding:28px;">
+          <h3>Register a team</h3>
+          <form class="signup" id="signup-form">
+            <input type="text" placeholder="Team name" required>
+            <input type="text" placeholder="Captain's name" required>
+            <input type="email" placeholder="Contact email" required>
+            <select required>
+              <option value="" disabled selected>Preferred group (if any)</option>
+              <option>No preference</option>
+              <option>Group A</option>
+              <option>Group B</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Submit entry</button>
+          </form>
+          <p class="form-note" id="form-note">This form is a placeholder — connect it to your email or a form service before going live.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="brand">Road to <span style="color:var(--floodlight);">the Final</span></span>
+    <span>5-a-side football tournament · Sample data — edit freely</span>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
