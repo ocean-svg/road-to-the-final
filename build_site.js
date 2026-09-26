@@ -1,4 +1,380 @@
-/* =============================================
+
+const fs = require('fs');
+
+// ─────────────────────────────────────────────
+// INDEX.HTML
+// ─────────────────────────────────────────────
+const html = `<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Road to the Final 2026 - Summer Edition Tournament</title>
+  <meta name="description" content="Road to the Final 2026 Summer Edition - Follow live fixtures, standings, top scorers, rules and tournament news. Register your team today.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#" id="logo-home" aria-label="Road to the Final Home">
+        <div class="brand-icon">
+          <svg viewBox="0 0 36 36" fill="none" width="36" height="36">
+            <circle cx="18" cy="18" r="17" stroke="url(#bgrad)" stroke-width="2"/>
+            <path d="M18 6 L22 15 L32 15 L24 21 L27 30 L18 24 L9 30 L12 21 L4 15 L14 15 Z" fill="url(#bgrad)" opacity="0.9"/>
+            <defs>
+              <linearGradient id="bgrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#f7b731"/>
+                <stop offset="100%" stop-color="#fc5c7d"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-main">ROAD TO</span>
+          <span class="brand-sub">THE FINAL</span>
+        </div>
+        <div class="brand-year">2026</div>
+      </a>
+
+      <nav class="main-tabs" id="main-tabs" role="tablist">
+        <button class="tab-btn active" data-tab="fixtures" id="tab-fixtures" role="tab" aria-selected="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Fixtures
+        </button>
+        <button class="tab-btn" data-tab="standings" id="tab-standings" role="tab" aria-selected="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+          Standings
+        </button>
+        <button class="tab-btn" data-tab="stats" id="tab-stats" role="tab" aria-selected="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Stats
+        </button>
+        <button class="tab-btn" data-tab="teams" id="tab-teams" role="tab" aria-selected="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Teams
+        </button>
+        <button class="tab-btn" data-tab="rules" id="tab-rules" role="tab" aria-selected="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Rules
+        </button>
+        <button class="tab-btn signup-tab" data-tab="signup" id="tab-signup" role="tab" aria-selected="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+          Sign Up
+        </button>
+        <button class="tab-btn" data-tab="news" id="tab-news" role="tab" aria-selected="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+          News
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+        </button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="hero-banner" id="hero-banner">
+    <div class="hero-bg">
+      <div class="hero-pitch-lines"></div>
+      <div class="hero-glow hero-glow-1"></div>
+      <div class="hero-glow hero-glow-2"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-season-badge">&#9917; Summer Edition 2026</div>
+      <h1 class="hero-title">
+        <span class="hero-title-road">ROAD</span>
+        <span class="hero-title-to">TO THE</span>
+        <span class="hero-title-final">FINAL</span>
+      </h1>
+      <p class="hero-subtitle">8 Teams &middot; 3 Groups &middot; 1 Champion</p>
+      <div class="hero-cta-group">
+        <button class="btn-primary" onclick="switchTab('fixtures')">View Fixtures</button>
+        <button class="btn-secondary" onclick="switchTab('signup')">Register Team</button>
+      </div>
+    </div>
+    <div class="hero-stats-bar">
+      <div class="hero-stat"><span class="hero-stat-val">17</span><span class="hero-stat-label">Total Matches</span></div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat"><span class="hero-stat-val">8</span><span class="hero-stat-label">Teams</span></div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat"><span class="hero-stat-val">50</span><span class="hero-stat-label">Goals Scored</span></div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat"><span class="hero-stat-val">Oct 3</span><span class="hero-stat-label">Kick-off Date</span></div>
+    </div>
+  </div>
+
+  <main class="main-content" id="main-content">
+
+    <section class="tab-panel active" id="panel-fixtures" role="tabpanel" aria-labelledby="tab-fixtures">
+      <div class="panel-inner">
+        <div class="panel-header">
+          <h2 class="panel-title">Fixtures &amp; Results</h2>
+          <div class="filter-pills" id="fixtures-filter" role="group" aria-label="Filter fixtures by round">
+            <button class="filter-pill active" data-filter="all">All</button>
+            <button class="filter-pill" data-filter="Group Stage">Group Stage</button>
+            <button class="filter-pill" data-filter="Quarter Finals">Quarter Finals</button>
+            <button class="filter-pill" data-filter="Semi Finals">Semi Finals</button>
+            <button class="filter-pill" data-filter="Final">Final</button>
+          </div>
+        </div>
+        <div class="fixtures-list" id="fixtures-list"></div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="panel-standings" role="tabpanel" aria-labelledby="tab-standings">
+      <div class="panel-inner">
+        <div class="panel-header"><h2 class="panel-title">Standings</h2></div>
+        <div class="standings-container" id="standings-container"></div>
+        <div class="bracket-section">
+          <h3 class="section-sub-title">Knockout Bracket</h3>
+          <div class="bracket-grid" id="bracket-grid">
+            <div class="bracket-round">
+              <div class="bracket-round-label">Quarter Finals<br><small>Oct 24</small></div>
+              <div class="bracket-match">
+                <div class="bracket-team"><span class="bracket-crest" style="background:#e63946"></span><span>FC Predators</span></div>
+                <div class="bracket-vs">vs</div>
+                <div class="bracket-team"><span class="bracket-crest" style="background:#ff6b35"></span><span>Phoenix Rising</span></div>
+              </div>
+              <div class="bracket-match">
+                <div class="bracket-team"><span class="bracket-crest" style="background:#06d6a0"></span><span>Dynamo Stars</span></div>
+                <div class="bracket-vs">vs</div>
+                <div class="bracket-team"><span class="bracket-crest" style="background:#457b9d"></span><span>Thunder United</span></div>
+              </div>
+            </div>
+            <div class="bracket-round">
+              <div class="bracket-round-label">Semi Finals<br><small>Oct 31</small></div>
+              <div class="bracket-match tbd">
+                <div class="bracket-team tbd-team"><span class="bracket-crest tbd-crest"></span><span>TBD</span></div>
+                <div class="bracket-vs">vs</div>
+                <div class="bracket-team tbd-team"><span class="bracket-crest tbd-crest"></span><span>TBD</span></div>
+              </div>
+              <div class="bracket-match tbd">
+                <div class="bracket-team tbd-team"><span class="bracket-crest tbd-crest"></span><span>TBD</span></div>
+                <div class="bracket-vs">vs</div>
+                <div class="bracket-team tbd-team"><span class="bracket-crest tbd-crest"></span><span>TBD</span></div>
+              </div>
+            </div>
+            <div class="bracket-round bracket-final-round">
+              <div class="bracket-round-label">Final<br><small>Nov 7</small></div>
+              <div class="bracket-match tbd bracket-final-match">
+                <div class="bracket-team tbd-team"><span class="bracket-crest tbd-crest"></span><span>TBD</span></div>
+                <div class="bracket-vs">vs</div>
+                <div class="bracket-team tbd-team"><span class="bracket-crest tbd-crest"></span><span>TBD</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="panel-stats" role="tabpanel" aria-labelledby="tab-stats">
+      <div class="panel-inner">
+        <div class="panel-header">
+          <h2 class="panel-title">Stats &amp; Leaders</h2>
+          <div class="filter-pills" id="stats-filter" role="group" aria-label="Switch stats table">
+            <button class="filter-pill active" data-stat="scorers">&#127945; Golden Boot</button>
+            <button class="filter-pill" data-stat="assists">&#127919; Assist Kings</button>
+          </div>
+        </div>
+        <div class="stats-table-wrap" id="stats-table-wrap"></div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="panel-teams" role="tabpanel" aria-labelledby="tab-teams">
+      <div class="panel-inner">
+        <div class="panel-header"><h2 class="panel-title">Teams</h2></div>
+        <div class="teams-grid" id="teams-grid"></div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="panel-rules" role="tabpanel" aria-labelledby="tab-rules">
+      <div class="panel-inner">
+        <div class="panel-header"><h2 class="panel-title">Rules &amp; Info</h2></div>
+        <div class="venue-card">
+          <div class="venue-map-placeholder">
+            <div class="map-pin-anim">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="venue-pitch-grid"></div>
+          </div>
+          <div class="venue-info">
+            <div class="venue-badge">&#128205; Venue</div>
+            <h3 class="venue-name">City Sports Complex</h3>
+            <p class="venue-address">123 Stadium Drive, Cape Town, 8001</p>
+            <div class="venue-details">
+              <div class="venue-detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                3 Pitches available (A, B &amp; C)
+              </div>
+              <div class="venue-detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Matches: Saturdays from 09:00
+              </div>
+              <div class="venue-detail-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                Free parking on-site
+              </div>
+            </div>
+            <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="btn-venue-map">Get Directions &#8599;</a>
+          </div>
+        </div>
+        <div class="rules-accordion" id="rules-accordion"></div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="panel-signup" role="tabpanel" aria-labelledby="tab-signup">
+      <div class="panel-inner panel-inner-narrow">
+        <div class="panel-header"><h2 class="panel-title">Team Registration</h2></div>
+        <div class="payment-notice-banner">
+          <div class="notice-icon">&#128172;</div>
+          <div class="notice-text">
+            <strong>No online payment required.</strong>
+            Registration fee details and payment instructions will be communicated directly via <strong>WhatsApp</strong> or <strong>Email</strong> after form submission.
+            <br><small>Registration Fee: R350 per team</small>
+          </div>
+        </div>
+        <div class="signup-card" id="signup-form-card">
+          <form class="signup-form" id="signup-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="team-name">Team Name <span class="req">*</span></label>
+                <input type="text" id="team-name" name="teamName" placeholder="e.g. FC Predators" required maxlength="50">
+                <span class="field-error" id="err-team-name"></span>
+              </div>
+              <div class="form-group">
+                <label for="captain-name">Captain Name <span class="req">*</span></label>
+                <input type="text" id="captain-name" name="captainName" placeholder="Full name" required maxlength="60">
+                <span class="field-error" id="err-captain-name"></span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">WhatsApp Number <span class="req">*</span></label>
+                <input type="tel" id="phone" name="phone" placeholder="+27 81 234 5678" required>
+                <span class="field-error" id="err-phone"></span>
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address <span class="req">*</span></label>
+                <input type="email" id="email" name="email" placeholder="captain@email.com" required>
+                <span class="field-error" id="err-email"></span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="jersey-colors">Preferred Jersey Colors <span class="req">*</span></label>
+                <input type="text" id="jersey-colors" name="jerseyColors" placeholder="e.g. Red and White" required maxlength="80">
+                <span class="field-error" id="err-jersey-colors"></span>
+              </div>
+              <div class="form-group">
+                <label for="squad-size">Squad Size <span class="req">*</span></label>
+                <select id="squad-size" name="squadSize" required>
+                  <option value="">Select squad size</option>
+                  <option value="6">6 players</option>
+                  <option value="7">7 players</option>
+                  <option value="8">8 players</option>
+                  <option value="9">9 players</option>
+                  <option value="10">10 players</option>
+                  <option value="11">11 players</option>
+                  <option value="12">12 players (max)</option>
+                </select>
+                <span class="field-error" id="err-squad-size"></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="extra-notes">Additional Notes <span class="optional">(optional)</span></label>
+              <textarea id="extra-notes" name="notes" rows="3" placeholder="Any special requests, kit conflicts, or questions..."></textarea>
+            </div>
+            <div class="form-checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="agree-rules" name="agreeRules" required>
+                <span class="checkbox-custom"></span>
+                I confirm all players are available and I have read and agree to the
+                <button type="button" class="link-btn" onclick="switchTab('rules')">tournament rules</button>. <span class="req">*</span>
+              </label>
+              <span class="field-error" id="err-agree-rules"></span>
+            </div>
+            <button type="submit" class="btn-submit" id="submit-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Submit Registration
+            </button>
+          </form>
+        </div>
+        <div class="signup-success" id="signup-success" hidden>
+          <div class="success-icon">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3 class="success-title">Team Submitted Successfully!</h3>
+          <p class="success-msg">We will reach out on <strong>WhatsApp</strong> within 24 hours to confirm your spot and share payment details.</p>
+          <div class="success-contact">
+            <a href="https://wa.me/27812345678" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+              Chat on WhatsApp
+            </a>
+            <button class="btn-secondary-sm" onclick="resetSignupForm()">Register Another Team</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news">
+      <div class="panel-inner">
+        <div class="panel-header"><h2 class="panel-title">News &amp; Announcements</h2></div>
+        <div class="news-feed" id="news-feed"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <svg viewBox="0 0 36 36" fill="none" width="28" height="28">
+          <circle cx="18" cy="18" r="17" stroke="url(#fg2)" stroke-width="2"/>
+          <path d="M18 6 L22 15 L32 15 L24 21 L27 30 L18 24 L9 30 L12 21 L4 15 L14 15 Z" fill="url(#fg2)"/>
+          <defs><linearGradient id="fg2" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f7b731"/><stop offset="100%" stop-color="#fc5c7d"/></linearGradient></defs>
+        </svg>
+        <div>
+          <strong>Road to the Final 2026</strong>
+          <small>Summer Edition &middot; Cape Town</small>
+        </div>
+      </div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="switchTab('fixtures')">Fixtures</button>
+        <button class="footer-link" onclick="switchTab('standings')">Standings</button>
+        <button class="footer-link" onclick="switchTab('rules')">Rules</button>
+        <button class="footer-link" onclick="switchTab('signup')">Register</button>
+      </div>
+      <div class="footer-contact">
+        <a href="https://wa.me/27812345678" target="_blank" rel="noopener noreferrer" class="footer-wa">&#128172; +27 81 234 5678</a>
+        <a href="mailto:rttf2026@gmail.com" class="footer-email">rttf2026@gmail.com</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 Road to the Final. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>`;
+
+fs.writeFileSync('index.html', html, 'utf8');
+console.log('✓ index.html', fs.statSync('index.html').size, 'bytes');
+
+// ─────────────────────────────────────────────
+// CSS/STYLE.CSS
+// ─────────────────────────────────────────────
+const css = `/* =============================================
    ROAD TO THE FINAL 2026 — FotMob Style Theme
    ============================================= */
 
@@ -1469,3 +1845,183 @@ textarea { resize: vertical; min-height: 80px; }
 @media (max-width: 380px) {
   .teams-grid { grid-template-columns: 1fr; }
 }
+`;
+
+fs.writeFileSync('css/style.css', css, 'utf8');
+console.log('✓ css/style.css', fs.statSync('css/style.css').size, 'bytes');
+
+// ─────────────────────────────────────────────
+// JS/DATA.JS
+// ─────────────────────────────────────────────
+const dataJs = `// =============================================
+// TOURNAMENT DATA — Edit this file to update
+// scores, standings, stats, rules, and news.
+// =============================================
+
+const TOURNAMENT = {
+  name: "Road to the Final",
+  edition: "2026",
+  season: "Summer Edition",
+  venue: "City Sports Complex",
+  address: "123 Stadium Drive, Cape Town, 8001",
+  registrationFee: "R350 per team",
+  contactWhatsApp: "+27812345678",
+  contactEmail: "rttf2026@gmail.com"
+};
+
+// All teams — update color and accentColor per team
+const TEAMS = [
+  { id: "t1", name: "FC Predators",   shortName: "PRD", color: "#e63946", accentColor: "#fff", group: "A" },
+  { id: "t2", name: "Thunder United", shortName: "THU", color: "#457b9d", accentColor: "#fff", group: "A" },
+  { id: "t3", name: "Rapid FC",       shortName: "RPD", color: "#f4a261", accentColor: "#1a1a1a", group: "A" },
+  { id: "t4", name: "Black Eagles",   shortName: "BEG", color: "#2d2d2d", accentColor: "#ffd60a", group: "A" },
+  { id: "t5", name: "Dynamo Stars",   shortName: "DYN", color: "#06d6a0", accentColor: "#1a1a1a", group: "B" },
+  { id: "t6", name: "Phoenix Rising", shortName: "PHX", color: "#ff6b35", accentColor: "#fff", group: "B" },
+  { id: "t7", name: "Steel City FC",  shortName: "SCF", color: "#6c757d", accentColor: "#fff", group: "B" },
+  { id: "t8", name: "Golden Boys",    shortName: "GLD", color: "#ffc300", accentColor: "#1a1a1a", group: "B" },
+];
+
+const GROUPS = [
+  {
+    id: "A", name: "Group A",
+    standings: [
+      { teamId: "t1", pos: 1, p: 3, w: 2, d: 1, l: 0, gf: 8, ga: 3, gd: 5,  pts: 7, form: ["W","W","D"] },
+      { teamId: "t2", pos: 2, p: 3, w: 2, d: 0, l: 1, gf: 6, ga: 5, gd: 1,  pts: 6, form: ["W","L","W"] },
+      { teamId: "t3", pos: 3, p: 3, w: 1, d: 1, l: 1, gf: 4, ga: 5, gd: -1, pts: 4, form: ["D","W","L"] },
+      { teamId: "t4", pos: 4, p: 3, w: 0, d: 0, l: 3, gf: 2, ga: 7, gd: -5, pts: 0, form: ["L","L","L"] },
+    ]
+  },
+  {
+    id: "B", name: "Group B",
+    standings: [
+      { teamId: "t5", pos: 1, p: 3, w: 3, d: 0, l: 0, gf: 9, ga: 2, gd: 7,  pts: 9, form: ["W","W","W"] },
+      { teamId: "t6", pos: 2, p: 3, w: 1, d: 1, l: 1, gf: 5, ga: 4, gd: 1,  pts: 4, form: ["L","W","D"] },
+      { teamId: "t7", pos: 3, p: 3, w: 1, d: 1, l: 1, gf: 3, ga: 5, gd: -2, pts: 4, form: ["W","D","L"] },
+      { teamId: "t8", pos: 4, p: 3, w: 0, d: 0, l: 3, gf: 1, ga: 7, gd: -6, pts: 0, form: ["L","L","L"] },
+    ]
+  }
+];
+
+const MATCHES = [
+  { id:"m1",  round:"Group Stage",   group:"A", date:"2026-10-03", time:"09:00", pitch:"Pitch A", homeTeam:"t1", awayTeam:"t2", homeScore:3,    awayScore:2,    status:"FT" },
+  { id:"m2",  round:"Group Stage",   group:"A", date:"2026-10-03", time:"10:00", pitch:"Pitch B", homeTeam:"t3", awayTeam:"t4", homeScore:2,    awayScore:0,    status:"FT" },
+  { id:"m3",  round:"Group Stage",   group:"B", date:"2026-10-03", time:"11:00", pitch:"Pitch A", homeTeam:"t5", awayTeam:"t6", homeScore:4,    awayScore:1,    status:"FT" },
+  { id:"m4",  round:"Group Stage",   group:"B", date:"2026-10-03", time:"12:00", pitch:"Pitch B", homeTeam:"t7", awayTeam:"t8", homeScore:2,    awayScore:0,    status:"FT" },
+  { id:"m5",  round:"Group Stage",   group:"A", date:"2026-10-10", time:"09:00", pitch:"Pitch A", homeTeam:"t1", awayTeam:"t3", homeScore:2,    awayScore:2,    status:"FT" },
+  { id:"m6",  round:"Group Stage",   group:"A", date:"2026-10-10", time:"10:00", pitch:"Pitch B", homeTeam:"t2", awayTeam:"t4", homeScore:3,    awayScore:1,    status:"FT" },
+  { id:"m7",  round:"Group Stage",   group:"B", date:"2026-10-10", time:"11:00", pitch:"Pitch A", homeTeam:"t5", awayTeam:"t7", homeScore:3,    awayScore:1,    status:"FT" },
+  { id:"m8",  round:"Group Stage",   group:"B", date:"2026-10-10", time:"12:00", pitch:"Pitch C", homeTeam:"t6", awayTeam:"t8", homeScore:3,    awayScore:1,    status:"FT" },
+  { id:"m9",  round:"Group Stage",   group:"A", date:"2026-10-17", time:"09:00", pitch:"Pitch A", homeTeam:"t1", awayTeam:"t4", homeScore:3,    awayScore:1,    status:"FT" },
+  { id:"m10", round:"Group Stage",   group:"A", date:"2026-10-17", time:"10:00", pitch:"Pitch B", homeTeam:"t2", awayTeam:"t3", homeScore:1,    awayScore:0,    status:"FT" },
+  { id:"m11", round:"Group Stage",   group:"B", date:"2026-10-17", time:"11:00", pitch:"Pitch A", homeTeam:"t5", awayTeam:"t8", homeScore:2,    awayScore:1,    status:"FT" },
+  { id:"m12", round:"Group Stage",   group:"B", date:"2026-10-17", time:"12:00", pitch:"Pitch C", homeTeam:"t6", awayTeam:"t7", homeScore:1,    awayScore:0,    status:"FT" },
+  { id:"m13", round:"Quarter Finals",group:null, date:"2026-10-24", time:"10:00", pitch:"Pitch A", homeTeam:"t1", awayTeam:"t6", homeScore:null, awayScore:null, status:"Scheduled" },
+  { id:"m14", round:"Quarter Finals",group:null, date:"2026-10-24", time:"11:30", pitch:"Pitch B", homeTeam:"t5", awayTeam:"t2", homeScore:null, awayScore:null, status:"Scheduled" },
+  { id:"m15", round:"Semi Finals",   group:null, date:"2026-10-31", time:"12:00", pitch:"Pitch A", homeTeam:"TBD", awayTeam:"TBD", homeScore:null, awayScore:null, status:"TBD" },
+  { id:"m16", round:"Semi Finals",   group:null, date:"2026-10-31", time:"14:00", pitch:"Pitch A", homeTeam:"TBD", awayTeam:"TBD", homeScore:null, awayScore:null, status:"TBD" },
+  { id:"m17", round:"Final",         group:null, date:"2026-11-07", time:"15:00", pitch:"Pitch A", homeTeam:"TBD", awayTeam:"TBD", homeScore:null, awayScore:null, status:"TBD" },
+];
+
+const TOP_SCORERS = [
+  { rank:1, name:"Marco Silva",   teamId:"t1", goals:6, assists:2 },
+  { rank:2, name:"Jayden Nkosi",  teamId:"t5", goals:5, assists:3 },
+  { rank:3, name:"Carlos Mendez", teamId:"t2", goals:4, assists:1 },
+  { rank:4, name:"Thabo Mokoena", teamId:"t6", goals:3, assists:4 },
+  { rank:5, name:"Daniel Osei",   teamId:"t5", goals:3, assists:2 },
+  { rank:6, name:"Ryan Peters",   teamId:"t3", goals:2, assists:1 },
+  { rank:7, name:"Ahmed Hassan",  teamId:"t7", goals:2, assists:0 },
+  { rank:8, name:"Luca Ferreira", teamId:"t1", goals:2, assists:1 },
+];
+
+const TOP_ASSISTS = [
+  { rank:1, name:"Thabo Mokoena", teamId:"t6", goals:3, assists:4 },
+  { rank:2, name:"Jayden Nkosi",  teamId:"t5", goals:5, assists:3 },
+  { rank:3, name:"Marco Silva",   teamId:"t1", goals:6, assists:2 },
+  { rank:4, name:"Daniel Osei",   teamId:"t5", goals:3, assists:2 },
+  { rank:5, name:"Carlos Mendez", teamId:"t2", goals:4, assists:1 },
+];
+
+const NEWS = [
+  {
+    id:"n1", date:"2026-09-25", category:"Announcement", categoryColor:"#f7b731",
+    title:"Road to the Final 2026 — Registration Now Open!",
+    body:"We are thrilled to announce that team registration for the Road to the Final 2026 Summer Edition is now officially open. Secure your spot before slots fill up — only 16 teams will be accepted. Contact us on WhatsApp for payment details after submitting your registration."
+  },
+  {
+    id:"n2", date:"2026-09-22", category:"Info", categoryColor:"#4cc9f0",
+    title:"Venue Confirmed: City Sports Complex",
+    body:"All group stage and knockout matches will be held at the City Sports Complex, 123 Stadium Drive, Cape Town. Three pitches (A, B & C) will be operational. Parking is available on-site. Spectators welcome free of charge."
+  },
+  {
+    id:"n3", date:"2026-09-20", category:"Rules Update", categoryColor:"#fc5c7d",
+    title:"Updated Match Rules for 2026 Edition",
+    body:"Please review the updated rules for the 2026 edition. Key changes: squad size increased to 12 (up from 10), rolling substitutions now allowed in group stage, yellow card accumulation reset after group stage. Full rules available in the Rules tab."
+  },
+  {
+    id:"n4", date:"2026-09-15", category:"Preview", categoryColor:"#06d6a0",
+    title:"Team Spotlight: Dynamo Stars Looking Unbeatable",
+    body:"After a perfect 3-0 record in the last edition, Dynamo Stars return this year with an even stronger squad. With Jayden Nkosi leading the attack and a rock-solid defensive line, they are the team to beat heading into the 2026 tournament."
+  },
+  {
+    id:"n5", date:"2026-09-10", category:"Announcement", categoryColor:"#f7b731",
+    title:"Prizes & Awards Revealed",
+    body:"The 2026 prize structure has been confirmed. Champions: R5,000 + Trophy. Runners-up: R2,000. Golden Boot (Top Scorer): R500 + Medal. Best Goalkeeper: R500 + Medal. Fair Play Award: Merchandise Pack. All finalists receive medals."
+  },
+];
+
+const RULES = [
+  {
+    section:"Match Format", icon:"⏱️",
+    items:[
+      "Each match consists of two halves of 20 minutes each (40 min total).",
+      "5-minute half-time break.",
+      "Knockout matches that are tied after 40 mins proceed directly to penalty shootout (5 kicks each, then sudden death).",
+      "Matches start on time — teams not present within 5 minutes forfeit the match."
+    ]
+  },
+  {
+    section:"Squad & Substitutions", icon:"👥",
+    items:[
+      "Maximum squad size: 12 players per team.",
+      "Minimum players to start a match: 6 (including goalkeeper).",
+      "Rolling substitutions are allowed during Group Stage (unlimited).",
+      "Knockout Stage: Maximum 5 substitutions per team per match.",
+      "Players must be registered before the tournament starts — no late additions."
+    ]
+  },
+  {
+    section:"Disciplinary", icon:"🟨",
+    items:[
+      "Yellow Card: Warning. Two yellows in one match = Red Card (ejection).",
+      "Two yellow cards accumulated across different group stage matches = 1 match ban.",
+      "Red Card: Immediate ejection. Player misses the next match.",
+      "Violent conduct: Immediate tournament ban (no appeal).",
+      "Yellow card tally resets after the Group Stage."
+    ]
+  },
+  {
+    section:"Scoring & Advancement", icon:"🏆",
+    items:[
+      "Win: 3 points. Draw: 1 point. Loss: 0 points.",
+      "Top 2 teams from each group advance to the Quarter Finals.",
+      "Tie-breaker order: 1) Points, 2) Goal Difference, 3) Goals Scored, 4) Head-to-Head.",
+      "Group Stage: 3 matches per team.",
+      "Finals structure: Quarter Finals → Semi Finals → Final."
+    ]
+  },
+  {
+    section:"General Conduct", icon:"🤝",
+    items:[
+      "All players must wear matching team kits. Goalkeepers must wear a different color.",
+      "No slide tackles — this is a non-contact tournament.",
+      "Referee decisions are final. Arguing with referee may result in yellow card.",
+      "Spectators and team officials must remain in designated areas.",
+      "Teams are responsible for the conduct of their supporters."
+    ]
+  },
+];
+`;
+
+fs.writeFileSync('js/data.js', dataJs, 'utf8');
+console.log('✓ js/data.js', fs.statSync('js/data.js').size, 'bytes');
+console.log('All files written successfully!');

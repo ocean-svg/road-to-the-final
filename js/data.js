@@ -1,0 +1,167 @@
+// =============================================
+// TOURNAMENT DATA — Edit this file to update
+// scores, standings, stats, rules, and news.
+// =============================================
+
+const TOURNAMENT = {
+  name: "Road to the Final",
+  edition: "2026",
+  season: "Summer Edition",
+  venue: "City Sports Complex",
+  address: "123 Stadium Drive, Cape Town, 8001",
+  registrationFee: "R350 per team",
+  contactWhatsApp: "+27812345678",
+  contactEmail: "rttf2026@gmail.com"
+};
+
+// All teams — update color and accentColor per team
+const TEAMS = [
+  { id: "t1", name: "FC Predators",   shortName: "PRD", color: "#e63946", accentColor: "#fff", group: "A" },
+  { id: "t2", name: "Thunder United", shortName: "THU", color: "#457b9d", accentColor: "#fff", group: "A" },
+  { id: "t3", name: "Rapid FC",       shortName: "RPD", color: "#f4a261", accentColor: "#1a1a1a", group: "A" },
+  { id: "t4", name: "Black Eagles",   shortName: "BEG", color: "#2d2d2d", accentColor: "#ffd60a", group: "A" },
+  { id: "t5", name: "Dynamo Stars",   shortName: "DYN", color: "#06d6a0", accentColor: "#1a1a1a", group: "B" },
+  { id: "t6", name: "Phoenix Rising", shortName: "PHX", color: "#ff6b35", accentColor: "#fff", group: "B" },
+  { id: "t7", name: "Steel City FC",  shortName: "SCF", color: "#6c757d", accentColor: "#fff", group: "B" },
+  { id: "t8", name: "Golden Boys",    shortName: "GLD", color: "#ffc300", accentColor: "#1a1a1a", group: "B" },
+];
+
+const GROUPS = [
+  {
+    id: "A", name: "Group A",
+    standings: [
+      { teamId: "t1", pos: 1, p: 3, w: 2, d: 1, l: 0, gf: 8, ga: 3, gd: 5,  pts: 7, form: ["W","W","D"] },
+      { teamId: "t2", pos: 2, p: 3, w: 2, d: 0, l: 1, gf: 6, ga: 5, gd: 1,  pts: 6, form: ["W","L","W"] },
+      { teamId: "t3", pos: 3, p: 3, w: 1, d: 1, l: 1, gf: 4, ga: 5, gd: -1, pts: 4, form: ["D","W","L"] },
+      { teamId: "t4", pos: 4, p: 3, w: 0, d: 0, l: 3, gf: 2, ga: 7, gd: -5, pts: 0, form: ["L","L","L"] },
+    ]
+  },
+  {
+    id: "B", name: "Group B",
+    standings: [
+      { teamId: "t5", pos: 1, p: 3, w: 3, d: 0, l: 0, gf: 9, ga: 2, gd: 7,  pts: 9, form: ["W","W","W"] },
+      { teamId: "t6", pos: 2, p: 3, w: 1, d: 1, l: 1, gf: 5, ga: 4, gd: 1,  pts: 4, form: ["L","W","D"] },
+      { teamId: "t7", pos: 3, p: 3, w: 1, d: 1, l: 1, gf: 3, ga: 5, gd: -2, pts: 4, form: ["W","D","L"] },
+      { teamId: "t8", pos: 4, p: 3, w: 0, d: 0, l: 3, gf: 1, ga: 7, gd: -6, pts: 0, form: ["L","L","L"] },
+    ]
+  }
+];
+
+const MATCHES = [
+  { id:"m1",  round:"Group Stage",   group:"A", date:"2026-10-03", time:"09:00", pitch:"Pitch A", homeTeam:"t1", awayTeam:"t2", homeScore:3,    awayScore:2,    status:"FT" },
+  { id:"m2",  round:"Group Stage",   group:"A", date:"2026-10-03", time:"10:00", pitch:"Pitch B", homeTeam:"t3", awayTeam:"t4", homeScore:2,    awayScore:0,    status:"FT" },
+  { id:"m3",  round:"Group Stage",   group:"B", date:"2026-10-03", time:"11:00", pitch:"Pitch A", homeTeam:"t5", awayTeam:"t6", homeScore:4,    awayScore:1,    status:"FT" },
+  { id:"m4",  round:"Group Stage",   group:"B", date:"2026-10-03", time:"12:00", pitch:"Pitch B", homeTeam:"t7", awayTeam:"t8", homeScore:2,    awayScore:0,    status:"FT" },
+  { id:"m5",  round:"Group Stage",   group:"A", date:"2026-10-10", time:"09:00", pitch:"Pitch A", homeTeam:"t1", awayTeam:"t3", homeScore:2,    awayScore:2,    status:"FT" },
+  { id:"m6",  round:"Group Stage",   group:"A", date:"2026-10-10", time:"10:00", pitch:"Pitch B", homeTeam:"t2", awayTeam:"t4", homeScore:3,    awayScore:1,    status:"FT" },
+  { id:"m7",  round:"Group Stage",   group:"B", date:"2026-10-10", time:"11:00", pitch:"Pitch A", homeTeam:"t5", awayTeam:"t7", homeScore:3,    awayScore:1,    status:"FT" },
+  { id:"m8",  round:"Group Stage",   group:"B", date:"2026-10-10", time:"12:00", pitch:"Pitch C", homeTeam:"t6", awayTeam:"t8", homeScore:3,    awayScore:1,    status:"FT" },
+  { id:"m9",  round:"Group Stage",   group:"A", date:"2026-10-17", time:"09:00", pitch:"Pitch A", homeTeam:"t1", awayTeam:"t4", homeScore:3,    awayScore:1,    status:"FT" },
+  { id:"m10", round:"Group Stage",   group:"A", date:"2026-10-17", time:"10:00", pitch:"Pitch B", homeTeam:"t2", awayTeam:"t3", homeScore:1,    awayScore:0,    status:"FT" },
+  { id:"m11", round:"Group Stage",   group:"B", date:"2026-10-17", time:"11:00", pitch:"Pitch A", homeTeam:"t5", awayTeam:"t8", homeScore:2,    awayScore:1,    status:"FT" },
+  { id:"m12", round:"Group Stage",   group:"B", date:"2026-10-17", time:"12:00", pitch:"Pitch C", homeTeam:"t6", awayTeam:"t7", homeScore:1,    awayScore:0,    status:"FT" },
+  { id:"m13", round:"Quarter Finals",group:null, date:"2026-10-24", time:"10:00", pitch:"Pitch A", homeTeam:"t1", awayTeam:"t6", homeScore:null, awayScore:null, status:"Scheduled" },
+  { id:"m14", round:"Quarter Finals",group:null, date:"2026-10-24", time:"11:30", pitch:"Pitch B", homeTeam:"t5", awayTeam:"t2", homeScore:null, awayScore:null, status:"Scheduled" },
+  { id:"m15", round:"Semi Finals",   group:null, date:"2026-10-31", time:"12:00", pitch:"Pitch A", homeTeam:"TBD", awayTeam:"TBD", homeScore:null, awayScore:null, status:"TBD" },
+  { id:"m16", round:"Semi Finals",   group:null, date:"2026-10-31", time:"14:00", pitch:"Pitch A", homeTeam:"TBD", awayTeam:"TBD", homeScore:null, awayScore:null, status:"TBD" },
+  { id:"m17", round:"Final",         group:null, date:"2026-11-07", time:"15:00", pitch:"Pitch A", homeTeam:"TBD", awayTeam:"TBD", homeScore:null, awayScore:null, status:"TBD" },
+];
+
+const TOP_SCORERS = [
+  { rank:1, name:"Marco Silva",   teamId:"t1", goals:6, assists:2 },
+  { rank:2, name:"Jayden Nkosi",  teamId:"t5", goals:5, assists:3 },
+  { rank:3, name:"Carlos Mendez", teamId:"t2", goals:4, assists:1 },
+  { rank:4, name:"Thabo Mokoena", teamId:"t6", goals:3, assists:4 },
+  { rank:5, name:"Daniel Osei",   teamId:"t5", goals:3, assists:2 },
+  { rank:6, name:"Ryan Peters",   teamId:"t3", goals:2, assists:1 },
+  { rank:7, name:"Ahmed Hassan",  teamId:"t7", goals:2, assists:0 },
+  { rank:8, name:"Luca Ferreira", teamId:"t1", goals:2, assists:1 },
+];
+
+const TOP_ASSISTS = [
+  { rank:1, name:"Thabo Mokoena", teamId:"t6", goals:3, assists:4 },
+  { rank:2, name:"Jayden Nkosi",  teamId:"t5", goals:5, assists:3 },
+  { rank:3, name:"Marco Silva",   teamId:"t1", goals:6, assists:2 },
+  { rank:4, name:"Daniel Osei",   teamId:"t5", goals:3, assists:2 },
+  { rank:5, name:"Carlos Mendez", teamId:"t2", goals:4, assists:1 },
+];
+
+const NEWS = [
+  {
+    id:"n1", date:"2026-09-25", category:"Announcement", categoryColor:"#f7b731",
+    title:"Road to the Final 2026 — Registration Now Open!",
+    body:"We are thrilled to announce that team registration for the Road to the Final 2026 Summer Edition is now officially open. Secure your spot before slots fill up — only 16 teams will be accepted. Contact us on WhatsApp for payment details after submitting your registration."
+  },
+  {
+    id:"n2", date:"2026-09-22", category:"Info", categoryColor:"#4cc9f0",
+    title:"Venue Confirmed: City Sports Complex",
+    body:"All group stage and knockout matches will be held at the City Sports Complex, 123 Stadium Drive, Cape Town. Three pitches (A, B & C) will be operational. Parking is available on-site. Spectators welcome free of charge."
+  },
+  {
+    id:"n3", date:"2026-09-20", category:"Rules Update", categoryColor:"#fc5c7d",
+    title:"Updated Match Rules for 2026 Edition",
+    body:"Please review the updated rules for the 2026 edition. Key changes: squad size increased to 12 (up from 10), rolling substitutions now allowed in group stage, yellow card accumulation reset after group stage. Full rules available in the Rules tab."
+  },
+  {
+    id:"n4", date:"2026-09-15", category:"Preview", categoryColor:"#06d6a0",
+    title:"Team Spotlight: Dynamo Stars Looking Unbeatable",
+    body:"After a perfect 3-0 record in the last edition, Dynamo Stars return this year with an even stronger squad. With Jayden Nkosi leading the attack and a rock-solid defensive line, they are the team to beat heading into the 2026 tournament."
+  },
+  {
+    id:"n5", date:"2026-09-10", category:"Announcement", categoryColor:"#f7b731",
+    title:"Prizes & Awards Revealed",
+    body:"The 2026 prize structure has been confirmed. Champions: R5,000 + Trophy. Runners-up: R2,000. Golden Boot (Top Scorer): R500 + Medal. Best Goalkeeper: R500 + Medal. Fair Play Award: Merchandise Pack. All finalists receive medals."
+  },
+];
+
+const RULES = [
+  {
+    section:"Match Format", icon:"⏱️",
+    items:[
+      "Each match consists of two halves of 20 minutes each (40 min total).",
+      "5-minute half-time break.",
+      "Knockout matches that are tied after 40 mins proceed directly to penalty shootout (5 kicks each, then sudden death).",
+      "Matches start on time — teams not present within 5 minutes forfeit the match."
+    ]
+  },
+  {
+    section:"Squad & Substitutions", icon:"👥",
+    items:[
+      "Maximum squad size: 12 players per team.",
+      "Minimum players to start a match: 6 (including goalkeeper).",
+      "Rolling substitutions are allowed during Group Stage (unlimited).",
+      "Knockout Stage: Maximum 5 substitutions per team per match.",
+      "Players must be registered before the tournament starts — no late additions."
+    ]
+  },
+  {
+    section:"Disciplinary", icon:"🟨",
+    items:[
+      "Yellow Card: Warning. Two yellows in one match = Red Card (ejection).",
+      "Two yellow cards accumulated across different group stage matches = 1 match ban.",
+      "Red Card: Immediate ejection. Player misses the next match.",
+      "Violent conduct: Immediate tournament ban (no appeal).",
+      "Yellow card tally resets after the Group Stage."
+    ]
+  },
+  {
+    section:"Scoring & Advancement", icon:"🏆",
+    items:[
+      "Win: 3 points. Draw: 1 point. Loss: 0 points.",
+      "Top 2 teams from each group advance to the Quarter Finals.",
+      "Tie-breaker order: 1) Points, 2) Goal Difference, 3) Goals Scored, 4) Head-to-Head.",
+      "Group Stage: 3 matches per team.",
+      "Finals structure: Quarter Finals → Semi Finals → Final."
+    ]
+  },
+  {
+    section:"General Conduct", icon:"🤝",
+    items:[
+      "All players must wear matching team kits. Goalkeepers must wear a different color.",
+      "No slide tackles — this is a non-contact tournament.",
+      "Referee decisions are final. Arguing with referee may result in yellow card.",
+      "Spectators and team officials must remain in designated areas.",
+      "Teams are responsible for the conduct of their supporters."
+    ]
+  },
+];
