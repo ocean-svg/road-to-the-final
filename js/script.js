@@ -492,7 +492,7 @@ function renderTeamsGrid() {
           <button class="club-action-pill primary-pill" onclick="event.stopPropagation(); openClubDetailModal('${team.id}')">
             Squad Profile
           </button>
-          <button class="club-action-pill" onclick="event.stopPropagation(); showToast('📍 Home Pitch: City Sports Complex &bull; Group ${team.group || 'A'}')">
+          <button class="club-action-pill" onclick="event.stopPropagation(); showToast('📍 Home Pitch: Edenvale Indoor Soccer &bull; Group ${team.group || 'A'}')">
             Pitch Allocation ↗
           </button>
         </div>
@@ -534,7 +534,7 @@ function renderTeamsGrid() {
           <div class="club-dir-stadium-tag">
             <span style="font-weight:800;color:var(--fifa-navy-dark);">Group ${team.group || 'A'}</span>
             <span>&bull;</span>
-            <span>City Sports Complex Pitch ${team.group === 'A' || team.group === 'C' ? 'A' : team.group === 'B' || team.group === 'D' ? 'B' : 'C'}</span>
+            <span>Edenvale Indoor Soccer Pitch ${team.group === 'A' || team.group === 'C' ? 'A' : team.group === 'B' || team.group === 'D' ? 'B' : 'C'}</span>
           </div>
         </td>
         <td>
@@ -1315,8 +1315,8 @@ function exportCalendarICS() {
 
     icsContent += `BEGIN:VEVENT\n`;
     icsContent += `SUMMARY:${home.name} vs ${away.name} (${m.round})\n`;
-    icsContent += `DESCRIPTION:${m.round} - ${m.stage || 'Match'} at ${m.pitch}, City Sports Complex\n`;
-    icsContent += `LOCATION:${m.pitch}, City Sports Complex, Cape Town\n`;
+    icsContent += `DESCRIPTION:${m.round} - ${m.stage || 'Match'} at ${m.pitch}, Edenvale Indoor Soccer\n`;
+    icsContent += `LOCATION:${m.pitch}, Edenvale Indoor Soccer, Edenvale\n`;
     icsContent += `DTSTART:${dt}T${timeClean}Z\n`;
     icsContent += `DTEND:${dt}T${timeClean}Z\n`;
     icsContent += `STATUS:CONFIRMED\n`;
@@ -1338,8 +1338,62 @@ function exportCalendarICS() {
   showToast("📅 Tournament schedule exported to your calendar (.ics)!");
 }
 
-// ── 8. MODAL CONTROLS ──
+// ── 8. DEVELOPER AUTHENTICATION & MODAL CONTROLS ──
+let pendingDevAction = null;
+
+function isDevAuthed() {
+  return sessionStorage.getItem('rttf_dev_authed') === 'true';
+}
+
+function requireDevAuth(actionCallback) {
+  if (isDevAuthed()) {
+    if (actionCallback) actionCallback();
+    return;
+  }
+  pendingDevAction = actionCallback;
+  const pwInput = document.getElementById('dev-password-input');
+  if (pwInput) pwInput.value = '';
+  openModal('dev-auth');
+  setTimeout(() => {
+    if (pwInput) pwInput.focus();
+  }, 100);
+}
+
+function submitDevAuth(e) {
+  if (e) e.preventDefault();
+  const pwInput = document.getElementById('dev-password-input');
+  const val = pwInput ? pwInput.value.trim() : '';
+
+  if (val === 'wedonthavewifi1') {
+    sessionStorage.setItem('rttf_dev_authed', 'true');
+    closeModal('dev-auth');
+    showToast("🔓 Developer access granted!");
+    if (pendingDevAction) {
+      const cb = pendingDevAction;
+      pendingDevAction = null;
+      cb();
+    }
+    renderMediaGallery();
+  } else {
+    showToast("❌ Incorrect password. Access denied.");
+    if (pwInput) {
+      pwInput.value = '';
+      pwInput.focus();
+    }
+  }
+}
+
+function lockDevAuth() {
+  sessionStorage.removeItem('rttf_dev_authed');
+  showToast('🔒 Developer session locked');
+  renderMediaGallery();
+}
+
 function openModal(modalId) {
+  if (modalId === 'upload-teams' && !isDevAuthed()) {
+    requireDevAuth(() => openModal('upload-teams'));
+    return;
+  }
   const overlay = document.getElementById('modal-' + modalId);
   if (overlay) {
     overlay.classList.add('open');
@@ -1402,7 +1456,7 @@ function openMatchDetail(matchId) {
           <strong style="font-size:14px;color:var(--fifa-navy-dark);">${away.name}</strong>
         </div>
       </div>
-      <p style="font-size:12.5px;color:var(--text-dim);">${formatDate(m.date)} &bull; City Sports Complex, Cape Town</p>
+      <p style="font-size:12.5px;color:var(--text-dim);">${formatDate(m.date)} &bull; Edenvale Indoor Soccer, Edenvale</p>
     </div>
 
     <div style="background:#f8fafc;border:1px solid var(--border-color);border-radius:8px;padding:14px;">
@@ -1835,6 +1889,10 @@ function initMediaGallery() {
 }
 
 function handleMediaFiles(files) {
+  if (!isDevAuthed()) {
+    requireDevAuth(() => handleMediaFiles(files));
+    return;
+  }
   if (!files || files.length === 0) return;
   const MAX_SIZE_MB = 50;
   let added = 0;
@@ -1885,6 +1943,76 @@ function renderMediaGallery() {
   const grid = document.getElementById('media-gallery-grid');
   if (!grid) return;
 
+  const isAuthed = isDevAuthed();
+
+  // Header Actions (Dev Lock / Unlock status)
+  const headerBar = document.querySelector('.media-header-bar');
+  if (headerBar) {
+    let headerActionBtn = headerBar.querySelector('.media-header-dev-btn');
+    if (!headerActionBtn) {
+      headerActionBtn = document.createElement('div');
+      headerActionBtn.className = 'media-header-dev-btn';
+      headerBar.appendChild(headerActionBtn);
+    }
+    if (isAuthed) {
+      headerActionBtn.innerHTML = `
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span class="dev-badge-unlocked">🔓 Dev Mode</span>
+          <label class="media-upload-btn" for="media-file-input-top" style="cursor:pointer;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            Upload Media
+          </label>
+          <button onclick="lockDevAuth();" class="stage-tab-btn" style="background:#fee2e2;color:#991b1b;border:none;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;">
+            🔒 Lock Dev
+          </button>
+        </div>`;
+    } else {
+      headerActionBtn.innerHTML = `
+        <button onclick="requireDevAuth(() => renderMediaGallery());" class="btn-upload-nav" style="padding:8px 16px;font-size:13px;">
+          🔑 Dev Upload Login
+        </button>`;
+    }
+    // Hide default static upload label in HTML header bar if present
+    const staticTopBtn = headerBar.querySelector('label.media-upload-btn[for="media-file-input-top"]');
+    if (staticTopBtn && staticTopBtn !== headerActionBtn.querySelector('label')) {
+      staticTopBtn.style.display = 'none';
+    }
+  }
+
+  // Drop Zone vs Dev Lock Banner
+  const dropZone = document.getElementById('media-drop-zone');
+  let devLockCard = document.getElementById('media-dev-lock-card');
+
+  if (isAuthed) {
+    if (dropZone) dropZone.style.display = 'flex';
+    if (devLockCard) devLockCard.style.display = 'none';
+  } else {
+    if (dropZone) dropZone.style.display = 'none';
+    if (!devLockCard && dropZone) {
+      devLockCard = document.createElement('div');
+      devLockCard.id = 'media-dev-lock-card';
+      devLockCard.className = 'dev-lock-banner';
+      dropZone.parentNode.insertBefore(devLockCard, dropZone.nextSibling);
+    }
+    if (devLockCard) {
+      devLockCard.style.display = 'block';
+      devLockCard.onclick = () => requireDevAuth(() => renderMediaGallery());
+      devLockCard.innerHTML = `
+        <div style="font-size:32px;margin-bottom:8px;">🔒</div>
+        <h3 style="font-family:var(--font-display);font-size:22px;font-weight:800;margin:0 0 6px;">Developer Upload Access</h3>
+        <p style="font-size:13px;color:rgba(255,255,255,0.8);max-width:540px;margin:0 auto 16px;line-height:1.45;">
+          The media gallery is public for viewing. Only verified tournament developers can upload videos &amp; photos or delete files.
+        </p>
+        <button class="btn-upload-nav" style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;font-size:14px;background:#ffffff;color:#001438;font-weight:800;border-radius:20px;">
+          🔑 Enter Dev Password to Upload Media
+        </button>`;
+    }
+  }
+
   // Update stats
   const photos = mediaItems.filter(i => i.type === 'photo');
   const videos = mediaItems.filter(i => i.type === 'video');
@@ -1904,14 +2032,15 @@ function renderMediaGallery() {
     grid.innerHTML = `
       <div class="media-empty-state" style="grid-column:1/-1;">
         <div class="media-empty-icon">${mediaCurrentFilter === 'video' ? '🎬' : mediaCurrentFilter === 'photo' ? '📸' : '📂'}</div>
-        <div class="media-empty-title">${mediaCurrentFilter === 'all' ? 'No media yet' : 'No ' + mediaCurrentFilter + 's yet'}</div>
-        <p class="media-empty-sub">Use the upload zone above to add ${mediaCurrentFilter === 'video' ? 'videos' : mediaCurrentFilter === 'photo' ? 'photos' : 'photos and videos'} from match day.<br>They will be saved here on this device.</p>
+        <div class="media-empty-title">${mediaCurrentFilter === 'all' ? 'No media in gallery yet' : 'No ' + mediaCurrentFilter + 's yet'}</div>
+        <p class="media-empty-sub">${isAuthed ? 'Use the upload drop zone above to add match photos &amp; videos.' : 'Public gallery is currently empty. Developers can log in above to upload photos and videos.'}</p>
       </div>`;
     return;
   }
 
   grid.innerHTML = filtered.map((item, idx) => {
     const realIdx = mediaItems.indexOf(item);
+    const deleteBtnHtml = isAuthed ? `<button class="media-item-delete" onclick="event.stopPropagation(); deleteMediaItem('${item.id}')" title="Delete File">✕</button>` : '';
     if (item.type === 'video') {
       return `
         <div class="media-gallery-item" onclick="openLightbox(${realIdx})">
@@ -1920,7 +2049,7 @@ function renderMediaGallery() {
             <span class="media-type-badge">🎬 Video</span>
             <div class="media-play-overlay"><div class="media-play-circle">▶</div></div>
           </div>
-          <button class="media-item-delete" onclick="event.stopPropagation(); deleteMediaItem('${item.id}')" title="Delete">✕</button>
+          ${deleteBtnHtml}
           <div class="media-item-info">
             <div class="media-item-caption">${escapeHtml(item.caption)}</div>
             <div class="media-item-meta"><span>${item.addedAt}</span><span>${item.size}</span></div>
@@ -1934,7 +2063,7 @@ function renderMediaGallery() {
             <span class="media-type-badge">📸 Photo</span>
             <div class="media-play-overlay"><div class="media-play-circle">🔍</div></div>
           </div>
-          <button class="media-item-delete" onclick="event.stopPropagation(); deleteMediaItem('${item.id}')" title="Delete">✕</button>
+          ${deleteBtnHtml}
           <div class="media-item-info">
             <div class="media-item-caption">${escapeHtml(item.caption)}</div>
             <div class="media-item-meta"><span>${item.addedAt}</span><span>${item.size}</span></div>
@@ -1945,6 +2074,10 @@ function renderMediaGallery() {
 }
 
 function deleteMediaItem(id) {
+  if (!isDevAuthed()) {
+    requireDevAuth(() => deleteMediaItem(id));
+    return;
+  }
   mediaItems = mediaItems.filter(i => i.id !== id);
   saveMediaItems();
   renderMediaGallery();

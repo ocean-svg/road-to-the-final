@@ -4,12 +4,12 @@
    ========================================================================== */
 
 :root {
-  --fifa-navy-dark: #001438;
-  --fifa-navy: #081d45;
-  --fifa-navy-light: #112d62;
-  --fifa-cyan: #111111;
-  --fifa-cyan-hover: #2a2a2a;
-  --fifa-blue: #111111;
+  --fifa-navy-dark: #045034;
+  --fifa-navy: #066b45;
+  --fifa-navy-light: #088a58;
+  --fifa-cyan: #045034;
+  --fifa-cyan-hover: #066b45;
+  --fifa-blue: #045034;
   --fifa-gold: #f59e0b;
   --fifa-red: #ef4444;
   --fifa-green: #10b981;
@@ -88,15 +88,26 @@ ul {
   background: #e2e8f0;
 }
 ::-webkit-scrollbar-thumb {
-  background: #001438;
+  background: #045034;
   border-radius: 4px;
+}
+
+/* =============================================
+   TAB PANELS (HIDE INACTIVE TABS)
+   ============================================= */
+.tab-panel {
+  display: none !important;
+}
+
+.tab-panel.active {
+  display: block !important;
 }
 
 /* =============================================
    1. TOP UTILITY HEADER
    ============================================= */
 .fifa-top-bar {
-  background: #000d24;
+  background: #032a1c;
   color: #94a3b8;
   font-size: 11px;
   height: 32px;
@@ -172,7 +183,7 @@ ul {
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #1a1a1a, #3a3a3a);
+  background: linear-gradient(135deg, #045034, #066b45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -255,7 +266,7 @@ ul {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: linear-gradient(135deg, #222222, #444444);
+  background: linear-gradient(135deg, #045034, #066b45);
   color: #ffffff;
   font-size: 12px;
   font-weight: 700;
@@ -285,59 +296,51 @@ ul {
 }
 
 /* =============================================
-   3. HERO BANNER — SLIM FOOTBALL STYLE
+   3. HERO BANNER — CINEMATIC FOOTBALL PITCH
    ============================================= */
 .fifa-hero-banner {
-  background: #001438;
+  background: #000d1a;
   color: #ffffff;
-  border-bottom: 3px solid #111111;
+  border-bottom: 3px solid #045034;
   position: relative;
   overflow: hidden;
-}
-/* Animated pitch lines */
-.fifa-hero-banner::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image:
-    repeating-linear-gradient(
-      90deg,
-      rgba(255,255,255,0.03) 0px,
-      rgba(255,255,255,0.03) 1px,
-      transparent 1px,
-      transparent 80px
-    );
-  pointer-events: none;
-}
-.fifa-hero-banner::after {
-  content: '⚽';
-  position: absolute;
-  right: -10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 140px;
-  opacity: 0.04;
-  pointer-events: none;
-  user-select: none;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
+/* SVG Pitch Background Layer */
+.hero-pitch-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-pitch-bg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Hero inner content sits above the pitch */
 .fifa-hero-inner {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 14px 20px;
+  padding: 28px 28px 32px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 16px;
   position: relative;
   z-index: 2;
+  width: 100%;
 }
 
 .fifa-hero-title-wrap {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
 }
 .fifa-tag-badge {
   display: inline-flex;
@@ -345,23 +348,32 @@ ul {
   gap: 6px;
   font-size: 10.5px;
   font-weight: 800;
-  color: #94a3b8;
+  color: rgba(255,255,255,0.55);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
 }
 .fifa-hero-title {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 36px;
   font-weight: 800;
   letter-spacing: 0.5px;
   color: #ffffff;
-  line-height: 1.1;
+  line-height: 1.05;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.6);
+}
+.fifa-hero-subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.5px;
+  margin-top: 2px;
 }
 
 .fifa-hero-actions {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 .btn-fifa-calendar {
   display: inline-flex;
@@ -785,7 +797,7 @@ ul {
   box-shadow: 0 8px 24px rgba(245, 158, 11, 0.15);
 }
 .tree-final-head {
-  background: linear-gradient(135deg, #001438, #0a214d);
+  background: linear-gradient(135deg, #045034, #066b45);
   color: var(--fifa-gold);
   font-weight: 800;
   padding: 6px 10px;
@@ -1721,7 +1733,7 @@ ul {
 }
 
 .fifa-footer {
-  background: #000d24;
+  background: #032a1c;
   color: #cbd5e1;
   padding: 40px 20px 24px;
   font-size: 12px;
@@ -1867,41 +1879,41 @@ ul {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  background: #25D366;
+  background: #045034;
   color: #ffffff;
   font-size: 12px;
   font-weight: 800;
   padding: 7px 15px;
   border-radius: var(--radius-pill);
-  box-shadow: 0 2px 10px rgba(37, 211, 102, 0.35);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
   transition: var(--trans);
   cursor: pointer;
   white-space: nowrap;
 }
 .btn-signup-nav:hover {
-  background: #1eb956;
+  background: #066b45;
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.55);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 
 .btn-signup-hero {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #25D366;
+  background: #045034;
   color: #ffffff;
   font-size: 13px;
   font-weight: 800;
   padding: 10px 18px;
   border-radius: var(--radius-pill);
-  box-shadow: 0 2px 12px rgba(37, 211, 102, 0.4);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
   transition: var(--trans);
   cursor: pointer;
 }
 .btn-signup-hero:hover {
-  background: #1eb956;
+  background: #066b45;
   transform: translateY(-1px);
-  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.6);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.55);
 }
 
 .signup-destination-banner {
@@ -2548,3 +2560,34 @@ ul {
   .media-gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .media-lightbox-nav { display: none; }
 }
+
+/* Dev Lock & Dev Mode styling */
+.dev-lock-banner {
+  background: linear-gradient(135deg, #045034 0%, #066b45 100%);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  text-align: center;
+  margin-bottom: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-card);
+  transition: var(--trans);
+}
+.dev-lock-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.dev-badge-unlocked {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
