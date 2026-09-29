@@ -1,167 +1,190 @@
 // =============================================
-// TOURNAMENT DATA — Edit this file to update
-// scores, standings, stats, rules, and news.
+// TOURNAMENT DATA — Road to the Final 2026
+// 8 Groups (Groups A - H), 32 Teams (TBD 1 - 32)
+// All scores & standings zeroed out for fresh tournament start
 // =============================================
 
-const TOURNAMENT = {
-  name: "Road to the Final",
-  edition: "2026",
-  season: "Summer Edition",
-  venue: "City Sports Complex",
-  address: "123 Stadium Drive, Cape Town, 8001",
-  registrationFee: "R350 per team",
-  contactWhatsApp: "+27812345678",
-  contactEmail: "rttf2026@gmail.com"
-};
+const GROUP_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-// All teams — update color and accentColor per team
-const TEAMS = [
-  { id: "t1", name: "FC Predators",   shortName: "PRD", color: "#e63946", accentColor: "#fff", group: "A" },
-  { id: "t2", name: "Thunder United", shortName: "THU", color: "#457b9d", accentColor: "#fff", group: "A" },
-  { id: "t3", name: "Rapid FC",       shortName: "RPD", color: "#f4a261", accentColor: "#1a1a1a", group: "A" },
-  { id: "t4", name: "Black Eagles",   shortName: "BEG", color: "#2d2d2d", accentColor: "#ffd60a", group: "A" },
-  { id: "t5", name: "Dynamo Stars",   shortName: "DYN", color: "#06d6a0", accentColor: "#1a1a1a", group: "B" },
-  { id: "t6", name: "Phoenix Rising", shortName: "PHX", color: "#ff6b35", accentColor: "#fff", group: "B" },
-  { id: "t7", name: "Steel City FC",  shortName: "SCF", color: "#6c757d", accentColor: "#fff", group: "B" },
-  { id: "t8", name: "Golden Boys",    shortName: "GLD", color: "#ffc300", accentColor: "#1a1a1a", group: "B" },
+const DEFAULT_TEAMS = [];
+const GROUP_COLORS = [
+  ['#38003c', '#00ff85'], ['#1e293b', '#38bdf8'], ['#3b0764', '#c084fc'], ['#18181b', '#facc15'],
+  ['#064e3b', '#34d399'], ['#7c2d12', '#fb923c'], ['#1e1b4b', '#818cf8'], ['#701a75', '#f472b6']
 ];
 
-const GROUPS = [
-  {
-    id: "A", name: "Group A",
-    standings: [
-      { teamId: "t1", pos: 1, p: 3, w: 2, d: 1, l: 0, gf: 8, ga: 3, gd: 5,  pts: 7, form: ["W","W","D"] },
-      { teamId: "t2", pos: 2, p: 3, w: 2, d: 0, l: 1, gf: 6, ga: 5, gd: 1,  pts: 6, form: ["W","L","W"] },
-      { teamId: "t3", pos: 3, p: 3, w: 1, d: 1, l: 1, gf: 4, ga: 5, gd: -1, pts: 4, form: ["D","W","L"] },
-      { teamId: "t4", pos: 4, p: 3, w: 0, d: 0, l: 3, gf: 2, ga: 7, gd: -5, pts: 0, form: ["L","L","L"] },
-    ]
-  },
-  {
-    id: "B", name: "Group B",
-    standings: [
-      { teamId: "t5", pos: 1, p: 3, w: 3, d: 0, l: 0, gf: 9, ga: 2, gd: 7,  pts: 9, form: ["W","W","W"] },
-      { teamId: "t6", pos: 2, p: 3, w: 1, d: 1, l: 1, gf: 5, ga: 4, gd: 1,  pts: 4, form: ["L","W","D"] },
-      { teamId: "t7", pos: 3, p: 3, w: 1, d: 1, l: 1, gf: 3, ga: 5, gd: -2, pts: 4, form: ["W","D","L"] },
-      { teamId: "t8", pos: 4, p: 3, w: 0, d: 0, l: 3, gf: 1, ga: 7, gd: -6, pts: 0, form: ["L","L","L"] },
-    ]
+let teamCounter = 1;
+GROUP_LETTERS.forEach((grp, gIdx) => {
+  for (let i = 1; i <= 4; i++) {
+    const colPair = GROUP_COLORS[(gIdx * 4 + (i - 1)) % GROUP_COLORS.length];
+    DEFAULT_TEAMS.push({
+      id: `t${teamCounter}`,
+      name: `TBD ${teamCounter}`,
+      shortName: `TBD${teamCounter}`,
+      color: colPair[0],
+      accentColor: colPair[1],
+      group: grp
+    });
+    teamCounter++;
   }
+});
+
+// Load from localStorage if custom teams were uploaded
+let savedTeams = localStorage.getItem('rttf_teams');
+let TEAMS = savedTeams ? JSON.parse(savedTeams) : DEFAULT_TEAMS;
+
+const ROUNDS_METADATA = [
+  { id: "Game 1", title: "Game 1", dateRange: "Sat 3 Oct - Mon 5 Oct", type: "group" },
+  { id: "Game 2", title: "Game 2", dateRange: "Sat 10 Oct - Mon 12 Oct", type: "group" },
+  { id: "Game 3", title: "Game 3", dateRange: "Sat 17 Oct - Mon 19 Oct", type: "group" },
+  { id: "Round of 16", title: "Round of 16", dateRange: "Sat 24 Oct - Sun 25 Oct", type: "knockout" },
+  { id: "Quarter Finals", title: "Quarter Finals", dateRange: "Sat 31 Oct", type: "knockout" },
+  { id: "Semi Finals", title: "Semi Finals", dateRange: "Wed 4 Nov", type: "knockout" },
+  { id: "Final", title: "Grand Final", dateRange: "Sat 7 Nov", type: "knockout" }
 ];
 
-const MATCHES = [
-  { id:"m1",  round:"Group Stage",   group:"A", date:"2026-10-03", time:"09:00", pitch:"Pitch A", homeTeam:"t1", awayTeam:"t2", homeScore:3,    awayScore:2,    status:"FT" },
-  { id:"m2",  round:"Group Stage",   group:"A", date:"2026-10-03", time:"10:00", pitch:"Pitch B", homeTeam:"t3", awayTeam:"t4", homeScore:2,    awayScore:0,    status:"FT" },
-  { id:"m3",  round:"Group Stage",   group:"B", date:"2026-10-03", time:"11:00", pitch:"Pitch A", homeTeam:"t5", awayTeam:"t6", homeScore:4,    awayScore:1,    status:"FT" },
-  { id:"m4",  round:"Group Stage",   group:"B", date:"2026-10-03", time:"12:00", pitch:"Pitch B", homeTeam:"t7", awayTeam:"t8", homeScore:2,    awayScore:0,    status:"FT" },
-  { id:"m5",  round:"Group Stage",   group:"A", date:"2026-10-10", time:"09:00", pitch:"Pitch A", homeTeam:"t1", awayTeam:"t3", homeScore:2,    awayScore:2,    status:"FT" },
-  { id:"m6",  round:"Group Stage",   group:"A", date:"2026-10-10", time:"10:00", pitch:"Pitch B", homeTeam:"t2", awayTeam:"t4", homeScore:3,    awayScore:1,    status:"FT" },
-  { id:"m7",  round:"Group Stage",   group:"B", date:"2026-10-10", time:"11:00", pitch:"Pitch A", homeTeam:"t5", awayTeam:"t7", homeScore:3,    awayScore:1,    status:"FT" },
-  { id:"m8",  round:"Group Stage",   group:"B", date:"2026-10-10", time:"12:00", pitch:"Pitch C", homeTeam:"t6", awayTeam:"t8", homeScore:3,    awayScore:1,    status:"FT" },
-  { id:"m9",  round:"Group Stage",   group:"A", date:"2026-10-17", time:"09:00", pitch:"Pitch A", homeTeam:"t1", awayTeam:"t4", homeScore:3,    awayScore:1,    status:"FT" },
-  { id:"m10", round:"Group Stage",   group:"A", date:"2026-10-17", time:"10:00", pitch:"Pitch B", homeTeam:"t2", awayTeam:"t3", homeScore:1,    awayScore:0,    status:"FT" },
-  { id:"m11", round:"Group Stage",   group:"B", date:"2026-10-17", time:"11:00", pitch:"Pitch A", homeTeam:"t5", awayTeam:"t8", homeScore:2,    awayScore:1,    status:"FT" },
-  { id:"m12", round:"Group Stage",   group:"B", date:"2026-10-17", time:"12:00", pitch:"Pitch C", homeTeam:"t6", awayTeam:"t7", homeScore:1,    awayScore:0,    status:"FT" },
-  { id:"m13", round:"Quarter Finals",group:null, date:"2026-10-24", time:"10:00", pitch:"Pitch A", homeTeam:"t1", awayTeam:"t6", homeScore:null, awayScore:null, status:"Scheduled" },
-  { id:"m14", round:"Quarter Finals",group:null, date:"2026-10-24", time:"11:30", pitch:"Pitch B", homeTeam:"t5", awayTeam:"t2", homeScore:null, awayScore:null, status:"Scheduled" },
-  { id:"m15", round:"Semi Finals",   group:null, date:"2026-10-31", time:"12:00", pitch:"Pitch A", homeTeam:"TBD", awayTeam:"TBD", homeScore:null, awayScore:null, status:"TBD" },
-  { id:"m16", round:"Semi Finals",   group:null, date:"2026-10-31", time:"14:00", pitch:"Pitch A", homeTeam:"TBD", awayTeam:"TBD", homeScore:null, awayScore:null, status:"TBD" },
-  { id:"m17", round:"Final",         group:null, date:"2026-11-07", time:"15:00", pitch:"Pitch A", homeTeam:"TBD", awayTeam:"TBD", homeScore:null, awayScore:null, status:"TBD" },
+// All scores zeroed out (scheduled)
+const MATCHES = [];
+let matchId = 1;
+
+// Group Stage: Game 1, 2, 3 across all 8 groups
+GROUP_LETTERS.forEach((grp, gIdx) => {
+  const baseT = gIdx * 4;
+  // Game 1
+  MATCHES.push({
+    id: `m${matchId++}`, round: "Game 1", stage: "Group Stage", group: grp,
+    date: "2026-10-03", time: `${9 + (gIdx % 4)}:00`, pitch: `Pitch ${String.fromCharCode(65 + (gIdx % 3))}`,
+    homeTeam: `t${baseT + 1}`, awayTeam: `t${baseT + 2}`, homeScore: null, awayScore: null, status: "Scheduled"
+  });
+  MATCHES.push({
+    id: `m${matchId++}`, round: "Game 1", stage: "Group Stage", group: grp,
+    date: "2026-10-04", time: `${10 + (gIdx % 4)}:00`, pitch: `Pitch ${String.fromCharCode(65 + ((gIdx + 1) % 3))}`,
+    homeTeam: `t${baseT + 3}`, awayTeam: `t${baseT + 4}`, homeScore: null, awayScore: null, status: "Scheduled"
+  });
+
+  // Game 2
+  MATCHES.push({
+    id: `m${matchId++}`, round: "Game 2", stage: "Group Stage", group: grp,
+    date: "2026-10-10", time: `${9 + (gIdx % 4)}:00`, pitch: `Pitch ${String.fromCharCode(65 + (gIdx % 3))}`,
+    homeTeam: `t${baseT + 1}`, awayTeam: `t${baseT + 3}`, homeScore: null, awayScore: null, status: "Scheduled"
+  });
+  MATCHES.push({
+    id: `m${matchId++}`, round: "Game 2", stage: "Group Stage", group: grp,
+    date: "2026-10-11", time: `${10 + (gIdx % 4)}:00`, pitch: `Pitch ${String.fromCharCode(65 + ((gIdx + 1) % 3))}`,
+    homeTeam: `t${baseT + 2}`, awayTeam: `t${baseT + 4}`, homeScore: null, awayScore: null, status: "Scheduled"
+  });
+
+  // Game 3
+  MATCHES.push({
+    id: `m${matchId++}`, round: "Game 3", stage: "Group Stage", group: grp,
+    date: "2026-10-17", time: `${9 + (gIdx % 4)}:00`, pitch: `Pitch ${String.fromCharCode(65 + (gIdx % 3))}`,
+    homeTeam: `t${baseT + 1}`, awayTeam: `t${baseT + 4}`, homeScore: null, awayScore: null, status: "Scheduled"
+  });
+  MATCHES.push({
+    id: `m${matchId++}`, round: "Game 3", stage: "Group Stage", group: grp,
+    date: "2026-10-18", time: `${10 + (gIdx % 4)}:00`, pitch: `Pitch ${String.fromCharCode(65 + ((gIdx + 1) % 3))}`,
+    homeTeam: `t${baseT + 2}`, awayTeam: `t${baseT + 3}`, homeScore: null, awayScore: null, status: "Scheduled"
+  });
+});
+
+// Knockouts (Round of 16, QF, SF, Final, 3rd Place)
+const KNOCKOUT_MATCHES = [
+  // Round of 16 (8 matches)
+  { id: "m_r16_1", round: "Round of 16", stage: "Knockout", group: null, date: "2026-10-24", time: "10:00", pitch: "Pitch A", homeTeam: "t1", awayTeam: "t6", homeScore: null, awayScore: null, status: "Scheduled", label: "1A vs 2B" },
+  { id: "m_r16_2", round: "Round of 16", stage: "Knockout", group: null, date: "2026-10-24", time: "11:30", pitch: "Pitch B", homeTeam: "t9", awayTeam: "t14", homeScore: null, awayScore: null, status: "Scheduled", label: "1C vs 2D" },
+  { id: "m_r16_3", round: "Round of 16", stage: "Knockout", group: null, date: "2026-10-24", time: "13:00", pitch: "Pitch A", homeTeam: "t17", awayTeam: "t22", homeScore: null, awayScore: null, status: "Scheduled", label: "1E vs 2F" },
+  { id: "m_r16_4", round: "Round of 16", stage: "Knockout", group: null, date: "2026-10-24", time: "14:30", pitch: "Pitch B", homeTeam: "t25", awayTeam: "t30", homeScore: null, awayScore: null, status: "Scheduled", label: "1G vs 2H" },
+
+  { id: "m_r16_5", round: "Round of 16", stage: "Knockout", group: null, date: "2026-10-25", time: "10:00", pitch: "Pitch A", homeTeam: "t5", awayTeam: "t2", homeScore: null, awayScore: null, status: "Scheduled", label: "1B vs 2A" },
+  { id: "m_r16_6", round: "Round of 16", stage: "Knockout", group: null, date: "2026-10-25", time: "11:30", pitch: "Pitch B", homeTeam: "t13", awayTeam: "t10", homeScore: null, awayScore: null, status: "Scheduled", label: "1D vs 2C" },
+  { id: "m_r16_7", round: "Round of 16", stage: "Knockout", group: null, date: "2026-10-25", time: "13:00", pitch: "Pitch A", homeTeam: "t21", awayTeam: "t18", homeScore: null, awayScore: null, status: "Scheduled", label: "1F vs 2E" },
+  { id: "m_r16_8", round: "Round of 16", stage: "Knockout", group: null, date: "2026-10-25", time: "14:30", pitch: "Pitch B", homeTeam: "t29", awayTeam: "t26", homeScore: null, awayScore: null, status: "Scheduled", label: "1H vs 2G" },
+
+  // Quarter Finals (4 matches)
+  { id: "m_qf_1", round: "Quarter Finals", stage: "Knockout", group: null, date: "2026-10-31", time: "10:00", pitch: "Pitch A", homeTeam: "TBD", awayTeam: "TBD", homeScore: null, awayScore: null, status: "Scheduled", label: "W R16-1 vs W R16-2" },
+  { id: "m_qf_2", round: "Quarter Finals", stage: "Knockout", group: null, date: "2026-10-31", time: "12:00", pitch: "Pitch B", homeTeam: "TBD", awayTeam: "TBD", homeScore: null, awayScore: null, status: "Scheduled", label: "W R16-3 vs W R16-4" },
+  { id: "m_qf_3", round: "Quarter Finals", stage: "Knockout", group: null, date: "2026-10-31", time: "14:00", pitch: "Pitch A", homeTeam: "TBD", awayTeam: "TBD", homeScore: null, awayScore: null, status: "Scheduled", label: "W R16-5 vs W R16-6" },
+  { id: "m_qf_4", round: "Quarter Finals", stage: "Knockout", group: null, date: "2026-10-31", time: "16:00", pitch: "Pitch B", homeTeam: "TBD", awayTeam: "TBD", homeScore: null, awayScore: null, status: "Scheduled", label: "W R16-7 vs W R16-8" },
+
+  // Semi Finals (2 matches)
+  { id: "m_sf_1", round: "Semi Finals", stage: "Knockout", group: null, date: "2026-11-04", time: "14:00", pitch: "Pitch A", homeTeam: "TBD", awayTeam: "TBD", homeScore: null, awayScore: null, status: "Scheduled", label: "W QF1 vs W QF2" },
+  { id: "m_sf_2", round: "Semi Finals", stage: "Knockout", group: null, date: "2026-11-04", time: "16:30", pitch: "Pitch A", homeTeam: "TBD", awayTeam: "TBD", homeScore: null, awayScore: null, status: "Scheduled", label: "W QF3 vs W QF4" },
+
+  // Finals
+  { id: "m_final", round: "Final", stage: "Knockout", group: null, date: "2026-11-07", time: "15:00", pitch: "Pitch A", homeTeam: "TBD", awayTeam: "TBD", homeScore: null, awayScore: null, status: "Scheduled", label: "Grand Final" },
+  { id: "m_third", round: "3rd Place Playoff", stage: "Knockout", group: null, date: "2026-11-07", time: "12:30", pitch: "Pitch B", homeTeam: "TBD", awayTeam: "TBD", homeScore: null, awayScore: null, status: "Scheduled", label: "3rd Place" }
 ];
+
+MATCHES.push(...KNOCKOUT_MATCHES);
+
+// 8 Groups, all 0 points, 0 games played
+const GROUPS = GROUP_LETTERS.map((grp, gIdx) => {
+  const baseT = gIdx * 4;
+  return {
+    id: grp,
+    name: `Group ${grp}`,
+    standings: [
+      { teamId: `t${baseT + 1}`, pos: 1, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0, form: ["-", "-", "-"] },
+      { teamId: `t${baseT + 2}`, pos: 2, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0, form: ["-", "-", "-"] },
+      { teamId: `t${baseT + 3}`, pos: 3, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0, form: ["-", "-", "-"] },
+      { teamId: `t${baseT + 4}`, pos: 4, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0, form: ["-", "-", "-"] }
+    ]
+  };
+});
 
 const TOP_SCORERS = [
-  { rank:1, name:"Marco Silva",   teamId:"t1", goals:6, assists:2 },
-  { rank:2, name:"Jayden Nkosi",  teamId:"t5", goals:5, assists:3 },
-  { rank:3, name:"Carlos Mendez", teamId:"t2", goals:4, assists:1 },
-  { rank:4, name:"Thabo Mokoena", teamId:"t6", goals:3, assists:4 },
-  { rank:5, name:"Daniel Osei",   teamId:"t5", goals:3, assists:2 },
-  { rank:6, name:"Ryan Peters",   teamId:"t3", goals:2, assists:1 },
-  { rank:7, name:"Ahmed Hassan",  teamId:"t7", goals:2, assists:0 },
-  { rank:8, name:"Luca Ferreira", teamId:"t1", goals:2, assists:1 },
+  { rank: 1, name: "Player 1", teamId: "t1", goals: 0, assists: 0 },
+  { rank: 2, name: "Player 2", teamId: "t5", goals: 0, assists: 0 },
+  { rank: 3, name: "Player 3", teamId: "t9", goals: 0, assists: 0 },
+  { rank: 4, name: "Player 4", teamId: "t13", goals: 0, assists: 0 },
+  { rank: 5, name: "Player 5", teamId: "t17", goals: 0, assists: 0 },
+  { rank: 6, name: "Player 6", teamId: "t21", goals: 0, assists: 0 },
+  { rank: 7, name: "Player 7", teamId: "t25", goals: 0, assists: 0 },
+  { rank: 8, name: "Player 8", teamId: "t29", goals: 0, assists: 0 }
 ];
 
 const TOP_ASSISTS = [
-  { rank:1, name:"Thabo Mokoena", teamId:"t6", goals:3, assists:4 },
-  { rank:2, name:"Jayden Nkosi",  teamId:"t5", goals:5, assists:3 },
-  { rank:3, name:"Marco Silva",   teamId:"t1", goals:6, assists:2 },
-  { rank:4, name:"Daniel Osei",   teamId:"t5", goals:3, assists:2 },
-  { rank:5, name:"Carlos Mendez", teamId:"t2", goals:4, assists:1 },
-];
-
-const NEWS = [
-  {
-    id:"n1", date:"2026-09-25", category:"Announcement", categoryColor:"#f7b731",
-    title:"Road to the Final 2026 — Registration Now Open!",
-    body:"We are thrilled to announce that team registration for the Road to the Final 2026 Summer Edition is now officially open. Secure your spot before slots fill up — only 16 teams will be accepted. Contact us on WhatsApp for payment details after submitting your registration."
-  },
-  {
-    id:"n2", date:"2026-09-22", category:"Info", categoryColor:"#4cc9f0",
-    title:"Venue Confirmed: City Sports Complex",
-    body:"All group stage and knockout matches will be held at the City Sports Complex, 123 Stadium Drive, Cape Town. Three pitches (A, B & C) will be operational. Parking is available on-site. Spectators welcome free of charge."
-  },
-  {
-    id:"n3", date:"2026-09-20", category:"Rules Update", categoryColor:"#fc5c7d",
-    title:"Updated Match Rules for 2026 Edition",
-    body:"Please review the updated rules for the 2026 edition. Key changes: squad size increased to 12 (up from 10), rolling substitutions now allowed in group stage, yellow card accumulation reset after group stage. Full rules available in the Rules tab."
-  },
-  {
-    id:"n4", date:"2026-09-15", category:"Preview", categoryColor:"#06d6a0",
-    title:"Team Spotlight: Dynamo Stars Looking Unbeatable",
-    body:"After a perfect 3-0 record in the last edition, Dynamo Stars return this year with an even stronger squad. With Jayden Nkosi leading the attack and a rock-solid defensive line, they are the team to beat heading into the 2026 tournament."
-  },
-  {
-    id:"n5", date:"2026-09-10", category:"Announcement", categoryColor:"#f7b731",
-    title:"Prizes & Awards Revealed",
-    body:"The 2026 prize structure has been confirmed. Champions: R5,000 + Trophy. Runners-up: R2,000. Golden Boot (Top Scorer): R500 + Medal. Best Goalkeeper: R500 + Medal. Fair Play Award: Merchandise Pack. All finalists receive medals."
-  },
+  { rank: 1, name: "Player 4", teamId: "t13", goals: 0, assists: 0 },
+  { rank: 2, name: "Player 2", teamId: "t5", goals: 0, assists: 0 },
+  { rank: 3, name: "Player 1", teamId: "t1", goals: 0, assists: 0 },
+  { rank: 4, name: "Player 5", teamId: "t17", goals: 0, assists: 0 },
+  { rank: 5, name: "Player 3", teamId: "t9", goals: 0, assists: 0 }
 ];
 
 const RULES = [
   {
-    section:"Match Format", icon:"⏱️",
-    items:[
+    section: "Match Format", icon: "⏱️",
+    items: [
       "Each match consists of two halves of 20 minutes each (40 min total).",
       "5-minute half-time break.",
-      "Knockout matches that are tied after 40 mins proceed directly to penalty shootout (5 kicks each, then sudden death).",
-      "Matches start on time — teams not present within 5 minutes forfeit the match."
+      "Knockout matches tied after 40 mins proceed directly to penalty shootout (5 kicks each, then sudden death).",
+      "Matches start promptly — teams not present within 5 minutes forfeit."
     ]
   },
   {
-    section:"Squad & Substitutions", icon:"👥",
-    items:[
+    section: "Squad & Substitutions", icon: "👥",
+    items: [
       "Maximum squad size: 12 players per team.",
       "Minimum players to start a match: 6 (including goalkeeper).",
-      "Rolling substitutions are allowed during Group Stage (unlimited).",
-      "Knockout Stage: Maximum 5 substitutions per team per match.",
-      "Players must be registered before the tournament starts — no late additions."
+      "Rolling substitutions are allowed during all 3 Group Stage Games (Game 1, Game 2, Game 3).",
+      "Knockout Stage: Maximum 5 substitutions per team per match."
     ]
   },
   {
-    section:"Disciplinary", icon:"🟨",
-    items:[
-      "Yellow Card: Warning. Two yellows in one match = Red Card (ejection).",
-      "Two yellow cards accumulated across different group stage matches = 1 match ban.",
-      "Red Card: Immediate ejection. Player misses the next match.",
-      "Violent conduct: Immediate tournament ban (no appeal).",
-      "Yellow card tally resets after the Group Stage."
-    ]
-  },
-  {
-    section:"Scoring & Advancement", icon:"🏆",
-    items:[
+    section: "Tournament Scoring & Qualification", icon: "🏆",
+    items: [
       "Win: 3 points. Draw: 1 point. Loss: 0 points.",
-      "Top 2 teams from each group advance to the Quarter Finals.",
-      "Tie-breaker order: 1) Points, 2) Goal Difference, 3) Goals Scored, 4) Head-to-Head.",
-      "Group Stage: 3 matches per team.",
-      "Finals structure: Quarter Finals → Semi Finals → Final."
+      "Group Stage: Exactly 3 games per team (Game 1, Game 2, Game 3) across 8 groups (Groups A to H).",
+      "Top 2 teams from each of the 8 groups qualify for the Round of 16.",
+      "Tie-breaker order: 1) Points, 2) Goal Difference, 3) Goals Scored, 4) Head-to-Head."
     ]
   },
   {
-    section:"General Conduct", icon:"🤝",
-    items:[
-      "All players must wear matching team kits. Goalkeepers must wear a different color.",
-      "No slide tackles — this is a non-contact tournament.",
-      "Referee decisions are final. Arguing with referee may result in yellow card.",
-      "Spectators and team officials must remain in designated areas.",
-      "Teams are responsible for the conduct of their supporters."
+    section: "Disciplinary Rules", icon: "🟨",
+    items: [
+      "Yellow Card: Warning. Two yellows in one match = Red Card.",
+      "Red Card: Immediate ejection and 1-match suspension.",
+      "Yellow card tally resets completely after the 3 Group Stage Games.",
+      "No slide tackles allowed — this is a non-contact competitive tournament."
     ]
-  },
+  }
 ];
