@@ -66,10 +66,17 @@
         <button class="fifa-nav-btn" data-tab="teams" onclick="switchTab('teams')">Teams &amp; Squads</button>
         <button class="fifa-nav-btn" data-tab="stats" onclick="switchTab('stats')">Statistics</button>
         <button class="fifa-nav-btn" data-tab="rules" onclick="switchTab('rules')">Tournament Info</button>
-        <button class="fifa-nav-btn" data-tab="news" onclick="switchTab('news')">News</button>
+        <button class="fifa-nav-btn" data-tab="news" onclick="switchTab('news')">Media</button>
       </nav>
 
       <div class="fifa-header-right">
+        <button class="btn-signup-nav" onclick="openModal('signup-team')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.771.821 2.791.821 3.182 0 5.768-2.587 5.768-5.767.001-3.18-2.585-5.767-5.768-5.767zm0 10.428c-.887 0-1.594-.239-2.316-.667l-.165-.098-1.58.414.421-1.539-.107-.171c-.482-.767-.736-1.527-.735-2.599.001-2.569 2.09-4.658 4.487-4.658 2.396 0 4.485 2.089 4.485 4.658 0 2.57-2.089 4.659-4.485 4.659z" />
+          </svg>
+          Sign Up Team
+        </button>
         <button class="btn-upload-nav" onclick="openModal('upload-teams')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -92,6 +99,13 @@
         <h1 class="fifa-hero-title">Official Tournament Match Center</h1>
       </div>
       <div class="fifa-hero-actions">
+        <button class="btn-signup-hero" onclick="openModal('signup-team')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.771.821 2.791.821 3.182 0 5.768-2.587 5.768-5.767.001-3.18-2.585-5.767-5.768-5.767zm0 10.428c-.887 0-1.594-.239-2.316-.667l-.165-.098-1.58.414.421-1.539-.107-.171c-.482-.767-.736-1.527-.735-2.599.001-2.569 2.09-4.658 4.487-4.658 2.396 0 4.485 2.089 4.485 4.658 0 2.57-2.089 4.659-4.485 4.659z" />
+          </svg>
+          Sign Up Team (5-8 Players)
+        </button>
         <button class="btn-fifa-calendar" onclick="exportCalendarICS()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
             <rect x="3" y="4" width="18" height="18" rx="2" />
@@ -193,9 +207,14 @@
             Customize your 32 tournament teams from TBD to your official club names and kit colors.
           </p>
         </div>
-        <button class="btn-upload-nav" onclick="openModal('upload-teams')" style="padding:10px 20px;font-size:13px;">
-          Manage &amp; Upload Teams ⚙️
-        </button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn-signup-nav" onclick="openModal('signup-team')" style="padding:10px 18px;font-size:13px;">
+            Sign Up Team 📝
+          </button>
+          <button class="btn-upload-nav" onclick="openModal('upload-teams')" style="padding:10px 18px;font-size:13px;">
+            Manage &amp; Upload Teams ⚙️
+          </button>
+        </div>
       </div>
 
       <div id="fifa-teams-container">
@@ -205,22 +224,12 @@
   </main>
 
   <!-- =============================================
-       7. TAB PANEL 4: STATISTICS
+       7. TAB PANEL 4: STATISTICS (STATS CENTRE)
        ============================================= -->
   <main class="tab-panel" id="panel-stats" role="tabpanel">
     <div class="fifa-main-content">
-      <div style="margin-bottom:20px;">
-        <h2
-          style="font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--fifa-navy-dark);text-transform:uppercase;">
-          Tournament Statistics
-        </h2>
-        <p style="font-size:13px;color:var(--text-dim);">
-          Track Golden Boot leaders and top playmakers across all 8 groups and finals.
-        </p>
-      </div>
-
-      <div class="fifa-stats-container" id="fifa-stats-container">
-        <!-- Dynamically rendered via renderStats() -->
+      <div id="fifa-stats-container">
+        <!-- Dynamically rendered via renderStatsCentre() -->
       </div>
     </div>
   </main>
@@ -251,44 +260,75 @@
             </h3>
             <p style="font-size:13px;color:#94a3b8;">123 Stadium Drive, Cape Town, 8001 &bull; Pitches A, B &amp; C</p>
           </div>
-          <button class="btn-fifa-calendar"
-            onclick="showToast('📍 Venue Directions: City Sports Complex Cape Town');">Get Directions ↗</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn-signup-nav" onclick="openModal('signup-team')"
+              style="padding:8px 16px;font-size:12.5px;">
+              Sign Up Team (WhatsApp) 💬
+            </button>
+            <button class="btn-fifa-calendar"
+              onclick="showToast('📍 Venue Directions: City Sports Complex Cape Town');">Get Directions ↗</button>
+          </div>
         </div>
 
         <div class="rules-grid-cards">
+          <!-- 1. Tournament Format & Roster Structure -->
           <div class="rule-box">
-            <h4 class="rule-box-title">⏱️ Match Format</h4>
+            <h4 class="rule-box-title">⚽ 1. Tournament Format &amp; Roster Structure</h4>
             <div class="rule-box-list">
-              <p>&bull; Two 20-minute halves per match (40 mins total).</p>
-              <p>&bull; 5-minute half-time interval.</p>
-              <p>&bull; Knockout ties proceed straight to penalties (5 kicks).</p>
+              <p><strong>Match Format:</strong> Games are played as <strong>5-a-side</strong> (4 outfield players + 1
+                goalkeeper).</p>
+              <p><strong>Roster Size:</strong> Each team may register a maximum of <strong>7 to 8 players</strong>
+                total. Only registered roster players are eligible to play or substitute.</p>
+              <p><strong>Substitutions:</strong> Rolling substitutions are permitted at any point during the match.</p>
             </div>
           </div>
 
+          <!-- 2. Competition Progression -->
           <div class="rule-box">
-            <h4 class="rule-box-title">👥 Squad &amp; Rolling Subs</h4>
+            <h4 class="rule-box-title">🏆 2. Competition Progression</h4>
             <div class="rule-box-list">
-              <p>&bull; Maximum squad size: 12 registered players.</p>
-              <p>&bull; Rolling substitutions permitted in Game 1, 2, 3.</p>
-              <p>&bull; 5 max substitutions per team in knockout matches.</p>
+              <p><strong>Phase 1 (Group Stage):</strong> Teams will first compete in round-robin group play (3 group
+                games across Groups A &ndash; H).</p>
+              <p><strong>Phase 2 (Knockout Stage):</strong> Top-qualifying teams advance to single-elimination knockout
+                rounds, progressing through to the final.</p>
             </div>
           </div>
 
+          <!-- 3. Punctuality & Forfeits -->
           <div class="rule-box">
-            <h4 class="rule-box-title">🏆 8 Groups Progression</h4>
+            <h4 class="rule-box-title">⏱️ 3. Punctuality &amp; Forfeits</h4>
             <div class="rule-box-list">
-              <p>&bull; Exactly 3 group games per team (Game 1, 2, 3) across 8 groups (A to H).</p>
-              <p>&bull; Win = 3 pts, Draw = 1 pt, Loss = 0 pts.</p>
-              <p>&bull; Top 2 teams from each of the 8 groups advance to Round of 16.</p>
+              <p><strong>Late Arrival Penalty:</strong> If a team is not ready at the scheduled start time, a penalty
+                goal will be awarded to the opposing team for every <strong>2 minutes of delay</strong>.</p>
+              <p><strong>Match Forfeit:</strong> If a team fails to field their squad within <strong>5 minutes</strong>
+                of the scheduled start time, the match is officially cancelled, and the tardy team automatically
+                forfeits the match.</p>
             </div>
           </div>
 
+          <!-- 4. On-Pitch Rules & Offenses -->
           <div class="rule-box">
-            <h4 class="rule-box-title">🟨 Discipline</h4>
+            <h4 class="rule-box-title">🟨 4. On-Pitch Rules &amp; Offenses</h4>
             <div class="rule-box-list">
-              <p>&bull; Yellow Card: Warning (2 in a match = Red Card).</p>
-              <p>&bull; Red Card: Immediate ejection + 1 match suspension.</p>
-              <p>&bull; Yellow cards reset after the 3 Group Stage Games.</p>
+              <p><strong>No Slide Tackling:</strong> Slide tackles are strictly prohibited.</p>
+              <p><strong>Sin-Bin Penalty:</strong> Infractions result in an immediate <strong>5-minute yellow card /
+                  sin-bin penalty</strong> (the offending player leaves the pitch, and their team plays a man down for 5
+                minutes).</p>
+              <p><strong>No Tackling from Behind:</strong> Marking or tackling directly from behind is strictly
+                forbidden.</p>
+              <p><strong>Zero Tolerance for Fighting:</strong> Any physical altercations or violent behavior will result
+                in <strong>immediate team disqualification</strong> from the tournament.</p>
+            </div>
+          </div>
+
+          <!-- 5. Payment & Refund Policy -->
+          <div class="rule-box" style="grid-column: 1 / -1; border-left: 4px solid var(--fifa-cyan);">
+            <h4 class="rule-box-title">💳 5. Payment &amp; Refund Policy</h4>
+            <div class="rule-box-list">
+              <p><strong>Strict No Refund Policy:</strong> Registration fees are strictly non-refundable once
+                transferred.</p>
+              <p><strong>7-Day Cut-Off:</strong> No refund requests will be accepted or processed within <strong>7
+                  days</strong> prior to the tournament start date.</p>
             </div>
           </div>
         </div>
@@ -297,32 +337,64 @@
   </main>
 
   <!-- =============================================
-       9. TAB PANEL 6: NEWS
+       9. TAB PANEL 6: MEDIA GALLERY
        ============================================= -->
   <main class="tab-panel" id="panel-news" role="tabpanel">
     <div class="fifa-main-content">
-      <div style="margin-bottom:20px;">
-        <h2
-          style="font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--fifa-navy-dark);text-transform:uppercase;">
-          Tournament News &amp; Bulletins
-        </h2>
+
+      <!-- Header -->
+      <div class="media-header-bar">
+        <div>
+          <div class="media-page-title">Tournament Media</div>
+          <p class="media-page-sub">Upload and browse photos &amp; videos from match day. All media is stored locally on
+            this device.</p>
+        </div>
+        <label class="media-upload-btn" for="media-file-input-top" style="cursor:pointer;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          Upload Media
+        </label>
       </div>
 
-      <div style="display:flex;flex-direction:column;gap:14px;">
-        <div
-          style="background:#ffffff;border:1px solid var(--border-color);border-radius:10px;padding:22px;box-shadow:var(--shadow-sm);">
-          <span style="font-size:11px;font-weight:800;color:var(--fifa-blue);text-transform:uppercase;">Official
-            Announcement</span>
-          <h3
-            style="font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--fifa-navy-dark);margin:6px 0;">
-            Tournament Schedule &amp; Team Upload Open
-          </h3>
-          <p style="font-size:13.5px;color:var(--text-muted);line-height:1.6;">
-            The 8 Group Stage Games schedule (Game 1, Game 2, Game 3) is officially live. Team managers can now
-            customize their squad names, short codes, and colors via the Team Manager tool.
-          </p>
-        </div>
+      <!-- Stats Strip -->
+      <div class="media-stats-strip" id="media-stats-strip">
+        <div class="media-stat-pill"><span>📸</span> <span id="media-count-photos">0 Photos</span></div>
+        <div class="media-stat-pill"><span>🎬</span> <span id="media-count-videos">0 Videos</span></div>
+        <div class="media-stat-pill"><span>📁</span> <span id="media-count-total">0 Total Files</span></div>
       </div>
+
+      <!-- Upload Drop Zone -->
+      <div class="media-upload-zone" id="media-drop-zone">
+        <input type="file" id="media-file-input" accept="image/*,video/*" multiple>
+        <input type="file" id="media-file-input-top" accept="image/*,video/*" multiple style="display:none;">
+        <span class="media-upload-icon">📷</span>
+        <div class="media-upload-title">Drop Photos &amp; Videos Here</div>
+        <p class="media-upload-hint">Supports JPG, PNG, GIF, MP4, MOV, WebM &bull; Click anywhere to browse files</p>
+        <span class="media-upload-btn" style="pointer-events:none;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          Browse Files
+        </span>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="media-filter-tabs" id="media-filter-tabs">
+        <button class="media-filter-btn active" data-filter="all" onclick="filterMedia('all')">All Media</button>
+        <button class="media-filter-btn" data-filter="photo" onclick="filterMedia('photo')">Photos Only</button>
+        <button class="media-filter-btn" data-filter="video" onclick="filterMedia('video')">Videos Only</button>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="media-gallery-grid" id="media-gallery-grid">
+        <!-- Empty state shown by JS -->
+      </div>
+
     </div>
   </main>
 
@@ -434,8 +506,166 @@
     </div>
   </div>
 
+  <!-- Modal 4: Official Team Sign-Up (5 to 8 Players -> WhatsApp 0695462972) -->
+  <div class="fifa-modal-overlay" id="modal-signup-team" role="dialog" aria-modal="true">
+    <div class="fifa-modal-content modal-lg">
+      <div class="fifa-modal-header">
+        <h3 class="fifa-modal-title">📝 Team Sign-Up &amp; Roster Registration</h3>
+        <button class="fifa-close-btn" onclick="closeModal('signup-team')">&times;</button>
+      </div>
+
+      <!-- Destination Info Strip -->
+      <div class="signup-destination-banner">
+        <div class="signup-dest-left">
+          <span class="signup-dest-icon">💬</span>
+          <div class="signup-dest-text">
+            <strong>Direct WhatsApp Submission</strong><br>
+            All member and squad details are formatted and transmitted directly to the tournament organizer.
+          </div>
+        </div>
+        <div class="signup-dest-badge">📲 069 546 2972</div>
+      </div>
+
+      <!-- Form Body -->
+      <form id="team-signup-form" onsubmit="event.preventDefault(); submitTeamSignupToWhatsApp();">
+
+        <!-- 1. Team & Captain Details -->
+        <div class="signup-section">
+          <div class="signup-section-title">
+            <span>1. Team &amp; Captain Information</span>
+            <span style="font-size:11px;color:var(--text-dim);font-weight:700;">* Required</span>
+          </div>
+
+          <div class="signup-grid-2" style="margin-bottom:12px;">
+            <div class="signup-field">
+              <label class="signup-label" for="signup-team-name">Team Name *</label>
+              <input type="text" id="signup-team-name" class="signup-input" placeholder="e.g. Cape Stormers FC"
+                required>
+            </div>
+            <div class="signup-field">
+              <label class="signup-label" for="signup-team-code">Short Code (3-4 Letters)</label>
+              <input type="text" id="signup-team-code" class="signup-input" placeholder="e.g. CST" maxlength="4">
+            </div>
+          </div>
+
+          <div class="signup-grid-3" style="margin-bottom:12px;">
+            <div class="signup-field">
+              <label class="signup-label" for="signup-captain-name">Captain / Manager Name *</label>
+              <input type="text" id="signup-captain-name" class="signup-input" placeholder="Full Name" required>
+            </div>
+            <div class="signup-field">
+              <label class="signup-label" for="signup-captain-phone">Captain WhatsApp Number *</label>
+              <input type="tel" id="signup-captain-phone" class="signup-input" placeholder="e.g. 082 123 4567" required>
+            </div>
+            <div class="signup-field">
+              <label class="signup-label" for="signup-group-pref">Preferred Group (Optional)</label>
+              <select id="signup-group-pref" class="signup-input">
+                <option value="Any Group">Any Group (A - H)</option>
+                <option value="Group A">Group A</option>
+                <option value="Group B">Group B</option>
+                <option value="Group C">Group C</option>
+                <option value="Group D">Group D</option>
+                <option value="Group E">Group E</option>
+                <option value="Group F">Group F</option>
+                <option value="Group G">Group G</option>
+                <option value="Group H">Group H</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="signup-grid-2">
+            <div class="signup-field">
+              <label class="signup-label">Primary Kit Color</label>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <input type="color" id="signup-kit-primary" value="#001438"
+                  style="width:40px;height:36px;border:none;background:none;cursor:pointer;">
+                <input type="text" id="signup-kit-primary-text" value="#001438" class="signup-input" style="flex:1;">
+              </div>
+            </div>
+            <div class="signup-field">
+              <label class="signup-label">Secondary / Away Color</label>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <input type="color" id="signup-kit-secondary" value="#00d4ff"
+                  style="width:40px;height:36px;border:none;background:none;cursor:pointer;">
+                <input type="text" id="signup-kit-secondary-text" value="#00d4ff" class="signup-input" style="flex:1;">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Squad Members (Min 5, Max 8) -->
+        <div class="signup-section">
+          <div class="roster-counter-bar">
+            <div>
+              <h4
+                style="font-family:var(--font-display);font-size:14.5px;font-weight:800;color:var(--fifa-navy-dark);text-transform:uppercase;margin:0;">
+                2. Squad Member Details
+              </h4>
+              <p style="font-size:11.5px;color:var(--text-dim);margin:2px 0 0;">
+                5-a-Side Format: <strong>Minimum 5</strong> (1 GK + 4 Outfield), <strong>Maximum 8</strong> players.
+              </p>
+            </div>
+            <span class="roster-count-pill valid" id="roster-count-badge">5 / 8 Members (Valid)</span>
+          </div>
+
+          <div id="signup-members-container">
+            <!-- Dynamic player rows generated by renderSignupSlots() -->
+          </div>
+
+          <button type="button" class="btn-add-sub-slot" id="btn-add-sub-slot" onclick="addSignupSubstituteSlot()">
+            <span>➕</span> Add Substitute Player (Slot <span id="next-slot-num">6</span> of 8)
+          </button>
+        </div>
+
+        <!-- 3. Tournament Rules Acknowledgement -->
+        <div class="signup-section" style="border-left: 4px solid var(--fifa-cyan);">
+          <label
+            style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:12.5px;color:var(--text-main);line-height:1.45;">
+            <input type="checkbox" id="signup-rules-agree" required
+              style="margin-top:3px;accent-color:var(--fifa-blue);">
+            <span>
+              <strong>I confirm and acknowledge the Official Tournament Rules:</strong><br>
+              &bull; 5-a-side match format (4 outfield players + 1 goalkeeper).<br>
+              &bull; Squad size between 5 and 8 players max with rolling substitutions.<br>
+              &bull; Punctuality rule: 2-minute delay = penalty goal, 5-minute delay = automatic match forfeit.<br>
+              &bull; No slide tackling (5-minute yellow card sin-bin) and zero tolerance for fighting.<br>
+              &bull; Strict non-refundable registration fee policy once submitted.
+            </span>
+          </label>
+        </div>
+
+        <!-- 4. Submit & Action Buttons -->
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <button type="submit" class="btn-whatsapp-submit">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.771.821 2.791.821 3.182 0 5.768-2.587 5.768-5.767.001-3.18-2.585-5.767-5.768-5.767zm0 10.428c-.887 0-1.594-.239-2.316-.667l-.165-.098-1.58.414.421-1.539-.107-.171c-.482-.767-.736-1.527-.735-2.599.001-2.569 2.09-4.658 4.487-4.658 2.396 0 4.485 2.089 4.485 4.658 0 2.57-2.089 4.659-4.485 4.659z" />
+            </svg>
+            Send Team Registration to 0695462972 on WhatsApp
+          </button>
+          <button type="button" class="stage-tab-btn" onclick="closeModal('signup-team')"
+            style="border:1px solid var(--border-color);border-radius:6px;padding:8px 14px;justify-content:center;">
+            Cancel &amp; Close
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <!-- Media Lightbox -->
+  <div class="media-lightbox-overlay" id="media-lightbox" onclick="closeLightbox(event)">
+    <div class="media-lightbox-inner">
+      <button class="media-lightbox-close" onclick="closeLightboxBtn()">&times;</button>
+      <button class="media-lightbox-nav prev" onclick="lightboxNav(-1)">&#8249;</button>
+      <div id="media-lightbox-media"></div>
+      <button class="media-lightbox-nav next" onclick="lightboxNav(1)">&#8250;</button>
+      <div class="media-lightbox-caption" id="media-lightbox-caption"></div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="js/data.js"></script>
