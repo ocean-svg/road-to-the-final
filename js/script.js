@@ -39,6 +39,11 @@ function switchTab(tabId) {
     btn.classList.toggle('active', isActive);
   });
 
+  document.querySelectorAll('.fotmob-nav-item').forEach(btn => {
+    const isActive = btn.dataset.tab === tabId;
+    btn.classList.toggle('active', isActive);
+  });
+
   document.querySelectorAll('.tab-panel').forEach(panel => {
     panel.classList.toggle('active', panel.id === 'panel-' + tabId);
   });
@@ -672,7 +677,7 @@ function renderStatsDashboardHTML() {
   const clubPasses = [...STAT_CLUBS].sort((a, b) => b.passes - a.passes).slice(0, 10);
 
   const playerLeaderboardCard = (title, metricKey, list, onClickSubpage) => `
-    <div class="stats-leaderboard-card">
+    <div class="stats-leaderboard-card fotmob-stat-card">
       <div class="stats-card-header" onclick="${onClickSubpage}">
         <div class="stats-card-header-title">${title}</div>
         <span class="stats-card-chevron">❯</span>
@@ -681,15 +686,18 @@ function renderStatsDashboardHTML() {
         ${list.map((p, idx) => {
           const team = getTeam(p.teamId);
           const initials = p.name.split(' ').map(n => n[0]).join('').slice(0, 2);
+          const isTop = idx === 0;
           return `
-            <div class="stats-row-item" onclick="openPlayerDetail('${p.id}')" style="cursor:pointer;">
-              <span class="stats-rank-num">${idx + 1}</span>
-              <span class="stats-avatar-circle">${initials}</span>
+            <div class="stats-row-item fotmob-stat-row" onclick="openPlayerDetail('${p.id}')" style="cursor:pointer;">
+              <div class="fotmob-avatar-wrap">
+                <span class="stats-avatar-circle">${initials}</span>
+                <span class="fotmob-mini-crest">${teamCrestHTML(team, 12)}</span>
+              </div>
               <div class="stats-info-box">
                 <span class="stats-name-text">${p.name}</span>
-                <span class="stats-sub-club">${teamCrestHTML(team, 14)} ${team.name}</span>
+                <span class="stats-sub-club">${team.name}</span>
               </div>
-              <span class="stats-metric-value">${p[metricKey]}</span>
+              <span class="stats-metric-value ${isTop ? 'fotmob-top-val' : ''}">${p[metricKey]}</span>
             </div>
           `;
         }).join('')}
