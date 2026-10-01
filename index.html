@@ -26,13 +26,15 @@
         <a href="#" class="active" onclick="switchTab('fixtures'); return false;">TOURNAMENT HUB</a>
         <a href="#" onclick="switchTab('standings'); return false;">STANDINGS</a>
         <a href="#" onclick="switchTab('teams'); return false;">TEAMS</a>
+        <a href="#" onclick="switchTab('stats'); return false;">STATISTICS</a>
         <a href="#" onclick="switchTab('rules'); return false;">RULES &amp; INFO</a>
         <a href="#" onclick="switchTab('news'); return false;">MEDIA</a>
+        <a href="#" onclick="openPlayerManagerModal(); return false;" style="color:#38bdf8;font-weight:700;">PLAYER ROSTERS</a>
       </div>
       <div class="fifa-top-right">
+        <span class="fifa-lang-badge" id="db-top-indicator" onclick="openScorekeeperModal();" style="background:rgba(16, 185, 129, 0.2);color:#10b981;border:1px solid rgba(16, 185, 129, 0.4);cursor:pointer;" title="SQLite Database Status">🟢 DB ONLINE</span>
         <span class="fifa-lang-badge" onclick="showToast('Language: English (UK)');">EN &#9662;</span>
-        <a href="#" onclick="openModal('upload-teams'); return false;" style="color:#fff;font-weight:700;">MANAGE
-          TEAMS</a>
+        <a href="#" onclick="openScorekeeperModal(); return false;" style="color:#00ff85;font-weight:700;">⚡ SCOREKEEPER</a>
       </div>
     </div>
   </aside>
@@ -70,20 +72,27 @@
       </nav>
 
       <div class="fifa-header-right">
+        <button class="btn-scorekeeper-nav" onclick="openScorekeeperModal()" aria-label="Scorekeeper & DB Admin" title="Open Scorekeeper & Match Event Logger">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+          <span class="nav-btn-text">Scorekeeper</span>
+        </button>
+        <button class="btn-signup-nav" onclick="openPlayerManagerModal()" aria-label="Manage Players" style="background:#045034;" title="Manage Players & Rosters">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          <span class="nav-btn-text">Rosters</span>
+        </button>
         <button class="btn-signup-nav" onclick="openModal('signup-team')" aria-label="Sign Up Team">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
             <path
               d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.771.821 2.791.821 3.182 0 5.768-2.587 5.768-5.767.001-3.18-2.585-5.767-5.768-5.767zm0 10.428c-.887 0-1.594-.239-2.316-.667l-.165-.098-1.58.414.421-1.539-.107-.171c-.482-.767-.736-1.527-.735-2.599.001-2.569 2.09-4.658 4.487-4.658 2.396 0 4.485 2.089 4.485 4.658 0 2.57-2.089 4.659-4.485 4.659z" />
           </svg>
           <span class="nav-btn-text">Sign Up Team</span>
-        </button>
-        <button class="btn-upload-nav" onclick="openModal('upload-teams')" aria-label="Upload Teams">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="17 8 12 3 7 8" />
-            <line x1="12" y1="3" x2="12" y2="15" />
-          </svg>
-          <span class="nav-btn-text">Upload Teams</span>
         </button>
       </div>
     </div>
@@ -847,8 +856,284 @@
     </button>
   </nav>
 
+  <!-- =============================================
+       SCOREKEEPER & MATCH EVENT RECORDER MODAL
+       ============================================= -->
+  <div class="fifa-modal-overlay" id="modal-scorekeeper" role="dialog" aria-labelledby="sk-modal-title">
+    <div class="fifa-modal-content" style="max-width:760px;border-top:4px solid #0ea5e9;">
+      <div class="fifa-modal-header">
+        <div>
+          <h3 class="fifa-modal-title" id="sk-modal-title">⚡ Official Match Scorekeeper &amp; Database Hub</h3>
+          <p style="font-size:12px;color:var(--text-dim);margin:2px 0 0;" id="db-status-badge">
+            <span class="db-dot green"></span> SQLite Database: <strong>Connecting...</strong>
+          </p>
+        </div>
+        <button class="fifa-close-btn" onclick="closeScorekeeperModal()" aria-label="Close Modal">&times;</button>
+      </div>
+
+      <!-- Match Select -->
+      <div style="margin-bottom:16px;">
+        <label class="signup-label" for="sk-match-select">Select Fixture / Match</label>
+        <select id="sk-match-select" class="signup-input" onchange="loadScorekeeperMatchData(this.value)" style="font-size:13.5px;font-weight:700;">
+          <!-- Dynamically populated -->
+        </select>
+      </div>
+
+      <div class="sk-grid">
+        <!-- Left: Match Score Card -->
+        <div class="sk-card">
+          <h4 style="font-size:14px;font-weight:800;color:var(--fifa-navy-dark);margin-bottom:12px;">📊 Match Result &amp; Status</h4>
+          
+          <div class="sk-match-card-header">
+            <div class="sk-team-box">
+              <div id="sk-home-crest"></div>
+              <span class="sk-team-title" id="sk-home-name">Home Team</span>
+            </div>
+            <div style="font-size:12px;font-weight:900;color:var(--text-dim);">VS</div>
+            <div class="sk-team-box">
+              <div id="sk-away-crest"></div>
+              <span class="sk-team-title" id="sk-away-name">Away Team</span>
+            </div>
+          </div>
+
+          <form onsubmit="saveMatchScoreFromPanel(event)">
+            <div class="sk-score-inputs">
+              <input type="number" id="sk-home-score" class="sk-score-input" min="0" max="99" placeholder="0">
+              <span style="font-size:24px;font-weight:900;color:var(--text-dim);">:</span>
+              <input type="number" id="sk-away-score" class="sk-score-input" min="0" max="99" placeholder="0">
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+              <div>
+                <label class="signup-label" for="sk-status">Match Status</label>
+                <select id="sk-status" class="signup-input" style="font-size:12px;">
+                  <option value="Scheduled">Scheduled</option>
+                  <option value="Live">🔴 Live Playing</option>
+                  <option value="Full Time">✅ Full Time (Final)</option>
+                </select>
+              </div>
+              <div>
+                <label class="signup-label" for="sk-pitch">Pitch / Court</label>
+                <input type="text" id="sk-pitch" class="signup-input" style="font-size:12px;">
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+              <div>
+                <label class="signup-label" for="sk-date">Match Date</label>
+                <input type="date" id="sk-date" class="signup-input" style="font-size:12px;">
+              </div>
+              <div>
+                <label class="signup-label" for="sk-time">Kickoff Time</label>
+                <input type="text" id="sk-time" class="signup-input" style="font-size:12px;">
+              </div>
+            </div>
+
+            <button type="submit" class="btn-upload-nav" style="width:100%;justify-content:center;padding:10px;background:var(--fifa-navy-dark);color:#fff;">
+              💾 Save Match Score to Database
+            </button>
+          </form>
+        </div>
+
+        <!-- Right: Log Match Events (Scorers, Cards) -->
+        <div class="sk-card">
+          <h4 style="font-size:14px;font-weight:800;color:var(--fifa-navy-dark);margin-bottom:12px;">⚽ Log Goal / Card Event</h4>
+          
+          <form onsubmit="addMatchEventFromPanel(event)" style="display:flex;flex-direction:column;gap:10px;">
+            <div>
+              <label class="signup-label" for="sk-event-team">Team</label>
+              <select id="sk-event-team" class="signup-input" onchange="updateEventPlayerOptions()" style="font-size:12.5px;">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div>
+                <label class="signup-label" for="sk-event-type">Event Type</label>
+                <select id="sk-event-type" class="signup-input" style="font-size:12px;">
+                  <option value="goal">⚽ Goal</option>
+                  <option value="assist">🎯 Assist</option>
+                  <option value="yellow_card">🟨 Yellow Card (Sin-Bin)</option>
+                  <option value="red_card">🟥 Red Card</option>
+                  <option value="save">🧤 GK Save</option>
+                </select>
+              </div>
+              <div>
+                <label class="signup-label" for="sk-event-minute">Minute</label>
+                <input type="number" id="sk-event-minute" class="signup-input" min="1" max="90" value="15" style="font-size:12px;">
+              </div>
+            </div>
+
+            <div>
+              <label class="signup-label" for="sk-event-player">Player</label>
+              <select id="sk-event-player" class="signup-input" style="font-size:12.5px;">
+                <!-- Populated with team players -->
+              </select>
+            </div>
+
+            <div>
+              <label class="signup-label" for="sk-event-notes">Notes (Optional)</label>
+              <input type="text" id="sk-event-notes" class="signup-input" placeholder="e.g. Free kick, volley, penalty..." style="font-size:12px;">
+            </div>
+
+            <button type="submit" class="stage-tab-btn active" style="justify-content:center;padding:8px 14px;border-radius:6px;background:var(--fifa-blue);color:#fff;">
+              ➕ Add Event &amp; Update Stats
+            </button>
+          </form>
+
+          <!-- Logged Events List -->
+          <div style="margin-top:16px;">
+            <label class="signup-label">Fixture Timeline Events</label>
+            <div id="sk-events-timeline" style="max-height:160px;overflow-y:auto;border:1px solid var(--border-color);border-radius:6px;padding:6px;background:#ffffff;">
+              <!-- Dynamic Events -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer action bar -->
+      <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border-color);padding-top:14px;">
+        <button type="button" onclick="resetTournamentDatabase()" style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;">
+          🔄 Reset Database to Defaults
+        </button>
+        <button type="button" class="stage-tab-btn" onclick="closeScorekeeperModal()" style="border:1px solid var(--border-color);border-radius:6px;padding:6px 16px;">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       PLAYER & SQUAD ROSTER MANAGER MODAL
+       ============================================= -->
+  <div class="fifa-modal-overlay" id="modal-player-manager" role="dialog" aria-labelledby="pm-modal-title">
+    <div class="fifa-modal-content" style="max-width:760px;border-top:4px solid #045034;">
+      <div class="fifa-modal-header">
+        <div>
+          <h3 class="fifa-modal-title" id="pm-modal-title">👥 Team Roster &amp; Player Database</h3>
+          <p style="font-size:12px;color:var(--text-dim);margin:2px 0 0;" id="pm-team-count">Manage official player squad rosters, jersey numbers &amp; stats</p>
+        </div>
+        <button class="fifa-close-btn" onclick="closePlayerManagerModal()" aria-label="Close Modal">&times;</button>
+      </div>
+
+      <!-- Team Select & Add Button -->
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:240px;">
+          <label class="signup-label" for="pm-team-select">Select Club / Team</label>
+          <select id="pm-team-select" class="signup-input" onchange="loadManagerTeamRoster(this.value)" style="font-size:13.5px;font-weight:700;">
+            <!-- Dynamically populated with 32 teams -->
+          </select>
+        </div>
+        <div>
+          <button type="button" class="stage-tab-btn active" onclick="openAddPlayerForm()" style="margin-top:20px;padding:8px 16px;border-radius:20px;background:#045034;color:#fff;">
+            ➕ Add New Player
+          </button>
+        </div>
+      </div>
+
+      <h4 id="pm-team-title" style="font-size:15px;font-weight:800;color:var(--fifa-navy-dark);margin-bottom:10px;">Official Squad Roster</h4>
+
+      <!-- Roster List -->
+      <div id="pm-roster-list" style="max-height:420px;overflow-y:auto;padding-right:4px;">
+        <!-- Dynamic Player Cards -->
+      </div>
+
+      <div style="margin-top:16px;display:flex;justify-content:flex-end;border-top:1px solid var(--border-color);padding-top:12px;">
+        <button type="button" class="stage-tab-btn" onclick="closePlayerManagerModal()" style="border:1px solid var(--border-color);border-radius:6px;padding:6px 16px;">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       ADD / EDIT PLAYER PROFILE MODAL
+       ============================================= -->
+  <div class="fifa-modal-overlay" id="modal-player-edit" role="dialog" aria-labelledby="pe-modal-title" style="z-index:1100;">
+    <div class="fifa-modal-content" style="max-width:500px;border-top:4px solid var(--fifa-blue);">
+      <div class="fifa-modal-header">
+        <h3 class="fifa-modal-title" id="pe-modal-title">✏️ Player Details</h3>
+        <button class="fifa-close-btn" onclick="closePlayerEditModal()" aria-label="Close Modal">&times;</button>
+      </div>
+
+      <form onsubmit="savePlayerFromForm(event)">
+        <input type="hidden" id="pe-player-id">
+        <input type="hidden" id="pe-team-id">
+
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="signup-field">
+            <label class="signup-label" for="pe-name">Player Full Name</label>
+            <input type="text" id="pe-name" class="signup-input" required placeholder="e.g. Alex Mercer" style="font-size:14px;">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div>
+              <label class="signup-label" for="pe-jersey">Jersey Number</label>
+              <input type="number" id="pe-jersey" class="signup-input" min="1" max="99" value="10" required>
+            </div>
+            <div>
+              <label class="signup-label" for="pe-role">Playing Position</label>
+              <select id="pe-role" class="signup-input">
+                <option value="FWD">Forward (FWD)</option>
+                <option value="MID">Midfielder (MID)</option>
+                <option value="DEF">Defender (DEF)</option>
+                <option value="GK">Goalkeeper (GK)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f8fafc;border-radius:6px;">
+            <input type="checkbox" id="pe-captain" style="width:16px;height:16px;">
+            <label for="pe-captain" style="font-size:13px;font-weight:700;color:var(--fifa-navy-dark);cursor:pointer;">Team Captain (C)</label>
+          </div>
+
+          <!-- Quick Stats Edit -->
+          <div style="border:1px solid var(--border-color);border-radius:6px;padding:12px;background:#fcfdfd;">
+            <label class="signup-label" style="margin-bottom:8px;">Player Tournament Stats</label>
+            <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;">
+              <div>
+                <label style="font-size:11px;color:var(--text-dim);">Goals</label>
+                <input type="number" id="pe-goals" class="signup-input" min="0" value="0">
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--text-dim);">Assists</label>
+                <input type="number" id="pe-assists" class="signup-input" min="0" value="0">
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--text-dim);">GK Saves</label>
+                <input type="number" id="pe-saves" class="signup-input" min="0" value="0">
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--text-dim);">Clean Sheets</label>
+                <input type="number" id="pe-cleansheets" class="signup-input" min="0" value="0">
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--text-dim);">Yellow Cards</label>
+                <input type="number" id="pe-yellow" class="signup-input" min="0" value="0">
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--text-dim);">Red Cards</label>
+                <input type="number" id="pe-red" class="signup-input" min="0" value="0">
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:8px;">
+            <button type="submit" class="btn-upload-nav" style="flex:1;justify-content:center;padding:10px;background:var(--fifa-navy-dark);color:#fff;">
+              💾 Save Player
+            </button>
+            <button type="button" class="stage-tab-btn" onclick="closePlayerEditModal()" style="border:1px solid var(--border-color);padding:8px 16px;border-radius:6px;">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="js/data.js"></script>
+  <script src="js/db-client.js"></script>
   <script src="js/script.js"></script>
 </body>
 

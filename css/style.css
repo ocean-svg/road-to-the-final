@@ -3152,3 +3152,236 @@ ul {
   font-weight: 700;
 }
 
+/* =============================================
+   15. DATABASE BADGE & SCOREKEEPER ADMIN STYLES
+   ============================================= */
+.db-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 4px;
+}
+.db-dot.green {
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+.db-dot.yellow {
+  background: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b;
+}
+
+.btn-scorekeeper-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: var(--trans);
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.35);
+}
+.btn-scorekeeper-nav:hover {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.45);
+}
+
+.sk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 768px) {
+  .sk-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sk-card {
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px;
+}
+
+.sk-match-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 16px 10px;
+  background: #ffffff;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.sk-team-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.sk-team-title {
+  font-weight: 800;
+  font-size: 13.5px;
+  color: var(--fifa-navy-dark);
+}
+
+.sk-score-inputs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.sk-score-input {
+  width: 68px;
+  height: 60px;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 900;
+  text-align: center;
+  border: 2px solid var(--fifa-blue);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--fifa-navy-dark);
+}
+.sk-score-input:focus {
+  outline: none;
+  border-color: var(--fifa-cyan);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+}
+
+.sk-event-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-size: 12.5px;
+}
+.sk-event-minute {
+  font-family: var(--font-display);
+  font-weight: 900;
+  color: var(--fifa-blue);
+  font-size: 13px;
+  min-width: 28px;
+}
+.sk-event-badge {
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+.sk-event-badge.goal { background: #ecfdf5; color: #059669; }
+.sk-event-badge.assist { background: #eff6ff; color: #2563eb; }
+.sk-event-badge.yellow_card { background: #fefce8; color: #ca8a04; }
+.sk-event-badge.red_card { background: #fef2f2; color: #dc2626; }
+.sk-event-badge.save { background: #fdf4ff; color: #a855f7; }
+
+.sk-event-info {
+  flex: 1;
+}
+
+.sk-delete-event-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.sk-delete-event-btn:hover {
+  color: #dc2626;
+  background: #fee2e2;
+}
+
+/* Player Manager styles */
+.pm-player-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  transition: var(--trans);
+}
+.pm-player-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-sm);
+}
+
+.pm-jersey-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.pm-player-details {
+  flex: 1;
+}
+
+.pm-player-stat-row {
+  display: flex;
+  gap: 12px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.pm-card-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.pm-btn-edit {
+  background: #f1f5f9;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-main);
+  cursor: pointer;
+}
+.pm-btn-edit:hover {
+  background: #e2e8f0;
+}
+
+.pm-btn-del {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11.5px;
+  color: #dc2626;
+  cursor: pointer;
+}
+.pm-btn-del:hover {
+  background: #fca5a5;
+}
+
+
