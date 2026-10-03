@@ -1353,6 +1353,41 @@ function isDevAuthed() {
   return sessionStorage.getItem('rttf_dev_authed') === 'true';
 }
 
+function updateDevModeUI() {
+  const authed = isDevAuthed();
+  if (authed) {
+    document.body.classList.add('dev-mode-active');
+  } else {
+    document.body.classList.remove('dev-mode-active');
+  }
+
+  const devToggleText = document.getElementById('dev-toggle-text');
+  if (devToggleText) {
+    devToggleText.textContent = authed ? '🔓 Dev Mode (Active)' : '🔐 Dev Login';
+  }
+
+  const headerDevText = document.getElementById('header-dev-text');
+  if (headerDevText) {
+    headerDevText.textContent = authed ? '🔓 Dev Active' : '🔐 Dev Login';
+  }
+
+  const headerDevPill = document.getElementById('header-dev-pill');
+  if (headerDevPill) {
+    if (authed) headerDevPill.classList.add('active');
+    else headerDevPill.classList.remove('active');
+  }
+}
+
+function toggleDevAuthModal() {
+  if (isDevAuthed()) {
+    openScorekeeperModal();
+  } else {
+    requireDevAuth(() => {
+      openScorekeeperModal();
+    });
+  }
+}
+
 function requireDevAuth(actionCallback) {
   if (isDevAuthed()) {
     if (actionCallback) actionCallback();
@@ -1375,7 +1410,9 @@ function submitDevAuth(e) {
   if (val === 'wedonthavewifi1') {
     sessionStorage.setItem('rttf_dev_authed', 'true');
     closeModal('dev-auth');
-    showToast("🔓 Developer access granted!");
+    updateDevModeUI();
+    showToast("🔓 Developer access granted! Site controls & scorekeeper unlocked.");
+    if (typeof fetchSignupsFromDb === 'function') fetchSignupsFromDb();
     if (pendingDevAction) {
       const cb = pendingDevAction;
       pendingDevAction = null;
@@ -1383,7 +1420,7 @@ function submitDevAuth(e) {
     }
     renderMediaGallery();
   } else {
-    showToast("❌ Incorrect password. Access denied.");
+    showToast("❌ Incorrect developer password. Access denied.");
     if (pwInput) {
       pwInput.value = '';
       pwInput.focus();
@@ -1393,7 +1430,12 @@ function submitDevAuth(e) {
 
 function lockDevAuth() {
   sessionStorage.removeItem('rttf_dev_authed');
-  showToast('🔒 Developer session locked');
+  updateDevModeUI();
+  closeModal('scorekeeper');
+  closeModal('player-manager');
+  closeModal('player-edit');
+  closeModal('upload-teams');
+  showToast('🔒 Developer mode locked. Site in spectator view.');
   renderMediaGallery();
 }
 
@@ -1789,26 +1831,29 @@ _Submitted via Road to the Final 2026 Portal_`;
   // Open WhatsApp in new tab
   window.open(whatsappUrl, '_blank');
 
-  // Also offer to add team to local tournament dataset
-  const assignToSlot = TEAMS.find(t => t.name.startsWith('TBD'));
-  if (assignToSlot) {
-    assignToSlot.name = teamName;
-    assignToSlot.shortName = teamCode;
-    assignToSlot.color = kitPrimary;
-    assignToSlot.accentColor = kitSecondary;
-    localStorage.setItem('rttf_teams', JSON.stringify(TEAMS));
-    renderFIFAMatches();
-    renderStandingsAndBracket();
-    renderTeamsGrid();
-    renderStatsCentre();
+  // Save sign-up to the database (pending queue) — team is NOT shown on site until admin admits them
+  if (typeof submitTeamSignupToDb === 'function') {
+    submitTeamSignupToDb({
+      team_name: teamName,
+      short_code: teamCode,
+      captain_name: captainName,
+      captain_phone: captainPhone,
+      group_pref: groupPref,
+      kit_primary: kitPrimary,
+      kit_secondary: kitSecondary,
+      players: activePlayers
+    });
   }
 
   closeModal('signup-team');
-  showToast("🚀 WhatsApp launched! Send the message to complete your team sign-up.");
+  showToast("🚀 WhatsApp launched! Your registration is pending payment verification by the organiser.");
 }
 
 // ── 10. INITIALIZATION ──
 document.addEventListener('DOMContentLoaded', () => {
+  // Restore dev mode state immediately (sessionStorage persists during tab session)
+  updateDevModeUI();
+
   initTeamUploaderUI();
   initSignupForm();
   renderFIFAMatches();

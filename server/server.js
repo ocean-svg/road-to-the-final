@@ -23,16 +23,20 @@ app.get('/api/status', async (req, res) => {
     const matchesCount = await get('SELECT COUNT(*) as count FROM matches');
     const playedMatches = await get("SELECT COUNT(*) as count FROM matches WHERE status = 'Full Time'");
     const eventsCount = await get('SELECT COUNT(*) as count FROM match_events');
+    const signupsCount = await get('SELECT COUNT(*) as count FROM team_signups');
+    const pendingSignups = await get("SELECT COUNT(*) as count FROM team_signups WHERE status = 'pending'");
 
     res.json({
       status: 'online',
       database: 'SQLite (rttf_tournament.db)',
       counts: {
-        teams: teamsCount.count,
-        players: playersCount.count,
-        matches: matchesCount.count,
-        playedMatches: playedMatches.count,
-        matchEvents: eventsCount.count
+        teams: teamsCount ? teamsCount.count : 0,
+        players: playersCount ? playersCount.count : 0,
+        matches: matchesCount ? matchesCount.count : 0,
+        playedMatches: playedMatches ? playedMatches.count : 0,
+        matchEvents: eventsCount ? eventsCount.count : 0,
+        signups: signupsCount ? signupsCount.count : 0,
+        pendingSignups: pendingSignups ? pendingSignups.count : 0
       },
       timestamp: new Date().toISOString()
     });
@@ -580,7 +584,179 @@ app.get('/api/leaderboards', async (req, res) => {
   }
 });
 
-// 8. ADMIN SEED / RESET
+// 8. TEAM SIGNUPS & ADMISSION API
+app.get('/api/signups', async (req, res) => {
+  try {
+    const signups = await all('SELECT * FROM team_signups ORDER BY created_at DESC');
+    res.json(signups);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/signups', async (req, res) => {
+  try {
+    const { team_name, short_code, captain_name, captain_phone, group_pref, kit_primary, kit_secondary, players } = req.body;
+    if (!team_name || !captain_name || !captain_phone) {
+      return res.status(400).json({ error: 'Team name, captain name and phone are required' });
+    }
+
+    const signupId = `signup_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+    const playersJson = typeof players === 'string' ? players : JSON.stringify(players || []);
+
+    await run(`
+      INSERT INTO team_signups (id, team_name, short_code, captain_name, captain_phone, group_pref, kit_primary, kit_secondary, players_json, payment_status, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending Payment', 'pending')
+    `, [
+      signupId,
+      team_name,
+      short_code || team_name.slice(0, 4).toUpperCase(),
+      captain_name,
+      captain_phone,
+      group_pref || 'Any Group',
+      kit_primary || '#001438',
+      kit_secondary || '#00d4ff',
+      playersJson
+    ]);
+
+    const created = await get('SELECT * FROM team_signups WHERE id = ?', [signupId]);
+    res.status(201).json(created);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/signups/:id/payment', async (req, res) => {
+  try {
+    const { payment_status } = req.body;
+    const newStatus = payment_status || 'Payment Verified';
+    
+    await run('UPDATE team_signups SET payment_status = ? WHERE id = ?', [newStatus, req.params.id]);
+    const updated = await get('SELECT * FROM team_signups WHERE id = ?', [req.params.id]);
+    if (!updated) return res.status(404).json({ error: 'Signup not found' });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/signups/:id/admit', async (req, res) => {
+  try {
+    const signup = await get('SELECT * FROM team_signups WHERE id = ?', [req.params.id]);
+    if (!signup) return res.status(404).json({ error: 'Signup not found' });
+
+    let targetTeamId = req.body.targetTeamId;
+
+    // If no target team specified, find an available TBD team
+    if (!targetTeamId) {
+      // Check group preference
+      let prefLetter = null;
+      if (signup.group_pref && signup.group_pref.startsWith('Group ')) {
+        prefLetter = signup.group_pref.replace('Group ', '').trim();
+      }
+
+      if (prefLetter) {
+        const prefTbd = await get("SELECT * FROM teams WHERE group_letter = ? AND (name LIKE 'TBD%' OR name = short_name) LIMIT 1", [prefLetter]);
+        if (prefTbd) targetTeamId = prefTbd.id;
+      }
+
+      if (!targetTeamId) {
+        const anyTbd = await get("SELECT * FROM teams WHERE name LIKE 'TBD%' LIMIT 1");
+        if (anyTbd) {
+          targetTeamId = anyTbd.id;
+        } else {
+          // Default to t1 if no TBD slot
+          targetTeamId = 't1';
+        }
+      }
+    }
+
+    // 1. Update the Team record in SQLite
+    await run(`
+      UPDATE teams SET
+        name = ?,
+        short_name = ?,
+        color = ?,
+        accent_color = ?
+      WHERE id = ?
+    `, [
+      signup.team_name,
+      signup.short_code || signup.team_name.slice(0, 4).toUpperCase(),
+      signup.kit_primary || '#001438',
+      signup.kit_secondary || '#00d4ff',
+      targetTeamId
+    ]);
+
+    // 2. Parse and replace player roster
+    let playerList = [];
+    try {
+      playerList = JSON.parse(signup.players_json || '[]');
+    } catch (e) {
+      playerList = [];
+    }
+
+    if (playerList && playerList.length > 0) {
+      // Remove old placeholder squad players
+      await run('DELETE FROM players WHERE team_id = ?', [targetTeamId]);
+
+      // Insert admitted squad players
+      for (let i = 0; i < playerList.length; i++) {
+        const p = playerList[i];
+        if (!p.name || !p.name.trim()) continue;
+
+        const pId = `p_${targetTeamId}_${i + 1}`;
+        let role = 'FWD';
+        if (p.role === 'Goalkeeper' || p.role === 'GK') role = 'GK';
+        else if (p.role === 'Defender' || p.role === 'DEF') role = 'DEF';
+        else if (p.role === 'Midfielder' || p.role === 'MID') role = 'MID';
+        else if (p.role === 'Forward' || p.role === 'FWD') role = 'FWD';
+
+        const jerseyNum = parseInt(p.number || (i === 0 ? 1 : (i + 5)), 10) || (i + 1);
+        const isCaptain = (i === 0 || p.isCaptain) ? 1 : 0;
+
+        await run(`
+          INSERT INTO players (id, team_id, name, jersey_number, role, is_captain, avatar_url, goals, assists, passes, clean_sheets, tackles, shots, saves, minutes, yellow_cards, red_cards)
+          VALUES (?, ?, ?, ?, ?, ?, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        `, [pId, targetTeamId, p.name.trim(), jerseyNum, role, isCaptain]);
+      }
+    }
+
+    // 3. Mark signup as admitted and verified
+    await run(`
+      UPDATE team_signups SET
+        status = 'admitted',
+        payment_status = 'Payment Verified',
+        assigned_team_id = ?
+      WHERE id = ?
+    `, [targetTeamId, signup.id]);
+
+    const updatedTeam = await get('SELECT * FROM teams WHERE id = ?', [targetTeamId]);
+    const updatedPlayers = await all('SELECT * FROM players WHERE team_id = ?', [targetTeamId]);
+    const updatedSignup = await get('SELECT * FROM team_signups WHERE id = ?', [signup.id]);
+
+    res.json({
+      success: true,
+      message: `Team "${signup.team_name}" successfully admitted to ${updatedTeam.group_letter} (${targetTeamId})!`,
+      team: updatedTeam,
+      players: updatedPlayers,
+      signup: updatedSignup
+    });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/signups/:id', async (req, res) => {
+  try {
+    await run('DELETE FROM team_signups WHERE id = ?', [req.params.id]);
+    res.json({ success: true, message: 'Signup record deleted.' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 9. ADMIN SEED / RESET
 app.post('/api/admin/reset', async (req, res) => {
   try {
     await seedDatabase(true);

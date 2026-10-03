@@ -139,13 +139,44 @@ async function syncAllFromDatabase() {
 }
 
 // ── 3. SCOREKEEPER MODAL CONTROLLER ──
-function openScorekeeperModal(matchId = null) {
+function openScorekeeperModal(target = null) {
+  if (typeof isDevAuthed === 'function' && !isDevAuthed()) {
+    requireDevAuth(() => openScorekeeperModal(target));
+    return;
+  }
+
   const modal = document.getElementById('modal-scorekeeper');
   if (!modal) return;
 
-  populateScorekeeperMatchList(matchId);
+  if (target === 'signups') {
+    switchScorekeeperTab('signups');
+  } else {
+    switchScorekeeperTab('matches');
+    populateScorekeeperMatchList(typeof target === 'string' && target !== 'matches' ? target : null);
+  }
+
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
+}
+
+function switchScorekeeperTab(tabName) {
+  const btnMatches = document.getElementById('sk-tab-btn-matches');
+  const btnSignups = document.getElementById('sk-tab-btn-signups');
+  const contentMatches = document.getElementById('sk-tab-content-matches');
+  const contentSignups = document.getElementById('sk-tab-content-signups');
+
+  if (tabName === 'signups') {
+    if (btnMatches) btnMatches.classList.remove('active');
+    if (btnSignups) btnSignups.classList.add('active');
+    if (contentMatches) contentMatches.style.display = 'none';
+    if (contentSignups) contentSignups.style.display = 'block';
+    fetchSignupsFromDb();
+  } else {
+    if (btnSignups) btnSignups.classList.remove('active');
+    if (btnMatches) btnMatches.classList.add('active');
+    if (contentSignups) contentSignups.style.display = 'none';
+    if (contentMatches) contentMatches.style.display = 'block';
+  }
 }
 
 function closeScorekeeperModal() {
@@ -169,7 +200,7 @@ function populateScorekeeperMatchList(selectMatchId = null) {
     select.appendChild(opt);
   });
 
-  if (selectMatchId) {
+  if (selectMatchId && MATCHES.some(m => m.id === selectMatchId)) {
     select.value = selectMatchId;
   } else if (MATCHES.length > 0) {
     select.value = MATCHES[0].id;
@@ -403,6 +434,11 @@ async function deleteMatchEvent(eventId) {
 
 // ── 5. PLAYER ROSTER & PROFILES MANAGER ──
 function openPlayerManagerModal(teamId = 't1') {
+  if (typeof isDevAuthed === 'function' && !isDevAuthed()) {
+    requireDevAuth(() => openPlayerManagerModal(teamId));
+    return;
+  }
+
   currentManagerTeamId = teamId;
   const modal = document.getElementById('modal-player-manager');
   if (!modal) return;
@@ -657,7 +693,362 @@ async function deletePlayerFromDb(playerId) {
   }
 }
 
-// ── 6. DATABASE RESET / SEED TOOL ──
+// ── 7. TEAM SIGNUPS & PAYMENT APPROVALS CONTROLLER ──
+let devSignups = [];
+
+async function fetchSignupsFromDb() {
+  const container = document.getElementById('sk-signups-list-container');
+  if (container) {
+    container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-dim);font-size:13px;">⏳ Loading team registrations from database...</div>';
+  }
+
+  if (isDbConnected) {
+    try {
+      const res = await fetch(`${API_BASE}/api/signups`);
+      if (!res.ok) throw new Error('Failed to fetch signups');
+      devSignups = await res.json();
+      localStorage.setItem('rttf_pending_signups', JSON.stringify(devSignups));
+    } catch (err) {
+      console.warn('Could not fetch signups from server, using local storage:', err);
+      const stored = localStorage.getItem('rttf_pending_signups');
+      devSignups = stored ? JSON.parse(stored) : [];
+    }
+  } else {
+    const stored = localStorage.getItem('rttf_pending_signups');
+    devSignups = stored ? JSON.parse(stored) : [];
+  }
+
+  updateDevPendingBadges();
+  renderDevSignupsList();
+}
+
+function updateDevPendingBadges() {
+  const pendingCount = devSignups.filter(s => s.status === 'pending').length;
+  
+  const b1 = document.getElementById('dev-pending-badge');
+  const b2 = document.getElementById('dev-banner-pending-count');
+  const b3 = document.getElementById('sk-tab-signups-badge');
+
+  if (b1) b1.textContent = pendingCount;
+  if (b2) b2.textContent = pendingCount;
+  if (b3) b3.textContent = pendingCount;
+}
+
+async function submitTeamSignupToDb(data) {
+  const localId = `signup_${Date.now()}`;
+  const record = {
+    id: localId,
+    team_name: data.team_name,
+    short_code: data.short_code || data.team_name.slice(0, 4).toUpperCase(),
+    captain_name: data.captain_name,
+    captain_phone: data.captain_phone,
+    group_pref: data.group_pref || 'Any Group',
+    kit_primary: data.kit_primary || '#001438',
+    kit_secondary: data.kit_secondary || '#00d4ff',
+    players_json: JSON.stringify(data.players || []),
+    payment_status: 'Pending Payment',
+    status: 'pending',
+    created_at: new Date().toISOString()
+  };
+
+  // Always save in localStorage backup
+  let localSignups = [];
+  try {
+    const stored = localStorage.getItem('rttf_pending_signups');
+    localSignups = stored ? JSON.parse(stored) : [];
+  } catch(e) { localSignups = []; }
+  localSignups.unshift(record);
+  localStorage.setItem('rttf_pending_signups', JSON.stringify(localSignups));
+  devSignups = localSignups;
+  updateDevPendingBadges();
+
+  if (isDbConnected) {
+    try {
+      const res = await fetch(`${API_BASE}/api/signups`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          team_name: data.team_name,
+          short_code: data.short_code,
+          captain_name: data.captain_name,
+          captain_phone: data.captain_phone,
+          group_pref: data.group_pref,
+          kit_primary: data.kit_primary,
+          kit_secondary: data.kit_secondary,
+          players: data.players
+        })
+      });
+      if (!res.ok) throw new Error('Server error registering team');
+      console.log('✅ Team sign-up saved to SQLite database.');
+      await fetchSignupsFromDb();
+    } catch (err) {
+      console.warn('Saved sign-up locally (DB sync failed):', err.message);
+    }
+  }
+}
+
+async function markSignupPaymentSent(signupId) {
+  const item = devSignups.find(s => s.id === signupId);
+  if (!item) return;
+
+  const newStatus = (item.payment_status === 'Payment Verified') ? 'Pending Payment' : 'Payment Verified';
+
+  if (isDbConnected) {
+    try {
+      const res = await fetch(`${API_BASE}/api/signups/${signupId}/payment`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ payment_status: newStatus })
+      });
+      if (!res.ok) throw new Error('Failed to update payment status');
+      showToast(`💵 Payment status updated: ${newStatus}`);
+      await fetchSignupsFromDb();
+    } catch (err) {
+      console.error(err);
+      item.payment_status = newStatus;
+      localStorage.setItem('rttf_pending_signups', JSON.stringify(devSignups));
+      showToast(`💵 Payment status updated locally: ${newStatus}`);
+      renderDevSignupsList();
+    }
+  } else {
+    item.payment_status = newStatus;
+    localStorage.setItem('rttf_pending_signups', JSON.stringify(devSignups));
+    showToast(`💵 Payment status updated: ${newStatus}`);
+    renderDevSignupsList();
+  }
+}
+
+async function admitSignupTeam(signupId) {
+  const item = devSignups.find(s => s.id === signupId);
+  if (!item) return;
+
+  if (item.payment_status !== 'Payment Verified') {
+    const confirmPay = confirm(`⚠️ Payment for "${item.team_name}" is currently marked as PENDING.\n\nDo you want to verify payment and admit the team now?`);
+    if (!confirmPay) return;
+  }
+
+  const slotSelect = document.getElementById(`slot-select-${signupId}`);
+  const targetTeamId = slotSelect ? slotSelect.value : null;
+
+  if (isDbConnected) {
+    try {
+      showToast(`⏳ Admitting ${item.team_name} to tournament database...`);
+      const res = await fetch(`${API_BASE}/api/signups/${signupId}/admit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ targetTeamId })
+      });
+
+      if (!res.ok) throw new Error('Failed to admit team');
+      const data = await res.json();
+
+      showToast(`🎉 ${data.message || `Team ${item.team_name} successfully admitted!`}`);
+      await syncAllFromDatabase();
+      await fetchSignupsFromDb();
+    } catch (err) {
+      console.error(err);
+      showToast('❌ Error admitting team to database.');
+    }
+  } else {
+    // Offline / Local Mode admission fallback
+    let target = TEAMS.find(t => t.id === targetTeamId) || TEAMS.find(t => t.name.startsWith('TBD')) || TEAMS[0];
+    if (target) {
+      target.name = item.team_name;
+      target.shortName = item.short_code || item.team_name.slice(0, 4).toUpperCase();
+      target.color = item.kit_primary || '#001438';
+      target.accentColor = item.kit_secondary || '#00d4ff';
+
+      // Insert registered players
+      let pList = [];
+      try { pList = JSON.parse(item.players_json || '[]'); } catch(e) { pList = []; }
+
+      if (pList.length > 0) {
+        // Remove dummy players
+        for (let i = STAT_PLAYERS.length - 1; i >= 0; i--) {
+          if (STAT_PLAYERS[i].teamId === target.id) STAT_PLAYERS.splice(i, 1);
+        }
+
+        pList.forEach((p, pIdx) => {
+          STAT_PLAYERS.push({
+            id: `p_${target.id}_${pIdx + 1}`,
+            teamId: target.id,
+            name: p.name.trim(),
+            jerseyNumber: parseInt(p.number || (pIdx === 0 ? 1 : (pIdx + 5)), 10) || (pIdx + 1),
+            role: (p.role === 'Goalkeeper' || p.role === 'GK') ? 'GK' : 'FWD',
+            isCaptain: pIdx === 0 || !!p.isCaptain,
+            goals: 0, assists: 0, passes: 40, cleanSheets: 0, tackles: 5, shots: 5, saves: 0, minutes: 0, yellowCards: 0, redCards: 0
+          });
+        });
+      }
+
+      item.status = 'admitted';
+      item.payment_status = 'Payment Verified';
+      item.assigned_team_id = target.id;
+      localStorage.setItem('rttf_pending_signups', JSON.stringify(devSignups));
+      localStorage.setItem('rttf_teams', JSON.stringify(TEAMS));
+
+      showToast(`🎉 Team "${item.team_name}" admitted to Group ${target.group}!`);
+      if (typeof renderFIFAMatches === 'function') renderFIFAMatches();
+      if (typeof renderStandingsAndBracket === 'function') renderStandingsAndBracket();
+      if (typeof renderTeamsGrid === 'function') renderTeamsGrid();
+      if (typeof renderStatsCentre === 'function') renderStatsCentre();
+      renderDevSignupsList();
+    }
+  }
+}
+
+async function deleteSignupRecord(signupId) {
+  if (!confirm('Are you sure you want to remove this sign-up record?')) return;
+
+  if (isDbConnected) {
+    try {
+      const res = await fetch(`${API_BASE}/api/signups/${signupId}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Failed to delete signup');
+      showToast('🗑️ Registration record removed.');
+      await fetchSignupsFromDb();
+    } catch (err) {
+      console.error(err);
+      showToast('❌ Error deleting record.');
+    }
+  } else {
+    devSignups = devSignups.filter(s => s.id !== signupId);
+    localStorage.setItem('rttf_pending_signups', JSON.stringify(devSignups));
+    showToast('🗑️ Registration record removed.');
+    updateDevPendingBadges();
+    renderDevSignupsList();
+  }
+}
+
+function renderDevSignupsList() {
+  const container = document.getElementById('sk-signups-list-container');
+  if (!container) return;
+
+  if (!devSignups || devSignups.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:36px 20px;background:#f8fafc;border:1px dashed var(--border-color);border-radius:8px;">
+        <div style="font-size:32px;margin-bottom:8px;">📝</div>
+        <h4 style="font-size:14px;font-weight:800;color:var(--fifa-navy-dark);margin:0 0 4px;">No Team Sign-ups Yet</h4>
+        <p style="font-size:12px;color:var(--text-dim);margin:0;">
+          When team captains register using the public <strong>"Sign Up Team"</strong> form, their registrations and rosters will appear here for payment confirmation and admission.
+        </p>
+      </div>
+    `;
+    return;
+  }
+
+  let html = '';
+  devSignups.forEach(s => {
+    let players = [];
+    try {
+      players = typeof s.players_json === 'string' ? JSON.parse(s.players_json || '[]') : (s.players_json || []);
+    } catch(e) {
+      players = [];
+    }
+
+    const isPaid = s.payment_status === 'Payment Verified';
+    const isAdmitted = s.status === 'admitted';
+    const dateFormatted = s.created_at ? new Date(s.created_at).toLocaleString() : 'Recent';
+
+    // Roster chips
+    let rosterHtml = '';
+    if (players && players.length > 0) {
+      players.forEach((p, idx) => {
+        const isGK = p.role === 'Goalkeeper' || p.role === 'GK' || idx === 0;
+        rosterHtml += `
+          <span class="signup-player-chip ${isGK ? 'gk' : ''}">
+            <span>${isGK ? '🧤' : '⚽'}</span>
+            <strong>${p.name || `Player ${idx + 1}`}</strong>
+            <span style="color:var(--text-dim);font-size:10px;">(#${p.number || (idx === 0 ? 1 : idx + 5)} ${p.role || ''})</span>
+          </span>
+        `;
+      });
+    } else {
+      rosterHtml = '<span style="font-size:11.5px;color:var(--text-dim);">No player list provided</span>';
+    }
+
+    // Available target slot options
+    let slotOptions = '';
+    TEAMS.forEach(t => {
+      const isPreferred = s.group_pref && s.group_pref.includes(t.group);
+      const isSelected = s.assigned_team_id === t.id || (t.name.startsWith('TBD') && isPreferred);
+      slotOptions += `<option value="${t.id}" ${isSelected ? 'selected' : ''}>Group ${t.group}: ${t.name} (${t.id})</option>`;
+    });
+
+    const cleanPhone = (s.captain_phone || '').replace(/[^0-9]/g, '');
+
+    html += `
+      <div class="signup-approval-card ${isAdmitted ? 'admitted' : ''}" id="signup-card-${s.id}">
+        <div class="signup-header-row">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="signup-color-dot" style="background:${s.kit_primary || '#001438'};"></span>
+            <span class="signup-color-dot" style="background:${s.kit_secondary || '#00d4ff'};margin-left:-4px;"></span>
+            <strong style="font-size:15px;color:var(--fifa-navy-dark);">${s.team_name}</strong>
+            <span style="font-family:var(--font-display);font-weight:900;color:var(--fifa-blue);font-size:12px;">[${s.short_code || s.team_name.slice(0, 4).toUpperCase()}]</span>
+            <span style="font-size:11px;background:#f1f5f9;color:var(--text-dim);padding:2px 8px;border-radius:12px;">Pref: ${s.group_pref || 'Any Group'}</span>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="sk-status-pill ${isPaid ? 'paid' : 'unpaid'}">
+              ${isPaid ? '✅ Payment Verified' : '⏳ Payment Pending'}
+            </span>
+            ${isAdmitted ? `<span class="sk-status-pill admitted">🏆 Admitted (${s.assigned_team_id || 'Active'})</span>` : ''}
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12px;color:var(--text-main);margin-bottom:8px;">
+          <div>
+            👤 <strong>Captain:</strong> ${s.captain_name} &bull;
+            📱 <strong>WhatsApp:</strong> <a href="https://wa.me/${cleanPhone}" target="_blank" style="color:var(--fifa-blue);font-weight:700;">${s.captain_phone} ↗</a>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim);">
+            🕒 Submitted: ${dateFormatted}
+          </div>
+        </div>
+
+        <!-- Squad Roster Sheet -->
+        <div style="margin:8px 0 4px;">
+          <div style="font-size:11.5px;font-weight:800;color:var(--fifa-navy-dark);margin-bottom:4px;">
+            📋 Registered Squad Teamsheet (${players.length} Players):
+          </div>
+          <div class="signup-roster-preview">
+            ${rosterHtml}
+          </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="signup-actions-row">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="btn-sk-pay" onclick="markSignupPaymentSent('${s.id}')" style="background:${isPaid ? '#0284c7' : '#2563eb'};">
+              ${isPaid ? '🔄 Toggle Payment Status' : '💵 Mark Payment Sent / Received'}
+            </button>
+
+            ${!isAdmitted ? `
+              <div style="display:inline-flex;align-items:center;gap:6px;">
+                <label style="font-size:11px;font-weight:700;color:var(--text-dim);">Slot:</label>
+                <select id="slot-select-${s.id}" class="signup-input" style="font-size:11.5px;padding:4px 8px;width:auto;">
+                  ${slotOptions}
+                </select>
+                <button type="button" class="btn-sk-admit ${!isPaid ? 'disabled' : ''}" onclick="admitSignupTeam('${s.id}')" title="${isPaid ? 'Admit team to tournament' : 'Click to verify payment and admit'}">
+                  🏆 Admit Team &amp; Teamsheet
+                </button>
+              </div>
+            ` : `
+              <span style="font-size:12px;font-weight:800;color:#059669;">✅ Team Sheet Active in Official Standings</span>
+            `}
+          </div>
+
+          <button type="button" class="btn-sk-del" onclick="deleteSignupRecord('${s.id}')" title="Delete Registration">
+            🗑️ Delete
+          </button>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+// ── 8. DATABASE RESET / SEED TOOL ──
 async function resetTournamentDatabase() {
   if (!confirm('⚠️ WARNING: This will reset all match scores, events, and rosters back to fresh tournament defaults in SQLite. Are you sure?')) return;
 
@@ -668,6 +1059,7 @@ async function resetTournamentDatabase() {
       if (!res.ok) throw new Error('Failed to reset database');
       showToast('🏆 Database successfully re-seeded with official teams & fixtures!');
       await syncAllFromDatabase();
+      await fetchSignupsFromDb();
       if (document.getElementById('modal-scorekeeper').classList.contains('open')) {
         populateScorekeeperMatchList();
       }
@@ -683,4 +1075,5 @@ async function resetTournamentDatabase() {
 // Auto-run DB initialization when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   initDatabaseSync();
+  fetchSignupsFromDb();
 });

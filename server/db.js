@@ -132,6 +132,24 @@ async function initSchema() {
     );
   `);
 
+  await run(`
+    CREATE TABLE IF NOT EXISTS team_signups (
+      id TEXT PRIMARY KEY,
+      team_name TEXT NOT NULL,
+      short_code TEXT,
+      captain_name TEXT NOT NULL,
+      captain_phone TEXT NOT NULL,
+      group_pref TEXT DEFAULT 'Any Group',
+      kit_primary TEXT DEFAULT '#001438',
+      kit_secondary TEXT DEFAULT '#00d4ff',
+      players_json TEXT NOT NULL,
+      payment_status TEXT DEFAULT 'Pending Payment',
+      status TEXT DEFAULT 'pending',
+      assigned_team_id TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
   console.log('✅ Schema initialization complete.');
 }
 
