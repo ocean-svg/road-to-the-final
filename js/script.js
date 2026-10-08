@@ -1809,13 +1809,11 @@ _Submitted via Road to the Final 2026 Portal_`;
 
 // ── 10. INITIALIZATION ──
 document.addEventListener('DOMContentLoaded', () => {
-  initTeamUploaderUI();
-  initSignupForm();
-  renderFIFAMatches();
-  renderStandingsAndBracket();
-  renderTeamsGrid();
-  renderStatsCentre();
-  initMediaGallery();
+  // Each step is isolated so the public one-pager (which has no admin panels) still renders.
+  [initTeamUploaderUI, initSignupForm, renderFIFAMatches, renderStandingsAndBracket,
+   renderTeamsGrid, renderStatsCentre, initMediaGallery].forEach((fn) => {
+    try { fn(); } catch (err) { console.warn('init step skipped:', fn && fn.name, err.message); }
+  });
 
   const mobileToggle = document.getElementById('fifa-menu-toggle');
   const mainNav = document.getElementById('fifa-main-nav');

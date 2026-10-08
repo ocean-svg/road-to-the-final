@@ -3523,3 +3523,53 @@ ul {
   .rt-cta-actions { flex-direction: column; max-width: 360px; margin: 0 auto; }
   .rt-cta .btn-signup-hero, .rt-cta .btn-fifa-calendar { width: 100%; justify-content: center; }
 }
+
+/* =========================================================
+   PUBLIC ONE-PAGER: round floating header + footer
+   ========================================================= */
+body.public-site { padding-bottom: 0; }
+.rt-nav-wrap { position: fixed; top: 12px; left: 0; right: 0; z-index: 200; padding: 0 14px; pointer-events: none; }
+.rt-nav { pointer-events: auto; max-width: 1040px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 8px 8px 8px 12px; border-radius: 9999px; background: rgba(4, 80, 52, .82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.18); box-shadow: 0 10px 30px rgba(0,0,0,.28); color: #fff; }
+.rt-nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; flex-shrink: 0; }
+.rt-nav-emblem { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.14); display: inline-flex; align-items: center; justify-content: center; }
+.rt-nav-name { font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+.rt-nav-links { display: flex; gap: 4px; }
+.rt-nav-links a { color: rgba(255,255,255,.85); text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 9999px; transition: background .15s ease, color .15s ease; }
+.rt-nav-links a:hover { background: rgba(255,255,255,.14); color: #fff; }
+.rt-nav-cta { background: var(--fifa-gold); color: #1f1300; font-weight: 800; font-size: 14px; padding: 10px 20px; border-radius: 9999px; cursor: pointer; border: 0; white-space: nowrap; transition: background .15s ease, transform .12s ease; }
+.rt-nav-cta:hover { background: #fbb83a; transform: translateY(-1px); }
+
+body.public-site .fifa-hero-banner { min-height: 600px; }
+body.public-site .rt-hero-inner { padding-top: 120px; }
+body.public-site .fifa-stage-bar { position: static; }
+body.public-site section[id], body.public-site .rt-section-head { scroll-margin-top: 90px; }
+
+.rt-footer { background: var(--fifa-navy-dark); color: rgba(255,255,255,.78); }
+.rt-footer-inner { max-width: 1200px; margin: 0 auto; padding: 26px 20px; display: flex; justify-content: space-between; align-items: center; gap: 10px 24px; flex-wrap: wrap; font-size: 13px; }
+.rt-footer-brand { font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: .04em; text-transform: uppercase; color: #fff; }
+
+@media (max-width: 760px) {
+  .rt-nav-links { display: none; }
+  .rt-nav-name { font-size: 17px; }
+  body.public-site .fifa-hero-banner { min-height: 520px; }
+  body.public-site .rt-hero-inner { padding-top: 100px; }
+  .rt-footer-inner { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .rt-nav { gap: 8px; padding: 6px 6px 6px 8px; }
+  .rt-nav-brand { gap: 8px; min-width: 0; }
+  .rt-nav-emblem { width: 32px; height: 32px; }
+  .rt-nav-name { font-size: 15px; letter-spacing: .02em; }
+  .rt-nav-cta { padding: 9px 14px; font-size: 13px; }
+}
+
+@media (max-width: 380px) {
+  .rt-nav-emblem { display: none; }
+  .rt-nav-brand { padding-left: 8px; }
+}
+
+@media (max-width: 340px) {
+  .rt-nav-name { font-size: 12.5px; }
+  .rt-nav-cta { padding: 8px 11px; font-size: 12px; }
+}
