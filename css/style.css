@@ -3446,3 +3446,6 @@ ul {
   .rt-info-cta { width: 100%; }
   .rt-info-cta button { flex: 1 1 100%; justify-content: center; text-align: center; padding: 12px 16px; }
 }
+
+/* 7 tiles: let the Age tile fill the last row */
+.rt-tile.rt-wide { grid-column: span 2; }
