@@ -185,9 +185,9 @@
     <!-- Hero Content -->
     <div class="fifa-hero-inner">
       <div class="fifa-hero-title-wrap">
-        <span class="fifa-tag-badge">&#9917; 8 Groups &bull; 32 Teams &bull; Edenvale 2026</span>
+        <span class="fifa-tag-badge">&#9917; 32 Teams &bull; 8 Groups &bull; Edenvale 2026</span>
         <h1 class="fifa-hero-title">Official Tournament<br>Match Center</h1>
-        <p class="fifa-hero-subtitle">5-a-side &bull; Group Stage &bull; Knockout Finals</p>
+        <p class="fifa-hero-subtitle">5-a-side &bull; 3 Guaranteed Games &bull; R5,000 for 1st Place</p>
       </div>
       <div class="fifa-hero-actions">
         <button class="btn-signup-hero" onclick="openModal('signup-team')">
@@ -214,6 +214,48 @@
        4. TAB PANEL 1: MATCHES (DEFAULT ACTIVE)
        ============================================= -->
   <main class="tab-panel active" id="panel-fixtures" role="tabpanel">
+
+    <!-- TOURNAMENT INFO (home) -->
+    <section class="rt-info" aria-label="Tournament information">
+      <div class="rt-info-inner">
+        <div class="rt-info-head">
+          <h2 class="rt-info-title">Tournament Day at a Glance</h2>
+          <div class="rt-info-cta">
+            <button class="btn-signup-nav" onclick="openModal('signup-team')">Sign Up Team</button>
+            <button class="btn-fifa-calendar" onclick="switchTab('rules')">View Tournament Rules</button>
+          </div>
+        </div>
+
+        <div class="rt-time" aria-label="Day timeline">
+          <div class="rt-time-bar">
+            <span class="rt-time-play" style="left:27.27%;width:56.82%;">Tournament 12:00 – 18:15</span>
+          </div>
+          <div class="rt-time-marks">
+            <span style="left:0%">09:00<small>Venue opens</small></span>
+            <span style="left:27.27%">12:00<small>Kick-off</small></span>
+            <span style="left:84.09%">18:15<small>Final whistle</small></span>
+            <span style="left:100%">20:00<small>Venue closes</small></span>
+          </div>
+        </div>
+
+        <div class="rt-grid">
+          <div class="rt-tile"><span class="rt-k">Entry</span><span class="rt-v">R100</span><span class="rt-s">per player &bull; R800 for a full squad</span></div>
+          <div class="rt-tile"><span class="rt-k">Squad</span><span class="rt-v">8</span><span class="rt-s">players per team</span></div>
+          <div class="rt-tile"><span class="rt-k">Teams</span><span class="rt-v">32</span><span class="rt-s">across 8 groups</span></div>
+          <div class="rt-tile"><span class="rt-k">Guaranteed</span><span class="rt-v">3</span><span class="rt-s">group games per team</span></div>
+          <div class="rt-tile"><span class="rt-k">Match length</span><span class="rt-v">10 min</span><span class="rt-s">per game</span></div>
+          <div class="rt-tile"><span class="rt-k">Pitches</span><span class="rt-v">3</span><span class="rt-s">Pitches A, B &amp; C</span></div>
+          <div class="rt-tile" data-info="age"><span class="rt-k">Age</span><span class="rt-v">TBC</span><span class="rt-s">age category</span></div>
+          <div class="rt-tile" data-info="gender"><span class="rt-k">Gender</span><span class="rt-v">TBC</span><span class="rt-s">who can enter</span></div>
+        </div>
+
+        <div class="rt-prizes">
+          <div class="rt-prize p1"><span class="rt-place">1st</span><span class="rt-amt">R5,000</span></div>
+          <div class="rt-prize p2"><span class="rt-place">2nd</span><span class="rt-amt">R2,500</span></div>
+          <div class="rt-prize p3"><span class="rt-place">3rd</span><span class="rt-amt">R1,000</span></div>
+        </div>
+      </div>
+    </section>
 
     <!-- STAGE / GAME SELECTOR BAR (Sticky) -->
     <div class="fifa-stage-bar">

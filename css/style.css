@@ -3385,3 +3385,64 @@ ul {
 }
 
 
+
+
+/* =========================================================
+   HOME: TOURNAMENT INFO (rt-info)
+   ========================================================= */
+.rt-info { background: var(--bg-card); border-bottom: 1px solid var(--border-color); }
+.rt-info-inner { max-width: 1200px; margin: 0 auto; padding: 28px 20px 24px; }
+.rt-info-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 26px; }
+.rt-info-title { font-family: var(--font-display); font-size: 28px; font-weight: 800; text-transform: uppercase; color: var(--fifa-navy-dark); margin: 0; letter-spacing: .01em; }
+.rt-info-cta { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.rt-time { margin-bottom: 30px; padding: 0 6px 34px; }
+.rt-time-bar { position: relative; height: 34px; background: var(--bg-hover); border: 1px solid var(--border-color); border-radius: var(--radius-pill); overflow: hidden; }
+.rt-time-play { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; background: var(--fifa-navy); color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: .04em; white-space: nowrap; overflow: hidden; }
+.rt-time-marks { position: relative; height: 0; }
+.rt-time-marks span { position: absolute; top: 8px; transform: translateX(-50%); font-family: var(--font-display); font-weight: 800; font-size: 17px; color: var(--fifa-navy-dark); text-align: center; white-space: nowrap; line-height: 1.1; }
+.rt-time-marks span:first-child { transform: none; text-align: left; }
+.rt-time-marks span:last-child { transform: translateX(-100%); text-align: right; }
+.rt-time-marks small { display: block; font-family: var(--font-main); font-weight: 500; font-size: 11.5px; color: var(--text-dim); }
+
+.rt-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.rt-tile { background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+.rt-k { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); }
+.rt-v { font-family: var(--font-display); font-size: 40px; font-weight: 800; line-height: 1; color: var(--fifa-navy-dark); }
+.rt-s { font-size: 12.5px; color: var(--text-muted); }
+
+.rt-prizes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+.rt-prize { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 14px 18px; border-radius: var(--radius-md); background: var(--fifa-navy-dark); color: #fff; }
+.rt-prize.p1 { background: var(--fifa-gold); color: #1f1300; }
+.rt-prize.p2 { background: #cbd5e1; color: #0f172a; }
+.rt-prize.p3 { background: #c98a5a; color: #1f1000; }
+.rt-place { font-family: var(--font-display); font-weight: 800; font-size: 22px; text-transform: uppercase; }
+.rt-amt { font-family: var(--font-display); font-weight: 800; font-size: 34px; line-height: 1; }
+
+@media (max-width: 760px) {
+  .rt-grid { grid-template-columns: repeat(2, 1fr); }
+  .rt-prizes { grid-template-columns: 1fr; }
+  .rt-info-title { font-size: 24px; }
+  .rt-v { font-size: 34px; }
+  .rt-time-play { font-size: 12px; }
+  .rt-time-marks span { font-size: 14px; }
+  .rt-time-marks small { font-size: 10px; }
+}
+
+/* rules button on the light info card (original style is for the dark hero) */
+.rt-info-cta .btn-fifa-calendar {
+  color: var(--fifa-navy-dark);
+  background: transparent;
+  border: 1.5px solid var(--fifa-navy-dark);
+}
+.rt-info-cta .btn-fifa-calendar:hover { background: var(--fifa-navy-dark); color: #fff; }
+
+@media (max-width: 760px) {
+  .rt-time { padding-bottom: 8px; }
+  .rt-time-marks { height: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 10px; }
+  .rt-time-marks span,
+  .rt-time-marks span:first-child,
+  .rt-time-marks span:last-child { position: static; transform: none; text-align: center; white-space: normal; }
+  .rt-info-cta { width: 100%; }
+  .rt-info-cta button { flex: 1 1 100%; justify-content: center; text-align: center; padding: 12px 16px; }
+}
