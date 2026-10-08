@@ -254,8 +254,8 @@ const RULES = [
     section: "1. Tournament Format & Roster Structure",
     icon: "⚽",
     items: [
-      "Match Format: Games are played as 5-a-side (4 outfield players + 1 goalkeeper).",
-      "Roster Size: Each team may register a squad of 5 to 8 players total. Only registered roster players are eligible to play or substitute.",
+      "Match Format: Games are played as 5-a-side (4 outfield players + 1 goalkeeper) and last 20 minutes in total: 9 minutes, a 2-minute break, then 9 minutes.",
+      "Roster Size: Each team registers a squad of 8 players. Only registered roster players are eligible to play or substitute.",
       "Substitutions: Rolling substitutions are permitted at any point during the match."
     ]
   },
@@ -263,8 +263,8 @@ const RULES = [
     section: "2. Competition Progression",
     icon: "🏆",
     items: [
-      "Phase 1 (Group Stage): Teams will first compete in round-robin group play (3 group stage games across 8 groups A-H).",
-      "Phase 2 (Knockout Stage): Top-qualifying teams advance to single-elimination knockout rounds, progressing through to the final."
+      "Phase 1 (Group Stage): Teams first compete in round-robin group play (3 group stage games across 8 groups A-H). Win = 3 points, draw = 1, loss = 0; goal difference then goals scored separate teams level on points.",
+      "Phase 2 (Knockout Stage): The top 2 teams from each group advance to the Round of 16, then the quarter-finals, semi-finals, a third-place playoff and the final."
     ]
   },
   {
@@ -289,7 +289,7 @@ const RULES = [
     section: "5. Payment & Refund Policy",
     icon: "💳",
     items: [
-      "Strict No Refund Policy: Registration fees are strictly non-refundable once transferred.",
+      "Strict No Refund Policy: The R800 per-team registration fee is strictly non-refundable once transferred.",
       "Cut-off Deadline: No refund requests will be accepted or processed within 7 days prior to the tournament start date."
     ]
   }

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Road to the Final 2026 | 5-a-side Tournament, Edenvale</title>
-  <meta name="description" content="Road to the Final 2026: 32-team 5-a-side tournament in Edenvale. R100 per player, 3 guaranteed games, R5,000 for 1st place. Sign up your squad.">
+  <meta name="description" content="Road to the Final 2026: 32 teams, 3 pitches, 1 champion. 5-a-side summer tournament in Edenvale. R800 per team, 20-minute matches, R5,000 for 1st place. Sign up your squad.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -36,7 +36,8 @@
       </a>
       <nav class="rt-nav-links" aria-label="Sections">
         <a href="#rt-stats">Info</a>
-        <a href="#rt-fixtures">Fixtures</a>
+        <a href="#rt-format">Format</a>
+        <a href="#rt-day">Schedule</a>
         <a href="#rt-faq">Rules &amp; FAQ</a>
       </nav>
       <button class="rt-nav-cta" onclick="openModal('signup-team')">Sign Up Team</button>
@@ -131,7 +132,8 @@
     <div class="fifa-hero-inner rt-hero-inner">
       <span class="rt-pill">&#127942; Edenvale 2026 &bull; 5-a-side</span>
       <h1 class="fifa-hero-title rt-hero-title">Road to<br>the Final</h1>
-      <p class="fifa-hero-subtitle rt-hero-sub">32 teams, 3 pitches, 3 guaranteed games each &mdash; and R5,000 waiting for the champions.</p>
+      <p class="rt-tagline">32 Teams. 3 Pitches. 1 Champion.</p>
+      <p class="fifa-hero-subtitle rt-hero-sub">A fun, competitive summer football tournament with short matches and a properly organised day.</p>
       <div class="fifa-hero-actions rt-hero-actions">
         <button class="btn-signup-hero" onclick="openModal('signup-team')">Sign Up Team</button>
         <button class="btn-fifa-calendar" onclick="document.getElementById('rt-faq').scrollIntoView({behavior:'smooth'})">View Tournament Rules</button>
@@ -166,21 +168,25 @@
 
         <div class="rt-time" aria-label="Day timeline">
           <div class="rt-time-bar">
-            <span class="rt-time-play" style="left:27.27%;width:56.82%;">Tournament 12:00 – 18:15</span>
+            <span class="rt-time-play" style="left:27.27%;width:48.48%;">Group stage</span>
+            <span class="rt-time-play rt-time-ko" style="left:78.03%;width:21.97%;">Knockouts</span>
           </div>
           <div class="rt-time-marks">
             <span style="left:0%">09:00<small>Venue opens</small></span>
             <span style="left:27.27%">12:00<small>Kick-off</small></span>
-            <span style="left:84.09%">18:15<small>Final whistle</small></span>
-            <span style="left:100%">20:00<small>Venue closes</small></span>
+            <span style="left:75.76%">17:20<small>Groups end*</small></span>
+            <span style="left:100%">20:00<small>Awards &amp; finish</small></span>
           </div>
+          <p class="rt-note">*Group-stage finish time is an estimate.</p>
         </div>
 
         <div class="rt-grid">
-          <div class="rt-tile"><span class="rt-k">Entry</span><span class="rt-v">R100</span><span class="rt-s">per player &bull; R800 for a full squad</span></div>
-          <div class="rt-tile"><span class="rt-k">Squad</span><span class="rt-v">5–8</span><span class="rt-s">players per team</span></div>
-          <div class="rt-tile"><span class="rt-k">Match length</span><span class="rt-v">10 min</span><span class="rt-s">per game</span></div>
+          <div class="rt-tile"><span class="rt-k">Registration</span><span class="rt-v">R800</span><span class="rt-s">per team</span></div>
+          <div class="rt-tile"><span class="rt-k">Squad</span><span class="rt-v">8</span><span class="rt-s">players per team</span></div>
+          <div class="rt-tile"><span class="rt-k">Match</span><span class="rt-v">20 min</span><span class="rt-s">9 + 2 break + 9</span></div>
+          <div class="rt-tile"><span class="rt-k">On the pitch</span><span class="rt-v">5</span><span class="rt-s">a side + rolling subs</span></div>
           <div class="rt-tile" data-info="age"><span class="rt-k">Age</span><span class="rt-v">14+</span><span class="rt-s">minimum age to play</span></div>
+          <div class="rt-tile"><span class="rt-k">Qualification</span><span class="rt-v">Top 2</span><span class="rt-s">per group advance</span></div>
         </div>
 
         <div class="rt-prizes">
@@ -191,51 +197,65 @@
       </div>
     </section>
 
-    <!-- FIXTURES HEADER -->
-    <section class="rt-section-head" id="rt-fixtures">
-      <div class="rt-section-inner">
-        <div>
-          <h2 class="rt-h2">All Matches &amp; Fixtures</h2>
-          <p class="rt-lead">Every match &mdash; kick-off times, pitches, results and teams.</p>
-        </div>
-        <button class="btn-fifa-calendar rt-ics" onclick="exportCalendarICS()">Export Schedule (.ics)</button>
+    <!-- ROAD TO THE FINAL (format) -->
+    <section class="rt-format" id="rt-format">
+      <div class="rt-wrap">
+        <h2 class="rt-h2">The Road to the Final</h2>
+        <p class="rt-lead">Group stage first, then straight knockout football.</p>
+        <ol class="rt-steps">
+          <li class="rt-step"><span class="rt-step-n">01</span><h3>Group stage</h3><p>32 teams in 8 groups of 4. Every team plays 3 matches.</p></li>
+          <li class="rt-step"><span class="rt-step-n">02</span><h3>Round of 16</h3><p>The top 2 teams from each group qualify.</p></li>
+          <li class="rt-step"><span class="rt-step-n">03</span><h3>Quarter-finals</h3><p>8 teams compete for 4 places.</p></li>
+          <li class="rt-step"><span class="rt-step-n">04</span><h3>Semi-finals</h3><p>4 teams compete for a place in the final.</p></li>
+          <li class="rt-step"><span class="rt-step-n">05</span><h3>Third-place playoff</h3><p>The semi-final losers play for third.</p></li>
+          <li class="rt-step rt-step-final"><span class="rt-step-n">06</span><h3>The Final</h3><p>The last 2 teams compete for the championship.</p></li>
+        </ol>
+        <p class="rt-points"><strong>Group points:</strong> win 3 &bull; draw 1 &bull; loss 0. Ties are split by goal difference, then goals scored.</p>
       </div>
     </section>
 
-    <!-- STAGE / GAME SELECTOR BAR (Sticky) -->
-    <div class="fifa-stage-bar">
-      <div class="fifa-stage-inner">
-        <div class="fifa-stage-tabs" role="tablist">
-          <button class="stage-tab-btn active" data-stage="Game 1" onclick="filterByStage('Game 1')">Game 1</button>
-          <button class="stage-tab-btn" data-stage="Game 2" onclick="filterByStage('Game 2')">Game 2</button>
-          <button class="stage-tab-btn" data-stage="Game 3" onclick="filterByStage('Game 3')">Game 3</button>
-          <button class="stage-tab-btn" data-stage="Knockout" onclick="filterByStage('Knockout')">Knockout
-            Stage</button>
-          <button class="stage-tab-btn" data-stage="all" onclick="filterByStage('all')">All Matches</button>
-        </div>
+    <!-- VENUE-DAY SCHEDULE -->
+    <section class="rt-day" id="rt-day">
+      <div class="rt-wrap">
+        <h2 class="rt-h2">Venue-Day Schedule</h2>
+        <p class="rt-lead">One day, start to finish.</p>
+        <ul class="rt-day-list">
+          <li><span class="rt-day-t">09:00 &ndash; 11:00</span><span class="rt-day-a">Pitch setup, equipment, music and event preparation</span></li>
+          <li><span class="rt-day-t">11:00 &ndash; 11:30</span><span class="rt-day-a">Team registration and check-in</span></li>
+          <li><span class="rt-day-t">11:30 &ndash; 12:00</span><span class="rt-day-a">Rules briefing and warm-ups</span></li>
+          <li class="rt-day-play"><span class="rt-day-t">12:00 &ndash; 17:20</span><span class="rt-day-a">Group-stage matches <em>(estimated)</em></span></li>
+          <li><span class="rt-day-t">17:20 &ndash; 17:35</span><span class="rt-day-a">Standings, water and recovery break</span></li>
+          <li class="rt-day-play"><span class="rt-day-t">17:35 onwards</span><span class="rt-day-a">Knockout rounds, third-place playoff and the final</span></li>
+          <li><span class="rt-day-t">By 20:00</span><span class="rt-day-a">Awards, pack-down and venue handover</span></li>
+        </ul>
+      </div>
+    </section>
 
-        <div class="fifa-filter-controls">
-          <select class="fifa-select-pill" id="fifa-group-select" aria-label="Filter by Group">
-            <option value="all">All Groups (A - H)</option>
-            <option value="A">Group A</option>
-            <option value="B">Group B</option>
-            <option value="C">Group C</option>
-            <option value="D">Group D</option>
-            <option value="E">Group E</option>
-            <option value="F">Group F</option>
-            <option value="G">Group G</option>
-            <option value="H">Group H</option>
-          </select>
+    <!-- EVENT ATMOSPHERE -->
+    <section class="rt-vibe">
+      <div class="rt-wrap">
+        <h2 class="rt-h2 rt-h2-light">More Than a Football Tournament</h2>
+        <p class="rt-lead rt-lead-light">Music, refreshments, team photos and a proper trophy presentation &mdash; a summer football event that feels like an occasion.</p>
+        <div class="rt-chips">
+          <span>Music</span><span>Refreshments</span><span>Team photos</span><span>Photographer</span><span>Trophy presentation</span>
+        </div>
+        <div class="rt-awards">
+          <div class="rt-award"><span class="rt-award-i">&#128095;</span><span class="rt-award-t">Golden Boot</span></div>
+          <div class="rt-award"><span class="rt-award-i">&#11088;</span><span class="rt-award-t">Player of the Tournament</span></div>
+          <div class="rt-award"><span class="rt-award-i">&#129508;</span><span class="rt-award-t">Best Goalkeeper</span></div>
         </div>
       </div>
-    </div>
+    </section>
+
+
+    <!-- FIXTURES HEADER -->
+    
+
+    <!-- STAGE / GAME SELECTOR BAR (Sticky) -->
+    
 
     <!-- MAIN MATCHES LIST CONTAINER -->
-    <div class="fifa-main-content">
-      <div id="fifa-matches-list-container">
-        <!-- Dynamically rendered via renderFIFAMatches() -->
-      </div>
-    </div>
+    
 
     <!-- FAQ -->
     <section class="rt-faq" id="rt-faq" aria-label="Frequently asked questions">
@@ -247,23 +267,31 @@
         <div class="rt-faq-list">
           <details open>
             <summary>How do I register my team?</summary>
-            <p>Tap <strong>Sign Up Team</strong>, add 5 to 8 players and send your squad through WhatsApp. Entry is R100 per player.</p>
+            <p>Tap <strong>Sign Up Team</strong> and send your squad of 8 players through WhatsApp. Registration is R800 per team. Check-in on the day is 11:00 to 11:30.</p>
           </details>
           <details>
             <summary>What is the tournament format?</summary>
-            <p>32 teams in 8 groups. Every team plays 3 guaranteed group games of 10 minutes each, then the knockout stage follows. Matches run from 12:00 to 18:15 across 3 pitches.</p>
+            <p>32 teams in 8 groups of 4, and every team plays 3 matches. The top 2 from each group go through to the Round of 16, then the quarter-finals, semi-finals, a third-place playoff and the final.</p>
+          </details>
+          <details>
+            <summary>How long are matches?</summary>
+            <p>20 minutes in total: 9 minutes, a 2-minute break, then another 9 minutes. Five players per side are on the pitch with rolling substitutes, across 3 pitches.</p>
+          </details>
+          <details>
+            <summary>How do group points work?</summary>
+            <p>Win = 3 points, draw = 1, loss = 0. Teams level on points are separated by goal difference, then goals scored.</p>
           </details>
           <details>
             <summary>Who can play?</summary>
-            <p>Players must be 14 or older. Squads are 5 to 8 players, with 1 goalkeeper and 4 outfield players on the pitch.</p>
+            <p>Players must be 14 or older. Each team registers 8 players.</p>
           </details>
           <details>
             <summary>Where and when is it?</summary>
-            <p>Edenvale Indoor Soccer, Edenvale. The venue is open 09:00 to 20:00 and the tournament runs 12:00 to 18:15.</p>
+            <p>Edenvale Indoor Soccer, Edenvale. The venue is open 09:00 to 20:00 with kick-off at 12:00, and awards and pack-down wrap up by 20:00.</p>
           </details>
           <details>
-            <summary>Are there prizes?</summary>
-            <p>Yes &mdash; R5,000 for 1st place, R2,500 for 2nd and R1,000 for 3rd.</p>
+            <summary>What can we win?</summary>
+            <p>R5,000 for 1st place, R2,500 for 2nd and R1,000 for 3rd, plus individual awards: Golden Boot, Player of the Tournament and Best Goalkeeper.</p>
           </details>
         </div>
       </div>
@@ -273,7 +301,7 @@
     <section class="rt-cta">
       <div class="rt-cta-inner">
         <h2 class="rt-cta-title">Get your squad in.</h2>
-        <p class="rt-cta-sub">5&ndash;8 players &bull; R100 per player &bull; 3 guaranteed games</p>
+        <p class="rt-cta-sub">8 players &bull; R800 per team &bull; 3 guaranteed games</p>
         <div class="rt-cta-actions">
           <button class="btn-signup-hero" onclick="openModal('signup-team')">Sign Up Team</button>
           <button class="btn-fifa-calendar" onclick="document.getElementById('rt-faq').scrollIntoView({behavior:'smooth'})">View Tournament Rules</button>
