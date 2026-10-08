@@ -255,7 +255,7 @@ const RULES = [
     icon: "⚽",
     items: [
       "Match Format: Games are played as 5-a-side (4 outfield players + 1 goalkeeper).",
-      "Roster Size: Each team may register a maximum of 7 to 8 players total. Only registered roster players are eligible to play or substitute.",
+      "Roster Size: Each team may register a squad of 5 to 8 players total. Only registered roster players are eligible to play or substitute.",
       "Substitutions: Rolling substitutions are permitted at any point during the match."
     ]
   },
