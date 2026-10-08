@@ -3449,3 +3449,77 @@ ul {
 
 /* 7 tiles: let the Age tile fill the last row */
 .rt-tile.rt-wide { grid-column: span 2; }
+
+/* =========================================================
+   GOAL-STYLE HOME: hero, stats row, section heads, FAQ, CTA
+   ========================================================= */
+.fifa-hero-banner { min-height: 520px; justify-content: center; }
+.rt-hero-inner { flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 18px; padding: 72px 24px 56px; max-width: 900px; }
+.rt-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; border-radius: var(--radius-pill); background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.22); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; backdrop-filter: blur(4px); }
+.rt-hero-title { font-size: clamp(56px, 11vw, 120px); line-height: .92; text-transform: uppercase; letter-spacing: .01em; }
+.rt-hero-sub { font-size: clamp(15px, 2.2vw, 19px); font-weight: 500; color: rgba(255,255,255,.78); max-width: 560px; line-height: 1.5; margin-top: 0; }
+.rt-hero-actions { justify-content: center; margin-top: 6px; }
+.rt-hero-actions .btn-signup-hero { padding: 14px 28px; font-size: 15px; background: var(--fifa-gold); color: #1f1300; }
+.rt-hero-actions .btn-signup-hero:hover { background: #fbb83a; }
+.rt-hero-actions .btn-fifa-calendar { padding: 13px 26px; font-size: 15px; }
+.rt-scroll { margin-top: 18px; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.6); text-decoration: none; }
+.rt-scroll:hover { color: #fff; }
+
+/* stats row */
+.rt-stats { background: var(--fifa-navy-dark); color: #fff; }
+.rt-stats-inner { max-width: 1200px; margin: 0 auto; padding: 26px 20px; display: grid; grid-template-columns: repeat(5, 1fr); }
+.rt-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 10px; border-left: 1px solid rgba(255,255,255,.14); }
+.rt-stat:first-child { border-left: 0; }
+.rt-stat-n { font-family: var(--font-display); font-size: clamp(34px, 5vw, 52px); font-weight: 800; line-height: 1; color: var(--fifa-gold); }
+.rt-stat-l { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.75); text-align: center; }
+
+/* info block: 4 tiles now */
+.rt-grid { grid-template-columns: repeat(4, 1fr); }
+.rt-info-head { margin-bottom: 20px; }
+
+/* section heads */
+.rt-section-head { background: var(--bg-page); }
+.rt-section-inner { max-width: 1200px; margin: 0 auto; padding: 34px 20px 8px; display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.rt-h2 { font-family: var(--font-display); font-size: clamp(30px, 4.5vw, 44px); font-weight: 800; line-height: 1; text-transform: uppercase; color: var(--fifa-navy-dark); margin: 0; }
+.rt-lead { color: var(--text-muted); font-size: 15px; margin: 8px 0 0; max-width: 52ch; }
+.rt-ics { color: var(--fifa-navy-dark); background: transparent; border: 1.5px solid var(--fifa-navy-dark); }
+.rt-ics:hover { background: var(--fifa-navy-dark); color: #fff; }
+
+/* FAQ */
+.rt-faq { background: var(--bg-card); border-top: 1px solid var(--border-color); }
+.rt-faq-inner { max-width: 1200px; margin: 0 auto; padding: 56px 20px; display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px; align-items: start; }
+.rt-rules-btn { margin-top: 20px; color: var(--fifa-navy-dark); background: transparent; border: 1.5px solid var(--fifa-navy-dark); }
+.rt-rules-btn:hover { background: var(--fifa-navy-dark); color: #fff; }
+.rt-faq-list { display: flex; flex-direction: column; gap: 10px; }
+.rt-faq-list details { background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0 18px; }
+.rt-faq-list summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 0; font-weight: 700; font-size: 16px; color: var(--text-main); }
+.rt-faq-list summary::-webkit-details-marker { display: none; }
+.rt-faq-list summary::after { content: "+"; font-family: var(--font-display); font-size: 26px; line-height: 1; color: var(--fifa-navy); transition: transform .15s ease; }
+.rt-faq-list details[open] summary::after { content: "–"; }
+.rt-faq-list details p { margin: 0 0 16px; color: var(--text-muted); font-size: 14.5px; line-height: 1.6; }
+
+/* CTA band */
+.rt-cta { background: radial-gradient(120% 160% at 50% 0%, var(--fifa-navy) 0%, var(--fifa-navy-dark) 60%, #022b1c 100%); color: #fff; text-align: center; }
+.rt-cta-inner { max-width: 760px; margin: 0 auto; padding: 64px 24px; }
+.rt-cta-title { font-family: var(--font-display); font-size: clamp(44px, 8vw, 80px); font-weight: 800; text-transform: uppercase; line-height: .95; margin: 0; }
+.rt-cta-sub { margin: 14px 0 26px; color: rgba(255,255,255,.8); font-size: 16px; }
+.rt-cta-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.rt-cta .btn-signup-hero { background: var(--fifa-gold); color: #1f1300; padding: 14px 28px; font-size: 15px; }
+.rt-cta .btn-signup-hero:hover { background: #fbb83a; }
+.rt-cta .btn-fifa-calendar { padding: 13px 26px; font-size: 15px; }
+
+@media (max-width: 860px) {
+  .rt-faq-inner { grid-template-columns: 1fr; gap: 24px; padding: 40px 16px; }
+  .rt-stats-inner { grid-template-columns: repeat(3, 1fr); row-gap: 14px; }
+  .rt-stat:nth-child(4) { border-left: 0; }
+}
+@media (max-width: 760px) {
+  .fifa-hero-banner { min-height: 440px; padding: 0; }
+  .rt-hero-inner { padding: 56px 18px 40px; }
+  .fifa-hero-banner .rt-hero-title { font-size: clamp(48px, 15vw, 72px); line-height: .92; }
+  .rt-hero-actions { flex-direction: column; width: 100%; max-width: 360px; }
+  .rt-grid { grid-template-columns: repeat(2, 1fr); }
+  .rt-section-inner { padding: 28px 16px 6px; }
+  .rt-cta-actions { flex-direction: column; max-width: 360px; margin: 0 auto; }
+  .rt-cta .btn-signup-hero, .rt-cta .btn-fifa-calendar { width: 100%; justify-content: center; }
+}
