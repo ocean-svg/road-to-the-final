@@ -255,7 +255,7 @@ const RULES = [
     icon: "⚽",
     items: [
       "Match Format: Games are played as 5-a-side (4 outfield players + 1 goalkeeper) and last 20 minutes in total: 9 minutes, a 2-minute break, then 9 minutes.",
-      "Roster Size: Each team registers a squad of 8 players. Only registered roster players are eligible to play or substitute.",
+      "Roster Size: Each team registers a squad of 5 to 8 players. Only registered roster players are eligible to play or substitute.",
       "Substitutions: Rolling substitutions are permitted at any point during the match."
     ]
   },
