@@ -3650,3 +3650,453 @@ body.dev-mode-active .btn-header-dev-pill {
 }
 
 
+
+
+/* =========================================================
+   HOME: TOURNAMENT INFO (rt-info)
+   ========================================================= */
+.rt-info { background: var(--bg-card); border-bottom: 1px solid var(--border-color); }
+.rt-info-inner { max-width: 1200px; margin: 0 auto; padding: 28px 20px 24px; }
+.rt-info-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 26px; }
+.rt-info-title { font-family: var(--font-display); font-size: 28px; font-weight: 800; text-transform: uppercase; color: var(--fifa-navy-dark); margin: 0; letter-spacing: .01em; }
+.rt-info-cta { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.rt-time { margin-bottom: 30px; padding: 0 6px 34px; }
+.rt-time-bar { position: relative; height: 34px; background: var(--bg-hover); border: 1px solid var(--border-color); border-radius: var(--radius-pill); overflow: hidden; }
+.rt-time-play { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; background: var(--fifa-navy); color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: .04em; white-space: nowrap; overflow: hidden; }
+.rt-time-marks { position: relative; height: 0; }
+.rt-time-marks span { position: absolute; top: 8px; transform: translateX(-50%); font-family: var(--font-display); font-weight: 800; font-size: 17px; color: var(--fifa-navy-dark); text-align: center; white-space: nowrap; line-height: 1.1; }
+.rt-time-marks span:first-child { transform: none; text-align: left; }
+.rt-time-marks span:last-child { transform: translateX(-100%); text-align: right; }
+.rt-time-marks small { display: block; font-family: var(--font-main); font-weight: 500; font-size: 11.5px; color: var(--text-dim); }
+
+.rt-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.rt-tile { background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+.rt-k { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); }
+.rt-v { font-family: var(--font-display); font-size: 40px; font-weight: 800; line-height: 1; color: var(--fifa-navy-dark); }
+.rt-s { font-size: 12.5px; color: var(--text-muted); }
+
+.rt-prizes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+.rt-prize { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 14px 18px; border-radius: var(--radius-md); background: var(--fifa-navy-dark); color: #fff; }
+.rt-prize.p1 { background: var(--accent); color: #0b2a1d; }
+.rt-prize.p2 { background: #cbd5e1; color: #0f172a; }
+.rt-prize.p3 { background: #c98a5a; color: #1f1000; }
+.rt-place { font-family: var(--font-display); font-weight: 800; font-size: 22px; text-transform: uppercase; }
+.rt-amt { font-family: var(--font-display); font-weight: 800; font-size: 34px; line-height: 1; }
+
+@media (max-width: 760px) {
+  .rt-grid { grid-template-columns: repeat(2, 1fr); }
+  .rt-prizes { grid-template-columns: 1fr; }
+  .rt-info-title { font-size: 24px; }
+  .rt-v { font-size: 34px; }
+  .rt-time-play { font-size: 12px; }
+  .rt-time-marks span { font-size: 14px; }
+  .rt-time-marks small { font-size: 10px; }
+}
+
+/* rules button on the light info card (original style is for the dark hero) */
+.rt-info-cta .btn-fifa-calendar {
+  color: var(--fifa-navy-dark);
+  background: transparent;
+  border: 1.5px solid var(--fifa-navy-dark);
+}
+.rt-info-cta .btn-fifa-calendar:hover { background: var(--fifa-navy-dark); color: #fff; }
+
+@media (max-width: 760px) {
+  .rt-time { padding-bottom: 8px; }
+  .rt-time-marks { height: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 10px; }
+  .rt-time-marks span,
+  .rt-time-marks span:first-child,
+  .rt-time-marks span:last-child { position: static; transform: none; text-align: center; white-space: normal; }
+  .rt-info-cta { width: 100%; }
+  .rt-info-cta button { flex: 1 1 100%; justify-content: center; text-align: center; padding: 12px 16px; }
+}
+
+/* 7 tiles: let the Age tile fill the last row */
+.rt-tile.rt-wide { grid-column: span 2; }
+
+/* =========================================================
+   GOAL-STYLE HOME: hero, stats row, section heads, FAQ, CTA
+   ========================================================= */
+.fifa-hero-banner { min-height: 520px; justify-content: center; }
+.rt-hero-inner { flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 18px; padding: 72px 24px 56px; max-width: 900px; }
+.rt-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; border-radius: var(--radius-pill); background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.22); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; backdrop-filter: blur(4px); }
+.rt-hero-title { font-size: clamp(56px, 11vw, 120px); line-height: .92; text-transform: uppercase; letter-spacing: .01em; }
+.rt-hero-sub { font-size: clamp(15px, 2.2vw, 19px); font-weight: 500; color: rgba(255,255,255,.78); max-width: 560px; line-height: 1.5; margin-top: 0; }
+.rt-hero-actions { justify-content: center; margin-top: 6px; }
+.rt-hero-actions .btn-signup-hero { padding: 14px 28px; font-size: 15px; background: var(--accent); color: #0b2a1d; }
+.rt-hero-actions .btn-signup-hero:hover { background: var(--accent-hover); }
+.rt-hero-actions .btn-fifa-calendar { padding: 13px 26px; font-size: 15px; }
+.rt-scroll { margin-top: 18px; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.6); text-decoration: none; }
+.rt-scroll:hover { color: #fff; }
+
+/* stats row */
+.rt-stats { background: var(--fifa-navy-dark); color: #fff; }
+.rt-stats-inner { max-width: 1200px; margin: 0 auto; padding: 26px 20px; display: grid; grid-template-columns: repeat(5, 1fr); }
+.rt-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 10px; border-left: 1px solid rgba(255,255,255,.14); }
+.rt-stat:first-child { border-left: 0; }
+.rt-stat-n { font-family: var(--font-display); font-size: clamp(34px, 5vw, 52px); font-weight: 800; line-height: 1; color: var(--accent); }
+.rt-stat-l { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.75); text-align: center; }
+
+/* info block: 4 tiles now */
+.rt-grid { grid-template-columns: repeat(4, 1fr); }
+.rt-info-head { margin-bottom: 20px; }
+
+/* section heads */
+.rt-section-head { background: var(--bg-page); }
+.rt-section-inner { max-width: 1200px; margin: 0 auto; padding: 34px 20px 8px; display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.rt-h2 { font-family: var(--font-display); font-size: clamp(30px, 4.5vw, 44px); font-weight: 800; line-height: 1; text-transform: uppercase; color: var(--fifa-navy-dark); margin: 0; }
+.rt-lead { color: var(--text-muted); font-size: 15px; margin: 8px 0 0; max-width: 52ch; }
+.rt-ics { color: var(--fifa-navy-dark); background: transparent; border: 1.5px solid var(--fifa-navy-dark); }
+.rt-ics:hover { background: var(--fifa-navy-dark); color: #fff; }
+
+/* FAQ */
+.rt-faq { background: var(--bg-card); border-top: 1px solid var(--border-color); }
+.rt-faq-inner { max-width: 1200px; margin: 0 auto; padding: 56px 20px; display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px; align-items: start; }
+.rt-rules-btn { margin-top: 20px; color: var(--fifa-navy-dark); background: transparent; border: 1.5px solid var(--fifa-navy-dark); }
+.rt-rules-btn:hover { background: var(--fifa-navy-dark); color: #fff; }
+.rt-faq-list { display: flex; flex-direction: column; gap: 10px; }
+.rt-faq-list details { background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0 18px; }
+.rt-faq-list summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 0; font-weight: 700; font-size: 16px; color: var(--text-main); }
+.rt-faq-list summary::-webkit-details-marker { display: none; }
+.rt-faq-list summary::after { content: "+"; font-family: var(--font-display); font-size: 26px; line-height: 1; color: var(--fifa-navy); transition: transform .15s ease; }
+.rt-faq-list details[open] summary::after { content: "–"; }
+.rt-faq-list details p { margin: 0 0 16px; color: var(--text-muted); font-size: 14.5px; line-height: 1.6; }
+
+/* CTA band */
+.rt-cta { background: radial-gradient(120% 160% at 50% 0%, var(--fifa-navy) 0%, var(--fifa-navy-dark) 60%, #022b1c 100%); color: #fff; text-align: center; }
+.rt-cta-inner { max-width: 760px; margin: 0 auto; padding: 64px 24px; }
+.rt-cta-title { font-family: var(--font-display); font-size: clamp(44px, 8vw, 80px); font-weight: 800; text-transform: uppercase; line-height: .95; margin: 0; }
+.rt-cta-sub { margin: 14px 0 26px; color: rgba(255,255,255,.8); font-size: 16px; }
+.rt-cta-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.rt-cta .btn-signup-hero { background: var(--accent); color: #0b2a1d; padding: 14px 28px; font-size: 15px; }
+.rt-cta .btn-signup-hero:hover { background: var(--accent-hover); }
+.rt-cta .btn-fifa-calendar { padding: 13px 26px; font-size: 15px; }
+
+@media (max-width: 860px) {
+  .rt-faq-inner { grid-template-columns: 1fr; gap: 24px; padding: 40px 16px; }
+  .rt-stats-inner { grid-template-columns: repeat(3, 1fr); row-gap: 14px; }
+  .rt-stat:nth-child(4) { border-left: 0; }
+}
+@media (max-width: 760px) {
+  .rt-grid { grid-template-columns: repeat(2, 1fr); }
+  .rt-section-inner { padding: 28px 16px 6px; }
+  .rt-cta-actions { flex-direction: column; max-width: 360px; margin: 0 auto; }
+  .rt-cta .btn-signup-hero, .rt-cta .btn-fifa-calendar { width: 100%; justify-content: center; }
+}
+
+/* =========================================================
+   PUBLIC ONE-PAGER: round floating header + footer
+   ========================================================= */
+body.public-site { padding-bottom: 0; }
+.rt-nav-wrap { position: fixed; top: 12px; left: 0; right: 0; z-index: 200; padding: 0 16px; pointer-events: none; }
+.rt-nav { pointer-events: auto; max-width: 1040px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 8px 12px 8px 14px; border-radius: 9999px; background: rgba(4, 80, 52, .88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.2); box-shadow: 0 10px 30px rgba(0,0,0,.32); color: #fff; }
+.rt-nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; flex-shrink: 0; }
+.rt-nav-emblem { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.16); display: inline-flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
+.rt-nav-name { font-family: var(--font-display); font-weight: 800; font-size: 19px; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; color: #fff; }
+.rt-nav-links { display: flex; align-items: center; gap: 4px; }
+.rt-nav-links a { color: rgba(255,255,255,.88); text-decoration: none; font-size: 13.5px; font-weight: 700; padding: 7px 14px; border-radius: 9999px; transition: background .15s ease, color .15s ease; }
+.rt-nav-links a:hover { background: rgba(255,255,255,.16); color: #fff; }
+.rt-nav-cta { background: var(--accent); color: #0b2a1d; font-weight: 800; font-size: 13.5px; padding: 9px 18px; border-radius: 9999px; cursor: pointer; border: 0; white-space: nowrap; transition: background .15s ease, transform .12s ease, box-shadow .15s ease; box-shadow: 0 2px 10px rgba(0,0,0,.2); }
+.rt-nav-cta:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,.3); }
+
+body.public-site section[id], body.public-site .rt-section-head { scroll-margin-top: 80px; }
+
+.rt-footer { background: var(--fifa-navy-dark); color: rgba(255,255,255,.78); }
+.rt-footer-inner { max-width: 1200px; margin: 0 auto; padding: 26px 20px; display: flex; justify-content: space-between; align-items: center; gap: 10px 24px; flex-wrap: wrap; font-size: 13px; }
+.rt-footer-brand { font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: .04em; text-transform: uppercase; color: #fff; }
+
+@media (max-width: 760px) {
+  .rt-nav-links { display: none; }
+  .rt-nav-name { font-size: 16px; }
+  .rt-nav-cta { padding: 8px 14px; font-size: 12.5px; }
+  .rt-footer-inner { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .rt-nav { gap: 8px; padding: 6px 8px 6px 10px; }
+  .rt-nav-brand { gap: 8px; min-width: 0; }
+  .rt-nav-emblem { width: 30px; height: 30px; }
+  .rt-nav-name { font-size: 14.5px; letter-spacing: .02em; }
+  .rt-nav-cta { padding: 7px 12px; font-size: 12px; }
+}
+
+@media (max-width: 360px) {
+  .rt-nav-emblem { display: none; }
+  .rt-nav-name { font-size: 13.5px; }
+  .rt-nav-cta { padding: 6px 10px; font-size: 11.5px; }
+}
+
+/* =========================================================
+   PLAN UPDATE: timeline segments, 6 tiles, format, schedule, vibe
+   ========================================================= */
+.rt-tagline { font-family: var(--font-display); font-size: clamp(20px, 3.5vw, 30px); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin: 0; }
+.rt-time-ko { background: var(--accent); color: #0b2a1d; }
+.rt-note { margin: 10px 0 0; font-size: 12px; color: var(--text-dim); }
+body .rt-grid { grid-template-columns: repeat(3, 1fr); }
+.rt-wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+.rt-format { background: var(--bg-page); padding: 60px 0 56px; }
+.rt-steps { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; counter-reset: none; }
+.rt-step { position: relative; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px 20px 22px; }
+.rt-step-n { font-family: var(--font-display); font-weight: 800; font-size: 34px; line-height: 1; color: var(--accent); }
+.rt-step h3 { font-family: var(--font-display); font-size: 26px; font-weight: 800; text-transform: uppercase; color: var(--fifa-navy-dark); margin: 6px 0 4px; line-height: 1; }
+.rt-step p { margin: 0; font-size: 14.5px; color: var(--text-muted); line-height: 1.5; }
+.rt-step-final { background: var(--fifa-navy-dark); border-color: var(--fifa-navy-dark); }
+.rt-step-final h3 { color: #fff; }
+.rt-step-final p { color: rgba(255,255,255,.8); }
+.rt-points { margin: 22px 0 0; padding: 14px 18px; background: var(--bg-card); border: 1px solid var(--border-color); border-left: 4px solid var(--accent); border-radius: var(--radius-md); font-size: 14.5px; color: var(--text-muted); }
+.rt-points strong { color: var(--fifa-navy-dark); }
+
+.rt-day { background: var(--bg-card); padding: 60px 0; border-top: 1px solid var(--border-color); }
+.rt-day-list { list-style: none; margin: 26px 0 0; padding: 0; max-width: 820px; }
+.rt-day-list li { display: grid; grid-template-columns: 170px 1fr; gap: 16px; align-items: baseline; padding: 15px 16px; border-bottom: 1px solid var(--border-color); }
+.rt-day-t { font-family: var(--font-display); font-weight: 800; font-size: 22px; color: var(--fifa-navy-dark); letter-spacing: .02em; }
+.rt-day-a { font-size: 15.5px; color: var(--text-main); }
+.rt-day-a em { color: var(--text-dim); font-style: normal; font-size: 13px; }
+.rt-day-list li.rt-day-play { background: var(--bg-card-alt); border-left: 4px solid var(--accent); }
+.rt-day-list li.rt-day-play .rt-day-a { font-weight: 700; }
+
+.rt-vibe { background: radial-gradient(120% 140% at 15% 0%, var(--fifa-navy) 0%, var(--fifa-navy-dark) 60%, #022b1c 100%); color: #fff; padding: 64px 0; }
+.rt-h2-light { color: #fff; }
+.rt-lead-light { color: rgba(255,255,255,.8); }
+.rt-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.rt-chips span { padding: 9px 18px; border-radius: var(--radius-pill); border: 1px solid rgba(255,255,255,.28); background: rgba(255,255,255,.07); font-weight: 600; font-size: 14px; }
+.rt-awards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
+.rt-award { display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: var(--radius-md); background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); }
+.rt-award-i { font-size: 30px; line-height: 1; }
+.rt-award-t { font-family: var(--font-display); font-weight: 800; font-size: 26px; text-transform: uppercase; line-height: 1; color: var(--accent); }
+
+@media (max-width: 860px) {
+  .rt-steps { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 760px) {
+  body .rt-grid { grid-template-columns: repeat(2, 1fr); }
+  .rt-steps { grid-template-columns: 1fr; }
+  .rt-awards { grid-template-columns: 1fr; }
+  .rt-day-list li { grid-template-columns: 1fr; gap: 2px; }
+  .rt-format, .rt-day, .rt-vibe { padding: 44px 0; }
+}
+
+.rt-note { margin-top: 50px; }
+.rt-time { padding-bottom: 6px; }
+@media (max-width: 760px) { .rt-note { margin-top: 12px; text-align: center; } }
+
+/* =========================================================
+   THEME: natural + lively — leaf green, fresh lime, warm cream
+   ========================================================= */
+:root {
+  --accent: #a3e635;
+  --accent-hover: #c4f06a;
+  --accent-ink: #4d7c0f;
+  --accent-line: #84cc16;
+
+  --bg-page: #f4f1e6;
+  --bg-card-alt: #faf8f0;
+  --bg-hover: #efebdc;
+  --border-color: #e3ddc9;
+  --border-subtle: #ece7d6;
+
+  --text-main: #14281d;
+  --text-muted: #4a5a4f;
+  --text-dim: #6a7a6e;
+}
+.rt-date { margin: 4px 0 0; font-size: 14px; font-weight: 600; color: var(--accent-ink); }
+.rt-info-head { flex-direction: column; align-items: flex-start; gap: 0; }
+.rt-step-n { color: var(--accent-ink); }
+.rt-step-final .rt-step-n { color: var(--accent); }
+.rt-points { border-left-color: var(--accent-line); }
+.rt-day-list li.rt-day-play { border-left-color: var(--accent-line); }
+.rt-prize.p1 { background: #f5b50a; color: #2a1c00; }
+.rt-faq-list summary::after { color: var(--accent-ink); }
+.rt-stats { background: radial-gradient(110% 200% at 80% 0%, rgba(163,230,53,.14) 0%, rgba(163,230,53,0) 55%), var(--fifa-navy-dark); }
+.rt-vibe, .rt-cta { background: radial-gradient(110% 160% at 80% 0%, rgba(163,230,53,.16) 0%, rgba(163,230,53,0) 55%), radial-gradient(120% 140% at 15% 0%, var(--fifa-navy) 0%, var(--fifa-navy-dark) 60%, #022b1c 100%); }
+
+/* =========================================================
+   SLIM HERO BANNER (Cinematic, Compact & Balanced)
+   ========================================================= */
+.fifa-hero-banner {
+  min-height: 440px;
+  background:
+    linear-gradient(to bottom, rgba(2, 24, 14, 0.72) 0%, rgba(2, 24, 14, 0.48) 45%, rgba(2, 24, 14, 0.90) 100%),
+    url('../images/hero-bg.jpg') center 32% / cover no-repeat,
+    #04170f;
+  border-bottom: 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fifa-hero-banner .hero-pitch-bg { display: none; }
+
+.fifa-hero-banner .rt-hero-inner {
+  max-width: 1040px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 88px 20px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+  min-height: auto;
+}
+
+body.public-site .fifa-hero-banner { min-height: 440px; }
+body.public-site .rt-hero-inner { padding-top: 88px; min-height: auto; }
+
+.fifa-hero-banner .rt-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(4, 80, 52, 0.88);
+  border: 1px solid rgba(163, 230, 53, 0.45);
+  color: #eaffc2;
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  margin-bottom: 2px;
+}
+
+.fifa-hero-banner .rt-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5.8vw, 68px);
+  font-weight: 800;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: .95;
+  text-shadow: 0 2px 20px rgba(0,0,0,.65), 0 0 40px rgba(0,0,0,.4);
+  margin: 0;
+}
+
+.fifa-hero-banner .rt-tagline {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2.6vw, 26px);
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow: 0 2px 12px rgba(0,0,0,.6);
+  margin: 0;
+}
+
+.fifa-hero-banner .rt-hero-sub {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 1px 8px rgba(0,0,0,.6);
+  max-width: 580px;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.fifa-hero-banner .rt-hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.btn-signup-hero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: #0b2a1d;
+  font-family: var(--font-main);
+  font-weight: 800;
+  font-size: 14px;
+  padding: 11px 24px;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  transition: var(--trans);
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  text-decoration: none;
+}
+.btn-signup-hero:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(0,0,0,.4);
+}
+
+.btn-fifa-calendar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 80, 52, 0.65);
+  border: 1px solid rgba(255,255,255,.4);
+  color: #ffffff;
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 13.5px;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  transition: var(--trans);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+.btn-fifa-calendar:hover {
+  background: rgba(255,255,255,.2);
+  border-color: #ffffff;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.fifa-hero-banner .rt-scroll {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,.7);
+  text-decoration: none;
+  margin-top: 2px;
+  transition: var(--trans);
+}
+.fifa-hero-banner .rt-scroll:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .fifa-hero-banner, body.public-site .fifa-hero-banner {
+    min-height: 400px;
+    background-image:
+      linear-gradient(to bottom, rgba(2, 24, 14, 0.76) 0%, rgba(2, 24, 14, 0.52) 40%, rgba(2, 24, 14, 0.92) 100%),
+      url('../images/hero-bg-m.jpg');
+    background-position: center 30%;
+    background-size: cover;
+  }
+  .fifa-hero-banner .rt-hero-inner, body.public-site .rt-hero-inner {
+    padding: 78px 16px 28px;
+    min-height: auto;
+    gap: 8px;
+  }
+  .fifa-hero-banner .rt-hero-title {
+    font-size: clamp(34px, 9.5vw, 48px);
+  }
+  .fifa-hero-banner .rt-tagline {
+    font-size: 19px;
+  }
+  .fifa-hero-banner .rt-hero-sub {
+    font-size: 13.5px;
+  }
+  .rt-hero-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    gap: 8px;
+  }
+  .btn-signup-hero, .btn-fifa-calendar {
+    width: 100%;
+  }
+}

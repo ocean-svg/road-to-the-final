@@ -544,7 +544,7 @@ function renderTeamsGrid() {
         </td>
         <td>
           <span style="font-size:12px;font-weight:700;color:var(--fifa-blue);background:#f1f5f9;padding:4px 10px;border-radius:var(--radius-pill);">
-            7-8 Players (5-a-side)
+            5-8 Players (5-a-side)
           </span>
         </td>
         <td style="text-align:right;">
@@ -581,7 +581,7 @@ function openClubDetailModal(teamId) {
     <div style="background:#f8fafc;border:1px solid var(--border-color);border-radius:8px;padding:16px;margin-bottom:16px;">
       <h4 style="font-size:13px;font-weight:800;color:var(--fifa-navy-dark);margin-bottom:8px;text-transform:uppercase;">Squad Overview</h4>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12.5px;color:var(--text-muted);">
-        <div><strong>Registered Squad:</strong> 7-8 Players Max (5-a-side)</div>
+        <div><strong>Registered Squad:</strong> 5-8 Players (5-a-side)</div>
         <div><strong>Primary Kit:</strong> <span style="display:inline-block;width:12px;height:12px;background:${team.color};border-radius:2px;vertical-align:middle;"></span> ${team.color}</div>
         <div><strong>Format:</strong> 4 Outfield + 1 Goalkeeper</div>
         <div><strong>Captain:</strong> Player 1 (C)</div>
@@ -1851,16 +1851,11 @@ _Submitted via Road to the Final 2026 Portal_`;
 
 // ── 10. INITIALIZATION ──
 document.addEventListener('DOMContentLoaded', () => {
-  // Restore dev mode state immediately (sessionStorage persists during tab session)
-  updateDevModeUI();
-
-  initTeamUploaderUI();
-  initSignupForm();
-  renderFIFAMatches();
-  renderStandingsAndBracket();
-  renderTeamsGrid();
-  renderStatsCentre();
-  initMediaGallery();
+  // Each step is isolated so the public one-pager (which has no admin panels) still renders.
+  [initTeamUploaderUI, initSignupForm, renderFIFAMatches, renderStandingsAndBracket,
+   renderTeamsGrid, renderStatsCentre, initMediaGallery].forEach((fn) => {
+    try { if (typeof fn === 'function') fn(); } catch (err) { console.warn('init step skipped:', fn && fn.name, err.message); }
+  });
 
   const mobileToggle = document.getElementById('fifa-menu-toggle');
   const mainNav = document.getElementById('fifa-main-nav');
