@@ -4107,3 +4107,9 @@ body.public-site .rt-hero-inner { padding-top: 88px; min-height: auto; }
 
 /* longer hero blurb */
 .fifa-hero-banner .rt-hero-sub { max-width: 680px; font-size: clamp(15px, 2vw, 17.5px); line-height: 1.55; }
+
+/* breathing room between the hero title and the copy below it */
+body .fifa-hero-banner .rt-tagline { margin-top: 64px; }
+@media (max-width: 760px) {
+  body .fifa-hero-banner .rt-tagline { margin-top: 40px; }
+}
