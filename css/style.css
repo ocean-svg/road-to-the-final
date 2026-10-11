@@ -4100,3 +4100,10 @@ body.public-site .rt-hero-inner { padding-top: 88px; min-height: auto; }
     width: 100%;
   }
 }
+
+/* prize cards: one colour (no gold / silver / bronze) */
+.rt-prize.p1, .rt-prize.p2, .rt-prize.p3 { background: var(--fifa-navy-dark); color: #fff; }
+.rt-prize .rt-place { color: rgba(255,255,255,.85); }
+
+/* longer hero blurb */
+.fifa-hero-banner .rt-hero-sub { max-width: 680px; font-size: clamp(15px, 2vw, 17.5px); line-height: 1.55; }
