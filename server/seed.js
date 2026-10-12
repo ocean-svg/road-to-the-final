@@ -123,12 +123,12 @@ async function seedDatabase(force = false) {
     // Game 1
     matches.push({
       id: `m${matchId++}`, round: "Game 1", stage: "Group Stage", group_letter: grp,
-      match_date: "2026-10-03", match_time: `${9 + (gIdx % 4)}:00`, pitch: `Pitch ${String.fromCharCode(65 + (gIdx % 3))}`,
+      match_date: "2026-11-07", match_time: `${9 + (gIdx % 4)}:00`, pitch: `Pitch ${String.fromCharCode(65 + (gIdx % 3))}`,
       home_team_id: `t${baseT + 1}`, away_team_id: `t${baseT + 2}`, home_score: null, away_score: null, status: "Scheduled", label: null
     });
     matches.push({
       id: `m${matchId++}`, round: "Game 1", stage: "Group Stage", group_letter: grp,
-      match_date: "2026-10-04", match_time: `${10 + (gIdx % 4)}:00`, pitch: `Pitch ${String.fromCharCode(65 + ((gIdx + 1) % 3))}`,
+      match_date: "2026-11-07", match_time: `${10 + (gIdx % 4)}:00`, pitch: `Pitch ${String.fromCharCode(65 + ((gIdx + 1) % 3))}`,
       home_team_id: `t${baseT + 3}`, away_team_id: `t${baseT + 4}`, home_score: null, away_score: null, status: "Scheduled", label: null
     });
 

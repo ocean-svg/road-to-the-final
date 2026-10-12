@@ -226,7 +226,7 @@ async function loadScorekeeperMatchData(matchId) {
   document.getElementById('sk-away-score').value = match.awayScore !== null ? match.awayScore : '';
   document.getElementById('sk-status').value = match.status || 'Scheduled';
   document.getElementById('sk-pitch').value = match.pitch || 'Pitch A';
-  document.getElementById('sk-date').value = match.date || '2026-10-03';
+  document.getElementById('sk-date').value = match.date || '2026-11-07';
   document.getElementById('sk-time').value = match.time || '09:00';
 
   // Load Team players into event dropdowns
