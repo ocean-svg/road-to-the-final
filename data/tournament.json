@@ -1,0 +1,23 @@
+{
+  "tournament": {
+    "name": "Road to the Final",
+    "edition": "2026",
+    "season": "Summer Edition",
+    "venue": "Edenvale Indoor Soccer",
+    "address": "Edenvale Indoor Soccer, Edenvale",
+    "pitches": ["Pitch A", "Pitch B", "Pitch C"],
+    "registrationFee": "R350 per team",
+    "contactWhatsApp": "+27 81 234 5678",
+    "contactEmail": "rttf2026@gmail.com"
+  },
+  "groups": [
+    { "id": "A", "name": "Group A", "teams": ["t1","t2","t3","t4"] },
+    { "id": "B", "name": "Group B", "teams": ["t5","t6","t7","t8"] },
+    { "id": "C", "name": "Group C", "teams": ["t9","t10","t11","t12"] },
+    { "id": "D", "name": "Group D", "teams": ["t13","t14","t15","t16"] },
+    { "id": "E", "name": "Group E", "teams": ["t17","t18","t19","t20"] },
+    { "id": "F", "name": "Group F", "teams": ["t21","t22","t23","t24"] },
+    { "id": "G", "name": "Group G", "teams": ["t25","t26","t27","t28"] },
+    { "id": "H", "name": "Group H", "teams": ["t29","t30","t31","t32"] }
+  ]
+}

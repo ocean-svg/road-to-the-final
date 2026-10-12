@@ -60,3 +60,8 @@ git push -u origin main
 ## License
 
 MIT — see `LICENSE`.
+
+## Public site vs admin
+
+- `index.html` — the public one-page site (hero, stats, day timeline, fixtures, FAQ, sign-up).
+- `admin.html` — the full match center: standings, teams & squads, statistics, rules & info, media, scorekeeper and rosters. It is not linked from the public page and is marked `noindex`, but it is **not password-protected** by the hosting itself — anyone with the URL can open it.

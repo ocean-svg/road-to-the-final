@@ -1,0 +1,28 @@
+{
+  "name": "road-to-the-final",
+  "version": "1.0.0",
+  "description": "A static website showcasing a 5-a-side football tournament — group stage, knockout bracket, fixtures, rules, and a team sign-up form.",
+  "main": "build_site.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "seed": "node server/seed.js",
+    "test": "node build_site.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ocean-svg/road-to-the-final.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ocean-svg/road-to-the-final/issues"
+  },
+  "homepage": "https://github.com/ocean-svg/road-to-the-final#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "sqlite3": "^6.0.1"
+  }
+}
